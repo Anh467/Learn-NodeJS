@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const path = require('path')
 const port= 8080
+const route= require('./resources/routers')
 const app= express()
 //check request
 app.use(morgan("combined"))
@@ -13,18 +14,9 @@ app.engine('hbs',exphbs.engine({
 }))
 app.set('view engine','hbs')
 app.set('views', path.join(__dirname, 'resources/views'))
-//do
-app.get('/', function(req, res) {
-     res.render('home')
-})
-//news
-app.get('/news', function(req, res) {
-    res.render('news')
-})
-//home
-app.get('/home', function(req, res) {
-    return res.send("/home")
-})
+//route
+route(app)
+
 
 app.listen(port, ()=>
     console.log(`listening on port ${port}`)
