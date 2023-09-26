@@ -53,5 +53,26 @@ class AuthenController{
             }
         )
     } 
+    checkAuthentication= function(req, res, next) {
+        var Account, Password
+        if(req.session.User){
+            Account = req.session.User.Account
+            Password= req.session.User.Password
+        }
+        if(Account != null && Password != null)
+            res.locals.isAuthenticated = false;
+        else
+            res.locals.isAuthenticated = true;
+        console.log("##########check authentication:"+  res.locals.isAuthenticated +"###########")
+        next();
+      }
+    logout= function(req, res) {
+         if (req.session.user) {
+            delete req.session.user;
+            req.session.save(); 
+            res.redirect("/home")
+          }
+
+    }
 }
 module.exports= new AuthenController

@@ -1,0 +1,9 @@
+.logo-container {
+  width: 70px;
+  height: 70px; }
+  .logo-container img {
+    top: auto;
+    bottom: auto;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; }
