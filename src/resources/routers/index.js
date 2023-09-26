@@ -1,8 +1,9 @@
 const customerRouter = require('./customer')
+const authenRouter = require('./authen')
 function route(app){
     //do
     app.get('/', function(req, res) {
-        res.render('customer/ListCustomer')
+        res.render('home')
     })
     //news
     app.get('/news', function(req, res) {
@@ -10,10 +11,12 @@ function route(app){
     })
     //home
     app.get('/home', function(req, res) {
-    return res.send("/home")
+        res.render('home')
     })
     //customer
     app.use('/customer', customerRouter)
+    //authen
+    app.use('/authen', authenRouter)
 }
 
 module.exports= route

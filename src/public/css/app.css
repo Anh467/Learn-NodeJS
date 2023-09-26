@@ -7,5 +7,12 @@ h1 {
   color: red; }
 
 h2 {
-  color: green;
-  background-color: green; }
+  color: green; }
+
+.font-awesome {
+  width: 50%; }
+
+.nav-item i {
+  align-items: right;
+  color: white;
+  padding-left: 2%; }
