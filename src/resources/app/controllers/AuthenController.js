@@ -41,12 +41,10 @@ class AuthenController{
                 Account: customer.Account,
                 Password: customer.Password,
             }
-            res.render('authen/loginSuccess',{
-                customer: customer
-            })
+            res.redirect('/home')
         })
         .catch( err => {
-                res.status(500).render('authen/loginFail',{
+                res.status(500).render('/authen/loginFail',{
                     message: "Đã có lỗi xảy ra",
                     err: err.message
                 });

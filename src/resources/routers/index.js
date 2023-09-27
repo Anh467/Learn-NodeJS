@@ -1,9 +1,9 @@
 const customerRouter = require('./customer')
 const authenRouter = require('./authen')
-const filterAutehn= require('./filterAuthen')
+const filterAuthen= require('./filterAuthen')
 function route(app){
     //filter
-    app.use('/*', filterAutehn)
+    app.use(['/home/*', '/customer/*', '/authen/*', '/home', '/'],filterAuthen)
     //customer
     app.use('/customer', customerRouter)
     //authen
