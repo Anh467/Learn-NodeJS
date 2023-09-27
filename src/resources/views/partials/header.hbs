@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/header.css">
+
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <a class="navbar-brand" href="/">
       <div class="logo-container">
@@ -27,18 +28,19 @@
           <div class="d-flex align-items-center ">
             
             {{#if isAuthenticated}}
+            {{!-- login --}}
               <p class="text-white my-auto ">login</p>
               <a href="/authen/login">
+                  
                    <i class="fa-solid fa-right-to-bracket fa-2xl mx-3 text-white"></i>
                  </a>
             {{else}}
-            
+            {{!-- logout --}}
             <p class="text-white my-auto ">logout</p>
-            <form action="/authen/logout" method="post"></form>
-            <button type="submit">
-              <i class="fa-solid fa-right-from-bracket fa-2xl mx-3 text-white"></i>
-            </button>
-                
+            <form id="frmActionLogout" action="/authen/logout" method="post"></form>
+              <button id="btnActionLogout" type="submit" class="btn btn-link p-0">
+                <i class="fa-solid fa-right-from-bracket fa-2xl mx-3 text-white"></i>
+              </button>
              </form>
             {{/if}}
               
@@ -47,6 +49,7 @@
       </div>
     </div>
 </nav>
-<script>
-    
+{{!-- <script src="/js/header.js"></script> --}}
+<script src="/js/header.js">
+  
 </script>
