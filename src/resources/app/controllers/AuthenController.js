@@ -65,12 +65,15 @@ class AuthenController{
         next();
       }
     logout= function(req, res) {
-         if (req.session.user) {
-            delete req.session.user;
-            req.session.save(); 
-            res.redirect("/home")
-          }
-
+        
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Lỗi khi xóa session:', err);
+            } else {
+                console.log('Session đã bị xóa thành công.');
+            }
+            res.redirect('/');
+        });
     }
 }
 module.exports= new AuthenController
