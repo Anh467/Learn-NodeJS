@@ -28,20 +28,20 @@
           <div class="d-flex align-items-center ">
             
             {{#if isAuthenticated}}
-            {{!-- login --}}
+             {{!-- logout --}}
+              <p class="text-white my-auto ">logout</p>
+              <form id="frmActionLogout" action="/authen/logout" method="post"></form>
+                <button id="btnActionLogout" type="submit" class="btn btn-link p-0">
+                  <i class="fa-solid fa-right-from-bracket fa-2xl mx-3 text-white"></i>
+                </button>
+              </form>
+            
+            {{else}}
+              {{!-- login --}}
               <p class="text-white my-auto ">login</p>
               <a href="/authen/login">
-                  
-                   <i class="fa-solid fa-right-to-bracket fa-2xl mx-3 text-white"></i>
-                 </a>
-            {{else}}
-            {{!-- logout --}}
-            <p class="text-white my-auto ">logout</p>
-            <form id="frmActionLogout" action="/authen/logout" method="post"></form>
-              <button id="btnActionLogout" type="submit" class="btn btn-link p-0">
-                <i class="fa-solid fa-right-from-bracket fa-2xl mx-3 text-white"></i>
-              </button>
-             </form>
+                <i class="fa-solid fa-right-to-bracket fa-2xl mx-3 text-white"></i>
+              </a>
             {{/if}}
               
            

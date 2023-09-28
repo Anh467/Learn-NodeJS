@@ -58,9 +58,9 @@ class AuthenController{
             Password= req.session.User.Password
         }
         if(Account != null && Password != null)
-            res.locals.isAuthenticated = false;
-        else
             res.locals.isAuthenticated = true;
+        else
+            res.locals.isAuthenticated = false;
         console.log("##########check authentication:"+  res.locals.isAuthenticated +"###########")
         next();
       }
