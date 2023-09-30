@@ -1,0 +1,12 @@
+.card {
+  width: 80%;
+  margin: auto; }
+
+.card-img-top {
+  transition: transform 0.2s; }
+
+.card:hover .card-img-top {
+  transform: scale(1.2); }
+
+.container {
+  margin-top: 10px; }
