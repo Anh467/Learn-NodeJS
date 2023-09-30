@@ -4,17 +4,18 @@ const filterAuthen= require('./filterAuthen')
 const folderCourse= require('./foldercourse')
 function route(app){
     //filter
-    app.use(['/home/*', '/customer/*', '/authen/*', '/home', '/', '*', '/foldercourse', '/foldercourse/*'],filterAuthen)
+    app.use(['/*','/*/*'],filterAuthen)
+    //do
+    app.get('/', function(req, res) {
+        res.render('home')
+    })
     //customer
     app.use('/customer', customerRouter)
     //authen
     app.use('/authen', authenRouter)
     //FolderCourses
     app.use('/foldercourse', folderCourse)
-    //do
-    app.get('/', function(req, res) {
-        res.render('home')
-    })
+    
     // //news
     // app.get('/news', function(req, res) {
     // res.render('news')
