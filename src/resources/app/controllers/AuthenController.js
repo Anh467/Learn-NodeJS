@@ -44,7 +44,7 @@ class AuthenController{
             res.redirect('/home')
         })
         .catch( err => {
-                res.status(500).render('/authen/loginFail',{
+                res.status(500).render('authen/loginFail',{
                     message: "Đã có lỗi xảy ra",
                     err: err.message
                 });
@@ -52,14 +52,31 @@ class AuthenController{
         )
     } 
     checkAuthentication= function(req, res, next) {
+        
         var Account, Password
+        // lấy kết quả có tồn tại không
         if(req.session.User){
             Account = req.session.User.Account
             Password= req.session.User.Password
         }
-        if(Account != null && Password != null)
+        //nếu cả account và password đều tồn tại chứng tỏ đã đăng nhập
+        if(Account != null && Password != null){
+
+            // lấy img của user
+            const {CustomerName, CustomerImg}= Customer.findOne({
+                attributes:['CustomerName', 'CustomerImg'],
+                where:{
+                    Account: Account,
+                    Password: Password
+                }
+            })
+            // trả cho trang nào load 
             res.locals.isAuthenticated = true;
+            res.locals.CustomerName = CustomerName;
+            res.locals.CustomerImg = CustomerImg;
+        }      
         else
+            // trả cho trang nào load 
             res.locals.isAuthenticated = false;
         console.log("##########check authentication:"+  res.locals.isAuthenticated +"###########")
         next();
