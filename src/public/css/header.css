@@ -7,3 +7,11 @@
     width: 60px;
     height: 60px;
     border-radius: 50%; }
+
+.avater-user {
+  height: 50px;
+  width: 50px; }
+  .avater-user img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%; }

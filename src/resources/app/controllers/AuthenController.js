@@ -51,8 +51,9 @@ class AuthenController{
             }
         )
     } 
-    checkAuthentication= function(req, res, next) {
-        
+    checkAuthentication=  async function(req, res, next) {
+        // biến truyền qua cho trang
+        var isAuthenticated , CustomerName, CustomerImg 
         var Account, Password
         // lấy kết quả có tồn tại không
         if(req.session.User){
@@ -61,23 +62,28 @@ class AuthenController{
         }
         //nếu cả account và password đều tồn tại chứng tỏ đã đăng nhập
         if(Account != null && Password != null){
-
-            // lấy img của user
-            const {CustomerName, CustomerImg}= Customer.findOne({
-                attributes:['CustomerName', 'CustomerImg'],
-                where:{
+            console.log("#############check const {CustomerName, CustomerImg} #############")
+            // lấy img và name của user
+            const data= await Customer.findOne({
+                attributes: ['CustomerName', 'CustomerImg'],
+                where: {
                     Account: Account,
                     Password: Password
                 }
             })
+            if(data){
+                CustomerName = data.CustomerName
+                CustomerImg = data.CustomerImg
+            }
             // trả cho trang nào load 
-            res.locals.isAuthenticated = true;
-            res.locals.CustomerName = CustomerName;
-            res.locals.CustomerImg = CustomerImg;
+            isAuthenticated = true;
         }      
         else
-            // trả cho trang nào load 
-            res.locals.isAuthenticated = false;
+            isAuthenticated = false;
+        // trả kết quả cho trang 
+            res.locals.isAuthenticated = isAuthenticated;
+            res.locals.CustomerName = CustomerName;
+            res.locals.CustomerImg = CustomerImg;
         console.log("##########check authentication:"+  res.locals.isAuthenticated +"###########")
         next();
       }

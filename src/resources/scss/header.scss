@@ -9,3 +9,12 @@
         border-radius: 50%;
     }
 }
+.avater-user{
+    height: 50px;
+    width: 50px;
+    img{
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }
+}

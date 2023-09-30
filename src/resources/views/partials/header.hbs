@@ -31,6 +31,10 @@
             
             {{#if isAuthenticated}}
              {{!-- logout --}}
+             <p class="text-white my-auto ">{{CustomerName}}</p>
+             <a class="avater-user m-3" >
+                <img class="img-fluid" src="/img/avatar/{{CustomerImg}}" alt="">
+             </a>
               <p class="text-white my-auto ">logout</p>
               <form id="frmActionLogout" action="/authen/logout" method="post">
                 <button id="btnActionLogout" type="submit" class="btn btn-link p-0">
@@ -40,6 +44,9 @@
             
             {{else}}
               {{!-- login --}}
+              <a>
+                <i class="fa-regular fa-user fa-2xl mx-3 text-white"></i>
+              </a>
               <p class="text-white my-auto ">login</p>
               <a href="/authen/login">
                 <i class="fa-solid fa-right-to-bracket fa-2xl mx-3 text-white"></i>
