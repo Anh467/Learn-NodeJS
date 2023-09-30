@@ -12,5 +12,5 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.customers = require("./customer")(sequelize, Sequelize);
-
+db.foldercourses = require("./foldercourse")(sequelize, Sequelize);
 module.exports = db;

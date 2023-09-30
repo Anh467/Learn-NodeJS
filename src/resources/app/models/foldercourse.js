@@ -44,4 +44,5 @@ module.exports= (sequelize, Sequelize) => {
           },
         ],
       });
+      return foldercourse
 }
