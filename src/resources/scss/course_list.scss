@@ -1,14 +1,19 @@
 .card{
     width: 80%;
     margin: auto;
+    img{
+      max-height: 300px;
+    }
 }
+
 .card-img-top {
     transition: transform 0.2s; 
   }
   
-  .card:hover .card-img-top {
-    transform: scale(1.2); 
-  }
+.card:hover .card-img-top {
+  transform: scale(1.2); 
+}
+
 .container{
     margin-top: 10px;
 }

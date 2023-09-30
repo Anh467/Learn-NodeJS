@@ -4,7 +4,7 @@ const filterAuthen= require('./filterAuthen')
 const folderCourse= require('./foldercourse')
 function route(app){
     //filter
-    app.use(['/home/*', '/customer/*', '/authen/*', '/home', '/', '*'],filterAuthen)
+    app.use(['/home/*', '/customer/*', '/authen/*', '/home', '/', '*', '/foldercourse', '/foldercourse/*'],filterAuthen)
     //customer
     app.use('/customer', customerRouter)
     //authen

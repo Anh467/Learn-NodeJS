@@ -40,6 +40,7 @@ class AuthenController{
             req.session.User = {
                 Account: customer.Account,
                 Password: customer.Password,
+                CustomerID: customer.CustomerID
             }
             res.redirect('/home')
         })

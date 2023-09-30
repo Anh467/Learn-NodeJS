@@ -1,6 +1,8 @@
 .card {
   width: 80%;
   margin: auto; }
+  .card img {
+    max-height: 300px; }
 
 .card-img-top {
   transition: transform 0.2s; }
