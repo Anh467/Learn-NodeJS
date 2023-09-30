@@ -1,4 +1,5 @@
  <link rel="stylesheet" href="/css/course_list.css">
+ <script src="/js/course_list.js"></script>
 <div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto" >
      {{#each FolderCourses}}
         <div class="col">
@@ -6,7 +7,10 @@
             <img src="/img/user/{{this.CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.FolderImg}}" class="card-img-top h-70" alt="...">
             <div class="h-30 card-body">
               <h5 class="card-title">{{this.FolderName}}</h5>
-              <p class="card-text">{{this.Description}}</p>
+              <p class="card-text">
+                <span class="truncate-text ">{{this.Description}}</span>
+                <a href="#" class="read-more ">Xem thêm</a>
+              </p>
             </div>
           </div>
         </div>
