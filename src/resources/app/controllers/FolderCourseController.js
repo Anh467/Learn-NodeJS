@@ -3,10 +3,7 @@ const FolderCourses= db.foldercourses
 class CustomerController{
     index=  function(req, res) {
         try {
-            var CustomerID
-            if(req.session.User){
-                CustomerID= req.session.User.CustomerID
-            }else throw new Error("U must be logged in")
+            var CustomerID = req.params.customerid
             if(CustomerID== "" || CustomerID == undefined ) throw new Error("U must be logged in")
             FolderCourses.findAll({
                 attributes: ['FolderName', 'FolderImg', 'Description', 'privacry', 'CustomerID', 'FolderID'],

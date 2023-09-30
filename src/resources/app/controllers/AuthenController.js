@@ -54,7 +54,7 @@ class AuthenController{
     } 
     checkAuthentication=  async function(req, res, next) {
         // biến truyền qua cho trang
-        var isAuthenticated , CustomerName, CustomerImg 
+        var isAuthenticated , CustomerName, CustomerImg, CustomerID
         var Account, Password
         // lấy kết quả có tồn tại không
         if(req.session.User){
@@ -66,7 +66,7 @@ class AuthenController{
             console.log("#############check const {CustomerName, CustomerImg} #############")
             // lấy img và name của user
             const data= await Customer.findOne({
-                attributes: ['CustomerName', 'CustomerImg'],
+                attributes: ['CustomerName', 'CustomerImg', 'CustomerID'],
                 where: {
                     Account: Account,
                     Password: Password
@@ -75,6 +75,7 @@ class AuthenController{
             if(data){
                 CustomerName = data.CustomerName
                 CustomerImg = data.CustomerImg
+                CustomerID= data.CustomerID
             }
             // trả cho trang nào load 
             isAuthenticated = true;
@@ -85,6 +86,7 @@ class AuthenController{
             res.locals.isAuthenticated = isAuthenticated;
             res.locals.CustomerName = CustomerName;
             res.locals.CustomerImg = CustomerImg;
+            res.locals.CustomerID = CustomerID;
         console.log("##########check authentication:"+  res.locals.isAuthenticated +"###########")
         next();
       }

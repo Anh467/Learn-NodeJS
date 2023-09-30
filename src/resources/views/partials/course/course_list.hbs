@@ -4,7 +4,9 @@
      {{#each FolderCourses}}
         <div class="col">
           <div class="card h-100">
-            <img src="/img/user/{{this.CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.FolderImg}}" class="card-img-top h-70" alt="...">
+            <a href="/foldercourse/{{this.FolderName}}">
+              <img src="/img/user/{{this.CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.FolderImg}}" class="card-img-top h-70" alt="...">
+            </a>
             <div class="h-30 card-body">
               <h5 class="card-title">{{this.FolderName}}</h5>
               <p class="card-text">
