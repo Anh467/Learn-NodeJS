@@ -40,7 +40,7 @@ class CustomerController{
             Courses.findAll({
                 where: {
                     FolderID: {
-                        [Op.eq]: sequelize.literal(`(SELECT TOP (1) FolderID FROM dbo.FolderCourse WHERE FolderName = '${foldername}' and CustomerID= '${customerid}') `),
+                        [Op.eq]: sequelize.literal(`(SELECT TOP (1) FolderID FROM dbo.FolderCourse WHERE FolderName = N'${foldername}' and CustomerID= '${customerid}') `),
                       },
                   },
                 raw : true,
