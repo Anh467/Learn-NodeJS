@@ -1,17 +1,16 @@
  <link rel="stylesheet" href="/css/folder_course_list.css">
  <script src="/js/folder_course_list.js"></script>
- <p>cusID: {{CustomerID}} Course: {{FolderName}}</p>
 <div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto" >
-     {{#each Courses}}
+     {{#each FolderCourses}}
         <div class="col">
           <div class="card h-100">
-            <a href="/foldercourse/{{../CustomerID}}/{{this.FolderName}}/{{this.CourseName}}">
-              <img src="/img/user/{{../CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.CourseID}}/{{this.CourseImg}}" class="card-img-top h-70" 
+            <a href="/foldercourse/{{CustomerID}}/{{this.FolderName}}">
+              <img src="/img/user/{{this.CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.FolderImg}}" class="card-img-top h-70" 
                     alt="{{this.FolderName}}">
             </a>
             <div class="h-30 card-body">
               <div class="d-flex flex-row">
-                <h5 class="card-title">{{this.CourseName}}</h5>
+                <h5 class="card-title">{{this.FolderName}}</h5>
                 <p class="card-privacry">{{this.privacry}}</p>
               </div>
               

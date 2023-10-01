@@ -4,6 +4,15 @@
   margin: auto; }
   .card img {
     max-height: 300px; }
+  .card .card-body .card-privacry {
+    height: 37px;
+    text-align: center;
+    margin-right: 0;
+    padding: 3px 10px 3px 10px;
+    margin-left: auto;
+    border: 3px solid #afce5a;
+    border-radius: 10px;
+    background-color: #23b3b0; }
 
 .card-img-top {
   transition: transform 0.2s; }

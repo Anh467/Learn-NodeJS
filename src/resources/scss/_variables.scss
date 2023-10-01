@@ -1,2 +1,10 @@
 $red-color: red;
 $green-color : green;
+
+@function random-color() {
+    $red: random(255);
+    $green: random(255);
+    $blue: random(255);
+    @return rgb($red, $green, $blue);
+  }
+  
