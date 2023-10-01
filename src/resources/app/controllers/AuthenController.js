@@ -23,7 +23,28 @@ class AuthenController{
         .catch(err=>{
             res.render("authen/login")
         });
-        
+    }
+    signup= function(req, res){
+        var Account, Password
+        if(req.session.User){
+            Account = req.session.User.Account
+            Password= req.session.User.Password
+        }
+        console.log("check my req.session"+ req.session.User +"\n Account: " + Account +"\n Password: " + Password)
+        Customer.findOne({
+            where: {
+                Password: Password,
+                Account: Account
+            },
+            raw: true 
+        })
+        .then( customer=>{
+            if (customer==null) throw  new Error("Đăng nhập không thành công")
+            res.redirect("/home")
+        })
+        .catch(err=>{
+            res.render("authen/signup")
+        });
     }
     login= function(req, res){
         const {Account, Password}= req.body

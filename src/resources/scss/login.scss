@@ -1,7 +1,7 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 form {border: 3px solid #f1f1f1;}
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password] , input[type=date], .my-input{
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -9,7 +9,19 @@ input[type=text], input[type=password] {
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
-
+.my-input{
+  display: flex;
+  img{
+    height: 200px;
+    width: 300px;
+    display: block;
+    margin: 0 auto; 
+  }
+  input{
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
 button {
   background-color: #04AA6D;
   color: white;

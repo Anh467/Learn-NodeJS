@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/css/login.css">
+<form action="/authen/signup" method="post">
+<div class="container">
+    <label for="uname"><b>Username</b></label>
+    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input class="{{messageClass}}" type="password" placeholder="Enter Password" name="Password" required>
+
+    <label for="uname"><b>Full Name</b></label>
+    <input class="{{messageClass}}" type="text" placeholder="Enter Password" name="FullName" required>
+
+    <label for="uname"><b>Mail</b></label>
+    <input class="{{messageClass}}" type="text" placeholder="Enter Password" name="Mail" required>
+
+    <label for="uname"><b>Date Of Birth</b></label>
+    <input class="{{messageClass}}" type="date" placeholder="Enter Password" name="DOB" required>
+
+    <label for="uname"><b>Gender </b></label>
+    <input class="{{messageClass}}" type="text" placeholder="Enter Password" name="Gender" required>
+
+    <label for="psw"><b>Avatar </b></label>
+    <div class="my-input">
+        <input class="{{messageClass}}" type="file" placeholder="Enter Password" name="Avatar">
+        <img  src="/img/nang-cap-von-tu-vung-tieng-anh-cuc-dinh-thong-qua-quiz-kiem-tra-2.jpg" alt="">
+    </div>
+    
+
+    <button type="submit">Sign Up</button>
+    <div class="d-flex">
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+      <div class="ms-auto me-0">
+        <p class="text-danger">{{message}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn">Cancel</button>
+    <span class="psw ms-2">Login <a href="/authen/login">your account?</a></span>
+    <span class="psw ms-2">Forgot <a href="#">password?</a></span>
+  </div>
+</form>
