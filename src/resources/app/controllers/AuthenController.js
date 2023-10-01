@@ -45,9 +45,9 @@ class AuthenController{
             res.redirect('/home')
         })
         .catch( err => {
-                res.status(500).render('authen/loginFail',{
-                    message: "Đã có lỗi xảy ra",
-                    err: err.message
+                res.status(500).render('authen/login',{
+                    message: "Đã có lỗi xảy ra: "+ err.message,
+                    messageClass : "border border-danger"
                 });
             }
         )

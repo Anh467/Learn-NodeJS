@@ -1,21 +1,26 @@
 
 <link rel="stylesheet" href="/css/login.css">
 <form action="/authen/login" method="post">
-  <div class="imgcontainer">
+  {{!-- <div class="imgcontainer">
     <img src="" alt="Avatar" class="avatar">
-  </div>
+  </div> --}}
 
   <div class="container">
     <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="Account" required>
+    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="Password" required>
+    <input class="{{messageClass}}" type="password" placeholder="Enter Password" name="Password" required>
         
     <button type="submit">Login</button>
-    <label>
-      <input type="checkbox" checked="checked" name="remember"> Remember me
-    </label>
+    <div class="d-flex">
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+      <div class="ms-auto me-0">
+        <p class="text-danger">{{message}}</p>
+      </div>
+    </div>
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
