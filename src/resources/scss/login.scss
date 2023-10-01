@@ -12,6 +12,7 @@ input[type=text], input[type=password] , input[type=date], .my-input{
 .my-input{
   display: flex;
   img{
+    object-fit: contain;
     height: 200px;
     width: 300px;
     display: block;
