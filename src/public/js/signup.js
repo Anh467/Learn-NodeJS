@@ -1,14 +1,15 @@
 function checkValidInput(e){
-    e.preventDefault()
-    var frm_signup= document.getElementById("frm-sign-up")
     try {
+        var frm_signup= document.getElementById("frm-sign-up")
         //check RepeatPassword = Password
-        var password= document.getElementsByName("Password")
-        var repeatPassword= document.getElementsByName("RepeatPassword")
-        if (repeatPassword.val !== password.val) throw new Error("mật khẩu không khớp\n")
+        var password= document.getElementsByName("Password")[0]
+        var repeatPassword= document.getElementsByName("RepeatPassword")[0]
+        //alert("repeatPassword: "+ repeatPassword.value + "\npassword: "+ password.value)
+        if (repeatPassword.value !== password.value) throw new Error("mật khẩu không khớp\n" + "repeatPassword: "+ repeatPassword.value + ", password: "+ password.value)
         if (frm_signup)
             frm_signup.submit()
     } catch (error) {
+        e.preventDefault()
         alert("error \n"+ error.message)
     }
 }

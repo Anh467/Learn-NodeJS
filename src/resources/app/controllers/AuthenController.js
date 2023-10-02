@@ -128,20 +128,24 @@ class AuthenController{
         });
     }
     newUser=  async function(req, res) {
+        const {Account, Password, CustomerName, Mail, DateOfBirth, Gender, CustomerImg}= req.body
         try{
-            const {Account, Password, CustomerName, Mail, DateOfBirth, Gender, CustomerImg}= req.body
             var customerID
-            var customer= Customer.build({
+            customer= Customer.build({
                 Account : Account,
                 Password : Password,
                 CustomerName : CustomerName,
-                CustomerImg: req.file.originalname,
+                CustomerImg: req.file?req.file.originalname: "",
                 Mail: Mail,
                 DateOfBirth : DateOfBirth,
                 Gender: Gender,
                 RoleCustomer: ROLE_USER
             })
-
+            await Customer.findOne({
+                where: {Account: Account}
+            }).then(data=>{
+                if(data) throw new Error(`Tài khoản ${Account} đã tồn tại`)
+            })
             await customer.save()
             .then(data=>{
                 customerID= data.CustomerID
@@ -151,6 +155,7 @@ class AuthenController{
             
             //set vị trí lưu ảnh 
             var path_prj= path.join(PROJECT_PATH(), "img", "user", customerID, "avatar")
+
             // tạo folder nếu nó k tồn tại 
             if (!fs.existsSync(path_prj)) 
                 try {
@@ -158,23 +163,36 @@ class AuthenController{
                 } catch (error) {
                     throw new ('Lỗi khi tạo thư mục:', error);
                 }
-            //resize ảnh
-            const fileUpload = new Resize(path_prj);
-            if (!req.file) {
-                throw new Error('Please provide an image')
+
+            //resize ảnh lưu ảnh 
+            
+            if (req.file) {
+                const fileUpload = new Resize(path_prj);
+                const filename = await fileUpload.save(req.file.buffer, req.file.originalname);
             }
+
+            // lưu đăng nhập người dùng 
             req.session.User = {
                 Account: Account,
                 Password: Password,
                 CustomerID: customerID
             }
-            // lưu ảnh 
-            const filename = await fileUpload.save(req.file.buffer, req.file.originalname);
+            
+           // chuyển hướng người dùng về trang chủ  
             res.status(200).redirect('../home')
             
         }catch(err){
             res.status(500).render('authen/signup',{
-                message: err.message
+                message: err.message,
+                Customer: {
+                    Gender: Gender,
+                    Account: Account, 
+                    Password:Password, 
+                    CustomerName: CustomerName, 
+                    Mail: Mail, 
+                    DateOfBirth: DateOfBirth, 
+                    Gender: Gender, 
+                },
             })
         }
     }

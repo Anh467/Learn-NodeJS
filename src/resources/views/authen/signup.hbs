@@ -3,30 +3,31 @@
 <form id="frm-sign-up" action="/authen/signup" method="post" enctype="multipart/form-data">
 <div class="container">
     <label ><b>Username</b></label>
-    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" 
+    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" value="{{Customer.Account}}"
       pattern="[A-Za-z0-9]{10,}" title="không được chưa kí tự đặc biệt, và có ít nhất 10 kí tự" 
       required
     >
 
     <label><b>Password</b></label>
-    <input class="{{messageClass}}" type="password" placeholder="Enter Password" name="Password" 
+    <input class="{{messageClass}}" type="password" placeholder="Enter Password" name="Password" value="{{Customer.Password}}"
       pattern="^.{8,}" title="Có ít nhất có 8 kí tự "
       required
     >
     <input class="{{messageClass}}" type="password" placeholder="Repeat Password" name="RepeatPassword" 
+      required
     >
 
     <div class="row d-flex">
       <div class="col-md-6 ">
           <div style="margin-bottom: 1.3%;">
             <label><b>Full Name</b></label>
-            <input  class="{{messageClass}}" type="text" placeholder="Enter fullname" name="CustomerName" 
+            <input  class="{{messageClass}}" type="text" placeholder="Enter fullname" name="CustomerName" value="{{Customer.CustomerName}}"
             required
             >
           </div>
           <div>
             <label ><b>Mail</b></label>
-            <input class="{{messageClass}}" type="text" placeholder="Enter mail" name="Mail" 
+            <input class="{{messageClass}}" type="text" placeholder="Enter mail" name="Mail" value="{{Customer.Mail}}"
               pattern="^[a-zA-Z0-9]+@[a-zA-Z]+(\.[a-zA-Z0-9]+){1,}$"
               title="Sai định dạng email"
               required
@@ -36,9 +37,9 @@
       <div class="col-md-6">
              <label ><b>Avatar </b></label>
             <div class="my-input">
-                <input class="{{messageClass}}" type="file" placeholder="Enter Password" name="CustomerImg" 
+                <input class="{{messageClass}}" type="file" placeholder="Enter Password" name="CustomerImg" value="{{Customer.CustomerImg}}"
                 onchange="changeImageOnInput(event)"  accept="image/*">
-                <img  src="/img/nang-cap-von-tu-vung-tieng-anh-cuc-dinh-thong-qua-quiz-kiem-tra-2.jpg" alt="">
+                <img  src="{{Customer.CustomerImgPath}}" alt="">
             </div>
       </div>
     </div>
@@ -46,28 +47,33 @@
     <div class="row d-flex">
       <div class="col-md-6">
         <label ><b>Date Of Birth</b></label>
-        <input class="{{messageClass}}" type="date" placeholder="Enter Password" name="DateOfBirth" required>
+        <input class="{{messageClass}}" type="date" placeholder="Enter Password" name="DateOfBirth" value="{{Customer.DateOfBirth}}"
+        required>
       </div>
       <div class="col-md-6">
         <label ><b>Gender </b></label>
         <div class="check-box-gender d-flex">
           <div class="gender">
-            <input type="radio" id="gender" name="Gender" value="Male" required>
+            <input type="radio" id="gender" name="Gender" value="Male" 
+            required>
             <label> Male</label><br>
           </div>
           <div class="gender">
-            <input type="radio" id="gender" name="Gender" value="Female" required>
+            <input type="radio" id="gender" name="Gender" value="Female" 
+            required>
             <label>  Female</label><br>
           </div>
           <div class="gender">
-            <input type="radio" id="gender" name="Gender" value="Others" required>
+            <input type="radio" id="gender" name="Gender" value="Others" 
+            Checked
+            required>
             <label> Others</label><br>
           </div>
         </div>
       </div>
     </div>
 
-    <button type="submit"  id="submit-sign-up-form" onclick="checkValidInput(event)">Sign Up</button>
+    <button type="submit"  id="submit-sign-up-form" onsubmit="checkValidInput(event)">Sign Up</button>
     <div class="d-flex">
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me
