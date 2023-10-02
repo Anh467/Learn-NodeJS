@@ -1,6 +1,11 @@
 const db= require('../models')
+const path= require('path')
+const fs = require('fs');
+const ROLE_STUDENT= "STUDENT"
+const ROLE_USER= "USER"
+const Resize = require('../../common/resize');
+const PROJECT_PATH= require('../../../public/getProjectPath')
 const Customer= db.customers
-
 class AuthenController{
     index= function(req, res){
         var Account, Password
@@ -122,5 +127,57 @@ class AuthenController{
             res.redirect('/');
         });
     }
+    newUser=  async function(req, res) {
+        try{
+            const {Account, Password, CustomerName, Mail, DateOfBirth, Gender, CustomerImg}= req.body
+            var customerID
+            var customer= Customer.build({
+                Account : Account,
+                Password : Password,
+                CustomerName : CustomerName,
+                CustomerImg: req.file.originalname,
+                Mail: Mail,
+                DateOfBirth : DateOfBirth,
+                Gender: Gender,
+                RoleCustomer: ROLE_USER
+            })
+
+            await customer.save()
+            .then(data=>{
+                customerID= data.CustomerID
+            }).catch(err=>{
+                throw err
+            })
+            
+            //set vị trí lưu ảnh 
+            var path_prj= path.join(PROJECT_PATH(), "img", "user", customerID, "avatar")
+            // tạo folder nếu nó k tồn tại 
+            if (!fs.existsSync(path_prj)) 
+                try {
+                    fs.mkdirSync(path_prj, { recursive: true });
+                } catch (error) {
+                    throw new ('Lỗi khi tạo thư mục:', error);
+                }
+            //resize ảnh
+            const fileUpload = new Resize(path_prj);
+            if (!req.file) {
+                throw new Error('Please provide an image')
+            }
+            req.session.User = {
+                Account: Account,
+                Password: Password,
+                CustomerID: customerID
+            }
+            // lưu ảnh 
+            const filename = await fileUpload.save(req.file.buffer, req.file.originalname);
+            res.status(200).redirect('../home')
+            
+        }catch(err){
+            res.status(500).render('authen/signup',{
+                message: err.message
+            })
+        }
+    }
+    
 }
 module.exports= new AuthenController

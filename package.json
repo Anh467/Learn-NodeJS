@@ -19,12 +19,18 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
+    "install": "^0.13.0",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.0.1",
+    "npm": "^10.1.0",
     "sequelize": "^6.33.0",
-    "tedious": "^16.4.1"
+    "sharp": "^0.32.6",
+    "tedious": "^16.4.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

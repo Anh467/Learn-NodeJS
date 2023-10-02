@@ -4,13 +4,16 @@ body {
 form {
   border: 3px solid #f1f1f1; }
 
-input[type=text], input[type=password], input[type=date], .my-input {
+input[type=text], input[type=password], input[type=date], .my-input, .check-box-gender {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box; }
+
+.check-box-gender .gender {
+  margin-right: 1%; }
 
 .my-input {
   display: flex; }

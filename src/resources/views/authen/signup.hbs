@@ -1,33 +1,73 @@
 <link rel="stylesheet" href="/css/login.css">
 <script src="/js/signup.js"></script>
-<form action="/authen/signup" method="post">
+<form id="frm-sign-up" action="/authen/signup" method="post" enctype="multipart/form-data">
 <div class="container">
-    <label for="uname"><b>Username</b></label>
-    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" >
+    <label ><b>Username</b></label>
+    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" 
+      pattern="[A-Za-z0-9]{10,}" title="không được chưa kí tự đặc biệt, và có ít nhất 10 kí tự" 
+      required
+    >
 
-    <label for="psw"><b>Password</b></label>
-    <input class="{{messageClass}}" type="password" placeholder="Enter Password" name="Password" >
+    <label><b>Password</b></label>
+    <input class="{{messageClass}}" type="password" placeholder="Enter Password" name="Password" 
+      pattern="^.{8,}" title="Có ít nhất có 8 kí tự "
+      required
+    >
+    <input class="{{messageClass}}" type="password" placeholder="Repeat Password" name="RepeatPassword" 
+    >
 
-    <label for="uname"><b>Full Name</b></label>
-    <input class="{{messageClass}}" type="text" placeholder="Enter Password" name="FullName" >
-
-    <label for="uname"><b>Mail</b></label>
-    <input class="{{messageClass}}" type="text" placeholder="Enter Password" name="Mail" >
-
-    <label for="uname"><b>Date Of Birth</b></label>
-    <input class="{{messageClass}}" type="date" placeholder="Enter Password" name="DOB" >
-
-    <label for="uname"><b>Gender </b></label>
-    <input class="{{messageClass}}" type="text" placeholder="Enter Password" name="Gender" >
-
-    <label for="psw"><b>Avatar </b></label>
-    <div class="my-input">
-        <input class="{{messageClass}}" type="file" placeholder="Enter Password" name="Avatar" onchange="changeImageOnInput(event)">
-        <img  src="/img/nang-cap-von-tu-vung-tieng-anh-cuc-dinh-thong-qua-quiz-kiem-tra-2.jpg" alt="">
+    <div class="row d-flex">
+      <div class="col-md-6 ">
+          <div style="margin-bottom: 1.3%;">
+            <label><b>Full Name</b></label>
+            <input  class="{{messageClass}}" type="text" placeholder="Enter fullname" name="CustomerName" 
+            required
+            >
+          </div>
+          <div>
+            <label ><b>Mail</b></label>
+            <input class="{{messageClass}}" type="text" placeholder="Enter mail" name="Mail" 
+              pattern="^[a-zA-Z0-9]+@[a-zA-Z]+(\.[a-zA-Z0-9]+){1,}$"
+              title="Sai định dạng email"
+              required
+            >  
+          </div>
+      </div>
+      <div class="col-md-6">
+             <label ><b>Avatar </b></label>
+            <div class="my-input">
+                <input class="{{messageClass}}" type="file" placeholder="Enter Password" name="CustomerImg" 
+                onchange="changeImageOnInput(event)"  accept="image/*">
+                <img  src="/img/nang-cap-von-tu-vung-tieng-anh-cuc-dinh-thong-qua-quiz-kiem-tra-2.jpg" alt="">
+            </div>
+      </div>
     </div>
-    
-    
-    <button type="submit"  >Sign Up</button>
+
+    <div class="row d-flex">
+      <div class="col-md-6">
+        <label ><b>Date Of Birth</b></label>
+        <input class="{{messageClass}}" type="date" placeholder="Enter Password" name="DateOfBirth" required>
+      </div>
+      <div class="col-md-6">
+        <label ><b>Gender </b></label>
+        <div class="check-box-gender d-flex">
+          <div class="gender">
+            <input type="radio" id="gender" name="Gender" value="Male" required>
+            <label> Male</label><br>
+          </div>
+          <div class="gender">
+            <input type="radio" id="gender" name="Gender" value="Female" required>
+            <label>  Female</label><br>
+          </div>
+          <div class="gender">
+            <input type="radio" id="gender" name="Gender" value="Others" required>
+            <label> Others</label><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit"  id="submit-sign-up-form" onclick="checkValidInput(event)">Sign Up</button>
     <div class="d-flex">
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me

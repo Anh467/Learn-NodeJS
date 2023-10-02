@@ -1,7 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
   const Customer = sequelize.define("CUSTOMER", {
     CustomerID: {
-      type: Sequelize.STRING(20), // Chọn kiểu dữ liệu phù hợp
+      type: Sequelize.STRING(20), // Chọn kiểu dữ liệu phù hợp]
+      autoIncrement: true, 
       primaryKey: true,
     },
     Account: {

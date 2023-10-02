@@ -1,3 +1,19 @@
+function checkValidInput(e){
+    e.preventDefault()
+    var frm_signup= document.getElementById("frm-sign-up")
+    try {
+        //check RepeatPassword = Password
+        var password= document.getElementsByName("Password")
+        var repeatPassword= document.getElementsByName("RepeatPassword")
+        if (repeatPassword.val !== password.val) throw new Error("mật khẩu không khớp\n")
+        if (frm_signup)
+            frm_signup.submit()
+    } catch (error) {
+        alert("error \n"+ error.message)
+    }
+}
+
+
 function showAlert() {
     var myInput= $('.my-input')
     var input= myInput.find('input')
@@ -14,3 +30,4 @@ function changeImageOnInput(event) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
