@@ -13,11 +13,16 @@
 
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-                <a class="nav-link active" href="/home" aria-current="page">Home <span class="visually-hidden">(current)</span></a>
+            <li class="nav-item d-flex">
+                
+                <a class="nav-link active" href="/home" aria-current="page">
+                 <span class="visually-hidden">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/foldercourse/{{CustomerID}}">Folder Courses</a>
+                <a class="nav-link" href="/foldercourse/{{CustomerID}}">My Courses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Favorite Courses</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -32,10 +37,18 @@
             
             {{#if isAuthenticated}}
              {{!-- logout --}}
+             
              <p class="text-white my-auto ">{{CustomerName}}</p>
              <a class="avater-user m-3" >
                 <img class="img-fluid" src="/img/user/{{CustomerID}}/avatar/{{CustomerImg}}" alt="">
              </a>
+             <i class="fa-solid fa-cart-shopping fa-2xl mx-3 text-white"></i>
+             
+             <span class="notification-icon mx-3 fa-2xl text-white">
+                <i class="fa-solid fa-trash"></i>
+                <span class="notification-count">3</span>
+              </span>
+            
               <p class="text-white my-auto ">logout</p>
               <form id="frmActionLogout" action="/authen/logout" method="post">
                 <button id="btnActionLogout" type="submit" class="btn btn-link p-0">
@@ -45,6 +58,10 @@
             
             {{else}}
               {{!-- login --}}
+              <div class="d-flex">
+               
+               
+             </div>
               <a>
                 <i class="fa-regular fa-user fa-2xl mx-3 text-white"></i>
               </a>

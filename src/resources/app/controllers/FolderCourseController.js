@@ -11,24 +11,37 @@ const Courses= db.courses
 class CustomerController{
     index=  function(req, res) {
         try {
-            var CustomerID = req.params.customerid
-            if(CustomerID== "" || CustomerID == undefined ) throw new Error("U must be logged in")
-            FolderCourses.findAll({
+            var isOwn= false
+            var condition = {
                 attributes: ['FolderName', 'FolderImg', 'Description', 'privacry', 'CustomerID', 'FolderID'],
                 raw : true,
-                where:{
+            }
+            var CustomerID = req.params.customerid
+            if(CustomerID== "" || CustomerID == undefined ) throw new Error("You must be logged in")
+            var CustomerIDSession= (req.session.User== undefined || req.session.User.CustomerID== "")? "": req.session.User.CustomerID
+            if(CustomerIDSession == CustomerID){
+                isOwn= true
+                condition.where= {
                     CustomerID: CustomerID
                 }
-            }).then(data=>{
+            }else{
+                condition.where= {
+                    CustomerID: CustomerID,
+                    privacry : "public"
+                }
+            }
+            FolderCourses.findAll(condition).then(data=>{
+                if(!data) throw ("Không tìm thấy kết quả")
                 res.status(200).render('course/folder_course_list',{
-                    FolderCourses: data
+                    FolderCourses: data,
+                    isOwn: isOwn
                 })
             }).catch(err=>{
                 throw err
             })
         } catch (error) {
             res.status(500).render('course/folder_course_list',{
-                error: "Folder not found: "
+                error: "Folder not found: "+error.message
             })
         }
     }

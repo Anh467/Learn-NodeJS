@@ -1,8 +1,10 @@
  <link rel="stylesheet" href="/css/folder_course_list.css">
  <script src="/js/folder_course_list.js"></script>
 <div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto" >
-    <div class="col">
-      <form class="h-100">
+  {{#if isAuthenticated}}
+    {{#if isOwn}} 
+      <div class="col">
+        <form class="h-100" action="" method="post">
           <div class="card h-100">
             <label for="fileInput"> 
               <img src="/img/common/add_image.png" class="card-img-top h-70" 
@@ -19,20 +21,18 @@
                       <option value="private">Private</option> 
                 </select>
               </div>
-              
               <p class="card-text h-50">
                 <textarea class="w-100 h-100" placeholder="Enter your description" required></textarea>
               </p>
               <div class="w-100 h-10 d-flex justify-content-center mt-2">
                   <button class="" >Confirm</button>
               </div>
-              
             </div>
-             
           </div>
-         
-          </form>
-        </div>
+        </form>
+      </div>
+    {{/if}}
+  {{/if}}
      {{#each FolderCourses}}
         <div class="col">
           <div class="card h-100">
