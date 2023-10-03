@@ -7,20 +7,20 @@
   .card .card-body .card-text {
     margin-bottom: 0; }
   .card .card-body button {
-    border: 3px solid #b24eaa;
+    border: 3px solid #dda6a6;
     border-radius: 10px;
-    background-color: #59c880; }
+    background-color: #80f080; }
   .card .card-body .card-privacry {
     height: 37px;
     text-align: center;
     margin-right: 0;
     padding: 3px 10px 3px 10px;
     margin-left: auto;
-    border: 3px solid #fe6b11;
+    border: 3px solid #7aa061;
     border-radius: 10px;
-    background-color: #0e0a9b; }
+    background-color: #80f080; }
   .card .card-body .card-title input {
-    border: 3px solid #5c560a;
+    border: 3px solid #f22018;
     border-radius: 10px;
     height: 37px;
     width: 80%; }
