@@ -6,6 +6,14 @@
       max-height: 300px;
     }
     .card-body{
+      .card-text{
+        margin-bottom: 0;
+      }
+      button{
+        border: 3px solid random-color();
+        border-radius: 10px;
+        background-color: random-color();
+      }
       .card-privacry{
         height: 37px;
         text-align: center;
@@ -15,6 +23,14 @@
         border: 3px solid random-color();
         border-radius: 10px;
         background-color: random-color();
+      }
+      .card-title{
+        input{
+          border: 3px solid random-color();
+          border-radius: 10px;
+          height: 37px;
+          width: 80%;
+        }
       }
     }
 }
