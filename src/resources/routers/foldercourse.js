@@ -1,4 +1,5 @@
 const folderCourseController= require('../app/controllers/FolderCourseController');
+const upload= require('../common/uploadMiddleware');
 const express= require('express');
 const route= express.Router()
 // Courses
@@ -10,6 +11,6 @@ const route= express.Router()
     //[POST]
     route.post('/:customerid', folderCourseController.newFolderCourse)
 
-route.get('/', folderCourseController.index)
+route.get('/', upload.single('FolderImg'), folderCourseController.index)
 
 module.exports= route

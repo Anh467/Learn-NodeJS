@@ -1,20 +1,22 @@
  <link rel="stylesheet" href="/css/folder_course_list.css">
  <script src="/js/folder_course_list.js"></script>
+ <p style="color: red;"> {{message}}</p>
 <div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto" >
   {{#if isAuthenticated}}
     {{#if isOwn}} 
       <div class="col">
-        <form class="h-100" action="/{{CustomerID}}/" method="post" >
+        <form class="h-100" enctype="multipart/form-data">
           <div class="card h-100">
             <label for="fileInput"> 
               <img src="/img/common/add_image.png" class="card-img-top h-70" 
                     alt="alt">
             </label>
-            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="changeImageOnInput(event)"> 
+            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="changeImageOnInput(event)" name="FolderImage"> 
             <div class="h-30 card-body mx-auto ">
               <div class="d-flex flex-row">
                 <h5 class="card-title">
-                  <input type="text" class="" placeholder="Course Name..." required>
+                  <input type="text" class="" placeholder="Course Name..." name="FolderName"
+                  required>
                 </h5>
                 <select class="card-privacry" name="privacry" required>
                       <option value="public">Public</option>   
@@ -22,10 +24,12 @@
                 </select>
               </div>
               <p class="card-text h-50">
-                <textarea class="w-100 h-100" placeholder="Enter your description" required></textarea>
+                <textarea class="w-100 h-100" placeholder="Enter your description" name="Description"
+                required></textarea>
               </p>
               <div class="w-100 h-10 d-flex justify-content-center mt-2">
-                  <button class="" >Confirm</button>
+                {{!-- AddNewFolderCourses(event,{{CustomerID}}) --}}
+                  <button onclick="AddNewFolderCourses(event,'{{CustomerID}}')" >Confirm</button>
               </div>
             </div>
           </div>
