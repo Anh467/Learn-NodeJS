@@ -9,6 +9,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const FolderCourses= db.foldercourses
 const Courses= db.courses
 class CustomerController{
+//FolderCourses
+    //[GET]
     index=  function(req, res) {
         try {
             var isOwn= false
@@ -46,6 +48,12 @@ class CustomerController{
         }
     }
 
+    //[POST]
+    newFolderCourse= function(res, req){
+        
+    }
+//Courses
+    //[GET]
     course= function(req, res) {
         const customerid= req.params.customerid
         const foldername= req.params.foldername

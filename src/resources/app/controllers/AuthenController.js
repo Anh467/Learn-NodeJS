@@ -7,77 +7,8 @@ const Resize = require('../../common/resize');
 const PROJECT_PATH= require('../../../public/getProjectPath')
 const Customer= db.customers
 class AuthenController{
-    index= function(req, res){
-        var Account, Password
-        if(req.session.User){
-            Account = req.session.User.Account
-            Password= req.session.User.Password
-        }
-        console.log("check my req.session"+ req.session.User +"\n Account: " + Account +"\n Password: " + Password)
-        Customer.findOne({
-            where: {
-                Password: Password,
-                Account: Account
-            },
-            raw: true 
-        })
-        .then( customer=>{
-            if (customer==null) throw  new Error("Đăng nhập không thành công")
-            res.redirect("/home")
-        })
-        .catch(err=>{
-            res.render("authen/login")
-        });
-    }
-    signup= function(req, res){
-        var Account, Password
-        if(req.session.User){
-            Account = req.session.User.Account
-            Password= req.session.User.Password
-        }
-        console.log("check my req.session"+ req.session.User +"\n Account: " + Account +"\n Password: " + Password)
-        Customer.findOne({
-            where: {
-                Password: Password,
-                Account: Account
-            },
-            raw: true 
-        })
-        .then( customer=>{
-            if (customer==null) throw  new Error("Đăng nhập không thành công")
-            res.redirect("/home")
-        })
-        .catch(err=>{
-            res.render("authen/signup")
-        });
-    }
-    login= function(req, res){
-        const {Account, Password}= req.body
-        console.log("check my req.body"+ Account +"\n Account: " + Account +"\n Password: " + Password)
-        Customer.findOne({
-            where: {
-                Password: Password,
-                Account: Account
-            },
-            raw: true 
-        })
-        .then( customer=>{
-            if (customer==null) throw  new Error("Đăng nhập không thành công")
-            req.session.User = {
-                Account: customer.Account,
-                Password: customer.Password,
-                CustomerID: customer.CustomerID
-            }
-            res.redirect('/home')
-        })
-        .catch( err => {
-                res.status(500).render('authen/login',{
-                    message: "Đã có lỗi xảy ra: "+ err.message,
-                    messageClass : "border border-danger"
-                });
-            }
-        )
-    } 
+// Common
+    //[GET]
     checkAuthentication=  async function(req, res, next) {
         // biến truyền qua cho trang
         var isAuthenticated , CustomerName, CustomerImg, CustomerID
@@ -116,17 +47,85 @@ class AuthenController{
         console.log("##########check authentication:"+  res.locals.isAuthenticated +"###########")
         next();
       }
-    logout= function(req, res) {
-        
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Lỗi khi xóa session:', err);
-            } else {
-                console.log('Session đã bị xóa thành công.');
-            }
-            res.redirect('/');
+
+// Login 
+    //[GET]
+    index= function(req, res){
+        var Account, Password
+        if(req.session.User){
+            Account = req.session.User.Account
+            Password= req.session.User.Password
+        }
+        console.log("check my req.session"+ req.session.User +"\n Account: " + Account +"\n Password: " + Password)
+        Customer.findOne({
+            where: {
+                Password: Password,
+                Account: Account
+            },
+            raw: true 
+        })
+        .then( customer=>{
+            if (customer==null) throw  new Error("Đăng nhập không thành công")
+            res.redirect("/home")
+        })
+        .catch(err=>{
+            res.render("authen/login")
         });
     }
+    //[POST]
+    login= function(req, res){
+        const {Account, Password}= req.body
+        console.log("check my req.body"+ Account +"\n Account: " + Account +"\n Password: " + Password)
+        Customer.findOne({
+            where: {
+                Password: Password,
+                Account: Account
+            },
+            raw: true 
+        })
+        .then( customer=>{
+            if (customer==null) throw  new Error("Đăng nhập không thành công")
+            req.session.User = {
+                Account: customer.Account,
+                Password: customer.Password,
+                CustomerID: customer.CustomerID
+            }
+            res.redirect('/home')
+        })
+        .catch( err => {
+                res.status(500).render('authen/login',{
+                    message: "Đã có lỗi xảy ra: "+ err.message,
+                    messageClass : "border border-danger"
+                });
+            }
+        )
+    } 
+    
+// SignUp
+    //[GET]
+    signup= function(req, res){
+        var Account, Password
+        if(req.session.User){
+            Account = req.session.User.Account
+            Password= req.session.User.Password
+        }
+        console.log("check my req.session"+ req.session.User +"\n Account: " + Account +"\n Password: " + Password)
+        Customer.findOne({
+            where: {
+                Password: Password,
+                Account: Account
+            },
+            raw: true 
+        })
+        .then( customer=>{
+            if (customer==null) throw  new Error("Đăng nhập không thành công")
+            res.redirect("/home")
+        })
+        .catch(err=>{
+            res.render("authen/signup")
+        });
+    }
+    //[POST]
     newUser=  async function(req, res) {
         const {Account, Password, CustomerName, Mail, DateOfBirth, Gender, CustomerImg}= req.body
         try{
@@ -197,5 +196,19 @@ class AuthenController{
         }
     }
     
+// Logout
+    //[post]
+    logout= function(req, res) {
+        
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Lỗi khi xóa session:', err);
+            } else {
+                console.log('Session đã bị xóa thành công.');
+            }
+            res.redirect('/');
+        });
+    }
+
 }
 module.exports= new AuthenController
