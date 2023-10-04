@@ -55,18 +55,29 @@
         <div class="check-box-gender d-flex">
           <div class="gender">
             <input type="radio" id="gender" name="Gender" value="Male" 
-            required>
+              {{#ifCheckBoxGender Customer.Gender "Male"}}
+                checked
+              {{else}}
+              {{/ifCheckBoxGender}}
+              required>
             <label> Male</label><br>
           </div>
           <div class="gender">
             <input type="radio" id="gender" name="Gender" value="Female" 
-            required>
+              {{#ifCheckBoxGender Customer.Gender "Female"}}
+                checked
+              {{else}}
+              {{/ifCheckBoxGender}}
+              required>
             <label>  Female</label><br>
           </div>
           <div class="gender">
             <input type="radio" id="gender" name="Gender" value="Others" 
-            Checked
-            required>
+              {{#ifCheckBoxGender Customer.Gender "Others"}}
+                checked
+              {{else}}
+              {{/ifCheckBoxGender}}
+              required>
             <label> Others</label><br>
           </div>
         </div>
@@ -83,10 +94,12 @@
       </div>
     </div>
   </div>
-
+ 
   <div class="container" style="background-color:#f1f1f1">
     <button type="button" class="cancelbtn">Cancel</button>
     <span class="psw ms-2">Login <a href="/authen/login">your account?</a></span>
     <span class="psw ms-2">Forgot <a href="#">password?</a></span>
   </div>
 </form>
+
+             

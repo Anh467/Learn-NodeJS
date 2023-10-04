@@ -7,6 +7,7 @@ const path = require('path')
 const port= 3000
 const route= require('./resources/routers')
 const app= express()
+
 //session
 app.use(session({
     resave: true, 
@@ -20,9 +21,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("combined"))
 app.use(express.static(path.join(__dirname,'public'))) 
 // template engine
+
 app.engine('hbs',exphbs.engine({
-    extname: 'hbs'
+    extname: 'hbs',
+    helpers: require('./resources/configHandleBar')
 }))
+
+
 app.set('view engine','hbs')
 app.set('views', path.join(__dirname, 'resources/views'))
 //route

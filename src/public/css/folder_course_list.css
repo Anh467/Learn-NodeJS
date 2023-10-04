@@ -7,7 +7,7 @@
   .card .card-body .card-text {
     margin-bottom: 0; }
   .card .card-body button {
-    border: 3px solid #dda6a6;
+    border: 3px solid #7db206;
     border-radius: 10px;
     background-color: #80f080; }
   .card .card-body .card-privacry {
@@ -16,11 +16,11 @@
     margin-right: 0;
     padding: 3px 10px 3px 10px;
     margin-left: auto;
-    border: 3px solid #7aa061;
+    border: 3px solid #82da2f;
     border-radius: 10px;
     background-color: #80f080; }
   .card .card-body .card-title input {
-    border: 3px solid #f22018;
+    border: 3px solid #90adde;
     border-radius: 10px;
     height: 37px;
     width: 80%; }
