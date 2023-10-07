@@ -1,11 +1,11 @@
  <link rel="stylesheet" href="/css/folder_course_list.css">
  <script src="/js/folder_course_list.js"></script>
- <p style="color: red;"> {{message}}</p>
+ <p style="color: red;" id="message"> message: {{message}}</p>
 <div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto" >
   {{#if isAuthenticated}}
     {{#if isOwn}} 
       <div class="col">
-        <form class="h-100" enctype="multipart/form-data">
+        <div name="form" class="h-100" enctype="multipart/form-data">
           <div class="card h-100">
             <label for="fileInput"> 
               <img src="/img/common/add_image.png" class="card-img-top h-70" 
@@ -33,7 +33,7 @@
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     {{/if}}
   {{/if}}

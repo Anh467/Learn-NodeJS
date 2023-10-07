@@ -130,7 +130,7 @@ class AuthenController{
         const {Account, Password, CustomerName, Mail, DateOfBirth, Gender, CustomerImg}= req.body
         try{
             var customerID
-            customer= Customer.build({
+            var customer= Customer.build({
                 Account : Account,
                 Password : Password,
                 CustomerName : CustomerName,

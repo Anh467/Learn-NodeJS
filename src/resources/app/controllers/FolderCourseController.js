@@ -1,4 +1,7 @@
 const db= require('../models')
+const fs= require('fs')
+const Resize = require('../../common/resize');
+const path= require('path')
 const dbConfig = require("../../config/db/config");
 const { Sequelize, Op } = require('sequelize');
 const PROJECT_PATH= require('../../../public/getProjectPath')
@@ -52,59 +55,74 @@ class CustomerController{
 
     //[POST]
     newFolderCourse= async function(req, res){
-        const {FolderName, privacry, Description}= req.body
-        const CustomerID= req.params.customerid
+        const {FolderName, privacry, Description, FolderImage}= req.body
+        if(!req.session.User) throw new Error("You must be logged in")
+        const CustomerID= req.session.User.CustomerID
         var FolderID
         try {
-            FolderCourses.build({
+            
+            var foldercourses= FolderCourses.build({
                 FolderImage: req.file?req.file.originalname: "",
                 FolderName: FolderName,
                 CustomerID: CustomerID,
                 Description: Description
             })
-
+            console.log("Check type img:"+typeof FolderImage)
+            console.log("Check type img buffer :"+typeof FolderImage.buffer)
             await FolderCourses.findOne({
-                FolderName: FolderName,
-                CustomerID: CustomerID
+                where:{
+                    FolderName: FolderName,
+                    CustomerID: CustomerID
+                }
             }).then(data => {
                 if( data ) 
                     throw new Error(`Thư mục với tên là ${FolderName} đã tồn tại`)
             })
 
-            await FolderCourses.Save()
+            await foldercourses.save()
                         .then(data => {
                             if(data)
                                 FolderID= data.FolderID
                             else throw new Error(`Đã có lỗi xảy ra, tạo thư mục khóa học mới không thành công`)
                         })
+                        .catch(err =>{
+                            throw new Error(err.message)
+                        })
             //set vị trí lưu ảnh 
-            var path_prj= path.join(PROJECT_PATH(), "img", "user", customerID,"FolderCourse",FolderID)
+            var path_prj= path.join(PROJECT_PATH(), "img", "user", CustomerID,"FolderCourse",''+FolderID)
             // tạo folder nếu nó k tồn tại 
             if (!fs.existsSync(path_prj)) 
-                try {
-                    fs.mkdirSync(path_prj, { recursive: true });
-                } catch (error) {
-                    throw new ('Lỗi khi tạo thư mục:', error);
-                }
-            //resize ảnh lưu ảnh 
-            if (req.file) {
-                const fileUpload = new Resize(path_prj);
-                const filename = await fileUpload.save(req.file.buffer, req.file.originalname);
+            try {
+                fs.mkdirSync(path_prj, { recursive: true });
+            } catch (error) {
+                throw new ('Lỗi khi tạo thư mục:', error);
             }
+            //
 
-            // chuyển hướng người dùng về trang chủ  
-            res.status(200).redirect(`course/folder_course_list`)
-        } catch (error) {
-            res.status(500).render(`course/folder_course_list`,
-                {   
-                    message: "Tạo mới thư mục khóa học không thành công!!!: "+error.message,
-                    FolderCourses:{
-                        FolderName: FolderName,
-                        privacry: privacry, 
-                        Description: Description,
-                    }
+            
+                //first way to upload file 
+            
+                //resize ảnh lưu ảnh 
+                if (req.fileUpload) {
+                    const fileUpload = new Resize(path_prj);
+                    const filename = await fileUpload.save(req.file.buffer, req.file.originalname);
                 }
-            )
+            
+            // chuyển hướng người dùng về trang chủ  
+            res.json({
+                FolderName: FolderName, 
+                privacry: privacry, 
+                Description: Description 
+            })
+        } catch (error) {
+            res.json({
+                message: "Tạo mới thư mục khóa học không thành công!!!: "+error.message,
+                FolderCourses:{
+                    FolderName: FolderName,
+                    privacry: privacry, 
+                    Description: Description,
+                }
+            })
         }
     }
 //Courses

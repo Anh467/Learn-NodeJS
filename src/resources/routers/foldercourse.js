@@ -11,6 +11,6 @@ const route= express.Router()
     //[POST]
     route.post('/:customerid', folderCourseController.newFolderCourse)
 
-route.get('/', upload.single('FolderImg'), folderCourseController.index)
+route.get('/', upload.single('FolderImage'), folderCourseController.index)
 
 module.exports= route

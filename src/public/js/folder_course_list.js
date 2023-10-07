@@ -22,12 +22,11 @@ function changeImageOnInput(event) {
     }
 }
 
-function AddNewFolderCourses(event, CustomerID){
+async function AddNewFolderCourses(event, CustomerID){
     // get button position
-    alert("Please")
     var input = event.target
     //get form 
-    var form= input.closest('form')
+    var form= input.closest('div[name="form"]')
     //get component
     var FolderImage = form.querySelector('input[name="FolderImage"]')
     var FolderName = form.querySelector('input[name="FolderName"]')
@@ -35,7 +34,7 @@ function AddNewFolderCourses(event, CustomerID){
     var Description= form.querySelector('textarea[name="Description"]')
     // from data to send to server
     var formData= new FormData();
-    formData.append('FolderImage', FolderImage.value)
+    formData.append('FolderImage', FolderImage.files[0])
     formData.append('FolderName', FolderName.value)
     formData.append('privacry', privacry.value)
     formData.append('Description', Description.value)
@@ -45,18 +44,19 @@ function AddNewFolderCourses(event, CustomerID){
         type: "POST",
         processData: false,
         contentType: false,
-        data: {
-            'FolderImage': FolderImage.value,
-            'FolderName': FolderName.value,
-            'privacry': privacry.value,
-            'Description': Description.value,
+        headers: {
+            'Content-Type': 'application/json',
         },
-        success: function (data) {
-            if (data === "null")
-                alert("!!!Somthing wrong happen!!!");
-            else {
-                location.reload();
+        data: JSON.stringify(
+                {
+                'FolderImage': FolderImage,
+                'FolderName': FolderName.value,
+                'privacry': privacry.value,
+                'Description': Description.value,
             }
+        ),
+        success: function (data) {
+            document.getElementById("message").innerHTML= data.message
         },
         error: function (xhr) {
             console.log("Có lỗi xảy ra");
