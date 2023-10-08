@@ -21,7 +21,7 @@ class Resize {
     
     return filename;
   }
-
+  
   filepath(filename) {
     return path.resolve(`${this.folder}/${filename}`)
   }

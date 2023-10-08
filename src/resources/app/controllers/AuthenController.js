@@ -2,6 +2,7 @@ const db= require('../models')
 const path= require('path')
 const fs = require('fs');
 const ROLE_STUDENT= "STUDENT"
+const { v4: uuidv4 } = require('uuid')
 const ROLE_USER= "USER"
 const Resize = require('../../common/resize');
 const PROJECT_PATH= require('../../../public/getProjectPath')
@@ -127,14 +128,15 @@ class AuthenController{
     }
     //[POST]
     newUser=  async function(req, res) {
-        const {Account, Password, CustomerName, Mail, DateOfBirth, Gender, CustomerImg}= req.body
+        const {Account, Password, CustomerName, Mail, DateOfBirth, Gender}= req.body
         try{
+            var CustomerImg = `${uuidv4()}.png`
             var customerID
             var customer= Customer.build({
                 Account : Account,
                 Password : Password,
                 CustomerName : CustomerName,
-                CustomerImg: req.file?req.file.originalname: "",
+                CustomerImg: CustomerImg,
                 Mail: Mail,
                 DateOfBirth : DateOfBirth,
                 Gender: Gender,
@@ -167,7 +169,7 @@ class AuthenController{
             
             if (req.file) {
                 const fileUpload = new Resize(path_prj);
-                const filename = await fileUpload.save(req.file.buffer, req.file.originalname);
+                const filename = await fileUpload.save(req.file.buffer, CustomerImg);
             }
 
             // lưu đăng nhập người dùng 

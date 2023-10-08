@@ -9,8 +9,8 @@ const route= express.Router()
     //[GET]
     route.get('/:customerid', folderCourseController.index)
     //[POST]
-    route.post('/:customerid', folderCourseController.newFolderCourse)
+    route.post('/',upload.single('FolderImg'), folderCourseController.newFolderCourse)
 
-route.get('/', upload.single('FolderImage'), folderCourseController.index)
+    route.get('/',  folderCourseController.index)
 
 module.exports= route

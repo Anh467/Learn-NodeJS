@@ -21,45 +21,65 @@ function changeImageOnInput(event) {
         reader.readAsDataURL(input.files[0]);
     }
 }
-
-async function AddNewFolderCourses(event, CustomerID){
-    // get button position
-    var input = event.target
-    //get form 
-    var form= input.closest('div[name="form"]')
-    //get component
-    var FolderImage = form.querySelector('input[name="FolderImage"]')
-    var FolderName = form.querySelector('input[name="FolderName"]')
-    var privacry = form.querySelector('select[name="privacry"]')
-    var Description= form.querySelector('textarea[name="Description"]')
-    // from data to send to server
-    var formData= new FormData();
-    formData.append('FolderImage', FolderImage.files[0])
-    formData.append('FolderName', FolderName.value)
-    formData.append('privacry', privacry.value)
-    formData.append('Description', Description.value)
-    // sending by using ajax
-    $.ajax({
-        url: `/foldercourse/${CustomerID}`,
-        type: "POST",
-        processData: false,
-        contentType: false,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        data: JSON.stringify(
-                {
-                'FolderImage': FolderImage,
-                'FolderName': FolderName.value,
-                'privacry': privacry.value,
-                'Description': Description.value,
+$(document).ready(function(){
+    $('form[name="form"]').on('submit', function(event){
+        event.preventDefault();
+        //get tag 
+        var FolderImg = $('input[name="FolderImg"]')
+        var FolderName = $('input[name="FolderName"]')
+        var privacry = $('select[name="privacry"]')
+        var Description= $('textarea[name="Description"]')
+        //send by form data 
+        var formData= new FormData();
+        formData.append('FolderImg', FolderImg[0].files[0])
+        formData.append('FolderName', FolderName.val())
+        formData.append('privacry', privacry.val())
+        formData.append('Description', Description.val())
+        //send ajax req 
+        $.ajax({
+            url: `/foldercourse`,
+            type: "POST",
+            processData: false,
+            contentType: false,
+            headers: {
+                'Content-Type': undefined,
+            },
+            data: formData,
+            success: function (data) {
+                var message= document.getElementById("message")
+                // message
+                message.innerHTML= data.message.value
+                message.setAttribute("style", `color: ${data.message.color};` )
+                //reset input 
+                // element folder in list
+                var folder_container = document.getElementById("folder-container")
+                var folderChild= ` 
+                                    <div class="col">
+                                        <div class="card h-100">
+                                        <a href="/foldercourse/${data.FolderCourse.CustomerID}/${data.FolderCourse.FolderName}">
+                                            <img src="/img/user/${data.FolderCourse.CustomerID}/FolderCourse/${data.FolderCourse.FolderID}/${data.FolderCourse.FolderImg}" class="card-img-top h-70" 
+                                                alt="${data.FolderCourse.FolderName}">
+                                        </a>
+                                        <div class="h-30 card-body">
+                                            <div class="d-flex flex-row">
+                                            <h5 class="card-title">${data.FolderCourse.FolderName}</h5>
+                                            <p class="card-privacry">${data.FolderCourse.privacry}</p>
+                                            </div>
+                                            
+                                            <p class="card-text">
+                                            <span class="truncate-text ">${data.FolderCourse.Description}</span>
+                                            <a href="#" class="read-more ">Xem thêm</a>
+                                            </p>
+                                        </div>
+                                        </div>
+                                    </div>
+                                `
+                folder_container.innerHTML += folderChild
+                
+            },
+            error: function (xhr) {
+                console.log("Có lỗi xảy ra");
             }
-        ),
-        success: function (data) {
-            document.getElementById("message").innerHTML= data.message
-        },
-        error: function (xhr) {
-            console.log("Có lỗi xảy ra");
-        }
-    });
-}
+        });
+    })
+})

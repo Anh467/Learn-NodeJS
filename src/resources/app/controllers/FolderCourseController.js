@@ -1,10 +1,12 @@
 const db= require('../models')
 const fs= require('fs')
+const { v4: uuidv4 } = require('uuid')
 const Resize = require('../../common/resize');
 const path= require('path')
 const dbConfig = require("../../config/db/config");
 const { Sequelize, Op } = require('sequelize');
-const PROJECT_PATH= require('../../../public/getProjectPath')
+const PROJECT_PATH= require('../../../public/getProjectPath');
+const multer = require('multer');
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   port: dbConfig.PORT,
@@ -55,20 +57,19 @@ class CustomerController{
 
     //[POST]
     newFolderCourse= async function(req, res){
-        const {FolderName, privacry, Description, FolderImage}= req.body
-        if(!req.session.User) throw new Error("You must be logged in")
-        const CustomerID= req.session.User.CustomerID
-        var FolderID
         try {
-            
+            const {FolderName, privacry, Description}= req.body
+            if(!req.session.User) throw new Error("You must be logged in")
+            const CustomerID= req.session.User.CustomerID
+            var FolderID 
+            var folderImg= `${uuidv4()}.png`
             var foldercourses= FolderCourses.build({
-                FolderImage: req.file?req.file.originalname: "",
+                FolderImg: folderImg,
                 FolderName: FolderName,
                 CustomerID: CustomerID,
-                Description: Description
+                Description: Description,
+                privacry: privacry
             })
-            console.log("Check type img:"+typeof FolderImage)
-            console.log("Check type img buffer :"+typeof FolderImage.buffer)
             await FolderCourses.findOne({
                 where:{
                     FolderName: FolderName,
@@ -92,36 +93,40 @@ class CustomerController{
             var path_prj= path.join(PROJECT_PATH(), "img", "user", CustomerID,"FolderCourse",''+FolderID)
             // tạo folder nếu nó k tồn tại 
             if (!fs.existsSync(path_prj)) 
-            try {
-                fs.mkdirSync(path_prj, { recursive: true });
-            } catch (error) {
-                throw new ('Lỗi khi tạo thư mục:', error);
-            }
-            //
-
-            
-                //first way to upload file 
-            
-                //resize ảnh lưu ảnh 
-                if (req.fileUpload) {
-                    const fileUpload = new Resize(path_prj);
-                    const filename = await fileUpload.save(req.file.buffer, req.file.originalname);
+                try {
+                    fs.mkdirSync(path_prj, { recursive: true });
+                } catch (error) {
+                    throw new ('Lỗi khi tạo thư mục:', error);
                 }
+
+            //first way to upload file 
+            //resize ảnh lưu ảnh 
+            if (req.file) {
+                const fileUpload = new Resize(path_prj);
+                const filename = await fileUpload.save(req.file.buffer, folderImg);
+            }
             
             // chuyển hướng người dùng về trang chủ  
             res.json({
-                FolderName: FolderName, 
-                privacry: privacry, 
-                Description: Description 
+                FolderCourse:{
+                    FolderID: FolderID,
+                    FolderName: FolderName, 
+                    privacry: privacry, 
+                    Description: Description,
+                    FolderImg: folderImg,
+                    CustomerID: CustomerID,
+                },
+                message:{
+                    value: `Tạo thành công thư mục ${folderImg}`,
+                    color: "green"
+                }
             })
         } catch (error) {
             res.json({
-                message: "Tạo mới thư mục khóa học không thành công!!!: "+error.message,
-                FolderCourses:{
-                    FolderName: FolderName,
-                    privacry: privacry, 
-                    Description: Description,
-                }
+                message:{
+                    value: `ERR[${error}]Tạo mới thư mục khóa học không thành công!!!: ${error.message}`,
+                    color: "red"
+                } 
             })
         }
     }
