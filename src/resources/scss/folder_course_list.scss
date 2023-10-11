@@ -19,7 +19,7 @@
         text-align: center;
         margin-right: 0;
         padding: 3px 10px 3px 10px;
-        margin-left: auto;
+        margin-left: auto; 
         border: 3px solid random-color();
         border-radius: 10px;
         background-color: rgb(128, 240, 128);
@@ -32,16 +32,39 @@
           width: 80%;
         }
       }
+      .card-checkbox{
+        margin-bottom: auto;
+        margin-top: 7px;
+        position: sticky;
+        margin-right: 10px;
+      }
     }
 }
 
 .card-img-top {
     transition: transform 0.2s; 
-  }
-  
+    position: relative;
+    display: inline-block; 
+}
+.edit-button {
+    position: absolute; 
+    top: 8px; 
+    right: 8px;
+    background-color: red; 
+    color: white; 
+    border-radius: 50%;
+    padding: 10px 8px;
+    font-size: 12px; 
+    z-index: 1;
+}
 .card:hover .card-img-top {
+    transform: scale(1.2); 
+}
+
+.card:hover .edit-button{
   transform: scale(1.2); 
 }
+
 
 .container{
     margin-top: 10px;
@@ -60,3 +83,4 @@
   overflow: visible;
   max-height: none
 }
+

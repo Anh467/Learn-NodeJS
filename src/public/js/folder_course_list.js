@@ -10,6 +10,13 @@ $(document).ready(function() {
         }
     });
 });
+$(document).ready(function(){
+        $(".edit-button").click(function(e){
+            e.preventDefault();
+            var $paragraph = $(this).prev(".truncate-text");
+        })
+    }
+)
 function changeImageOnInput(event) {
     var input = event.target;
     var img = input.parentElement.getElementsByTagName('img')[0];
@@ -83,3 +90,34 @@ $(document).ready(function(){
         });
     })
 })
+
+function myFunction(){
+    alert("hello how r u?")
+}
+function deleteHanlder(){
+    try {
+        var list = getChoosenList()
+        if(!confirm(`Are you sure you want to delete[${list.choosen.length}] ${list.message}`))
+            return
+    } catch (error) {
+        alert("Some error happen: "+error.message)
+    }
+}
+function getChoosenList(){
+    var choosenList = []
+    var temp = ""
+    var folderContainer= document.querySelectorAll(".foldercourse-container")
+    for(let i= 0; i<folderContainer.length; i++){
+        var divContainer = folderContainer[i]
+        var choosen= divContainer.querySelector('input[name="choosen"]')
+        var folderCourseName= divContainer.querySelector('h5[class="card-title"]')
+        if(choosen.checked){
+            choosenList.push(choosen.value)
+            temp += "\n + " + folderCourseName.innerHTML
+        }
+    }
+    return {
+        choosen: choosenList,
+        message: temp
+    }
+}

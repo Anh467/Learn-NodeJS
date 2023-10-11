@@ -7,7 +7,7 @@
   .card .card-body .card-text {
     margin-bottom: 0; }
   .card .card-body button {
-    border: 3px solid #7db206;
+    border: 3px solid #f756a1;
     border-radius: 10px;
     background-color: #80f080; }
   .card .card-body .card-privacry {
@@ -16,19 +16,40 @@
     margin-right: 0;
     padding: 3px 10px 3px 10px;
     margin-left: auto;
-    border: 3px solid #82da2f;
+    border: 3px solid #deff08;
     border-radius: 10px;
     background-color: #80f080; }
   .card .card-body .card-title input {
-    border: 3px solid #90adde;
+    border: 3px solid #e1b784;
     border-radius: 10px;
     height: 37px;
     width: 80%; }
+  .card .card-body .card-checkbox {
+    margin-bottom: auto;
+    margin-top: 7px;
+    position: sticky;
+    margin-right: 10px; }
 
 .card-img-top {
-  transition: transform 0.2s; }
+  transition: transform 0.2s;
+  position: relative;
+  display: inline-block; }
+
+.edit-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 10px 8px;
+  font-size: 12px;
+  z-index: 1; }
 
 .card:hover .card-img-top {
+  transform: scale(1.2); }
+
+.card:hover .edit-button {
   transform: scale(1.2); }
 
 .container {
