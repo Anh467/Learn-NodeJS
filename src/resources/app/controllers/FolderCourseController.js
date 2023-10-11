@@ -130,6 +130,41 @@ class CustomerController{
             })
         }
     }
+
+    //[DELETE]
+    deleteFolderCourse= async function(req, res){
+        try {
+            var user = req.session.User
+            if( user == undefined ) throw new Error("You need to be logged in")
+            const {id} = req.body
+            FolderCourses.destroy({
+                where:{
+                    FolderID:{
+                        [Op.in]: id
+                    },
+                    CustomerID: user.CustomerID
+                }
+            }).then(data =>{
+                res.json({
+                    message:{
+                        value: `Đã xóa thành công ${data} FolderCourses `,
+                        color: "Green"
+                    } 
+                })  
+            }).catch(err =>{
+                throw new Error(err.message)
+            })
+            
+            
+        } catch (error) {
+            res.json({
+                message:{
+                    value: `ERR[${error}]Đã có lỗi xảy ra khi cố gắng xóa thư mục!!!: ${error.message}`,
+                    color: "red"
+                } 
+            })   
+        }
+    }
 //Courses
     //[GET]
     course= function(req, res) {

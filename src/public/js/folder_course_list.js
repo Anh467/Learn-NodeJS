@@ -97,27 +97,56 @@ function myFunction(){
 function deleteHanlder(){
     try {
         var list = getChoosenList()
-        if(!confirm(`Are you sure you want to delete[${list.choosen.length}] ${list.message}`))
-            return
+        var id = []
+        if(list.length <= 0) throw new Error("You must choose folder that need to delete")
+        var temp = ""
+        list.forEach(element => {
+            temp += `\n + [${element.id}] ${element.name}`
+            id.push(element.id)
+        });
+        if(!confirm(`Are you sure you want to delete[${list.length}] ${temp}`)) return
+        $.ajax({
+                url: `/foldercourse`,
+                type: "DELETE",
+                processData: false,
+                contentType: 'application/json',
+                data: JSON.stringify({ id: id }),
+                success: function (data) {
+                    var message= document.getElementById("message")
+                    // message
+                    message.innerHTML= data.message.value
+                    message.setAttribute("style", `color: ${data.message.color};` )
+                    // display none all div that be deleted
+                    var folderContainer= document.querySelectorAll(".foldercourse-container")
+                    for(let i= 0; i<folderContainer.length; i++){
+                        var divContainer = folderContainer[i]
+                        var choosen= divContainer.querySelector('input[name="choosen"]')
+                        if(id.indexOf(choosen.value) !== -1)
+                            divContainer.setAttribute("style", "display: none")
+                    }
+                },
+                error: function (xhr) {
+                    throw new Error(xhr.responseText)
+                }
+            }
+        )
     } catch (error) {
         alert("Some error happen: "+error.message)
     }
 }
 function getChoosenList(){
-    var choosenList = []
-    var temp = ""
+    var list = []
     var folderContainer= document.querySelectorAll(".foldercourse-container")
     for(let i= 0; i<folderContainer.length; i++){
         var divContainer = folderContainer[i]
         var choosen= divContainer.querySelector('input[name="choosen"]')
         var folderCourseName= divContainer.querySelector('h5[class="card-title"]')
         if(choosen.checked){
-            choosenList.push(choosen.value)
-            temp += "\n + " + folderCourseName.innerHTML
+            list.push({
+                id: choosen.value,
+                name: folderCourseName.innerHTML
+            })
         }
     }
-    return {
-        choosen: choosenList,
-        message: temp
-    }
+    return list
 }

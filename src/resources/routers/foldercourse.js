@@ -10,6 +10,8 @@ const route= express.Router()
     route.get('/:customerid', folderCourseController.index)
     //[POST]
     route.post('/',upload.single('FolderImg'), folderCourseController.newFolderCourse)
+    //[DELETE]
+    route.delete('/', folderCourseController.deleteFolderCourse)
 
     route.get('/',  folderCourseController.index)
 
