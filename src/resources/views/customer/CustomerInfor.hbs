@@ -1,18 +1,12 @@
 <link rel="stylesheet" href="../css/CustomerInfor.css">
 <script src="../js/CustomerInfor.js"></script>
-<form id="frm-sign-up" action="/authen/signup" method="post" enctype="multipart/form-data">
+<h3 class="" style="color:{{message.color}}">message: {{message.value}}</h3>
+<form id="frm-sign-up" action="/customer" method="post" enctype="multipart/form-data">
 <div class="container">
-    <label ><b>Username</b></label>
-    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" value="{{Customer.Account}}"
-      pattern="[A-Za-z0-9]{10,}" title="không được chưa kí tự đặc biệt, và có ít nhất 10 kí tự" 
-      required
-    >
-
-
     <div class="row d-flex">
       <div class="col-md-6 ">
           <div style="margin-bottom: 1.3%;">
-            <label><b>Full Name</b></label>
+            <label><b>Full Name {{Customer.CustomerName}}</b></label>
             <input  class="{{messageClass}}" type="text" placeholder="Enter fullname" name="CustomerName" value="{{Customer.CustomerName}}"
             required
             >
@@ -31,7 +25,7 @@
             <div class="my-input">
                 <input class="{{messageClass}}" type="file" placeholder="Enter Password" name="CustomerImg" value="{{Customer.CustomerImg}}"
                 onchange="changeImageOnInput(event)"  accept="image/*">
-                <img  src="{{Customer.CustomerImgPath}}" alt="">
+                <img  src="/img/user/{{Customer.CustomerID}}/avatar/{{Customer.CustomerImg}}" alt="">
             </div>
       </div>
     </div>
@@ -47,23 +41,31 @@
         <div class="check-box-gender d-flex">
           <div class="gender">
             <input type="radio" id="gender" name="Gender" value="Male" 
+              {{#ifCheckBoxGender Customer.Gender "Male"}}
                 checked
+              {{else}}
+              {{/ifCheckBoxGender}}
               required>
             <label> Male</label><br>
           </div>
           <div class="gender">
             <input type="radio" id="gender" name="Gender" value="Female" 
+              {{#ifCheckBoxGender Customer.Gender "Female"}}
                 checked
+              {{else}}
+              {{/ifCheckBoxGender}}
               required>
             <label>  Female</label><br>
           </div>
           <div class="gender">
             <input type="radio" id="gender" name="Gender" value="Others" 
+              {{#ifCheckBoxGender Customer.Gender "Others"}}
                 checked
+              {{else}}
+              {{/ifCheckBoxGender}}
               required>
             <label> Others</label><br>
           </div>
-        </div>
       </div>
     </div>
 

@@ -20,7 +20,7 @@ function route(app){
     // app.get('/news', function(req, res) {
     // res.render('news')
     // })
-    //home
+    //home 
     app.get('/home', function(req, res) {
         res.render('home')
     })
