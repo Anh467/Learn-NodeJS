@@ -91,8 +91,28 @@ $(document).ready(function(){
     })
 })
 
-function myFunction(){
-    alert("hello how r u?")
+function myFunction(event){
+    var input = event.target
+    //
+    // get foldercourse-container
+    var foldercourse = input.closest(".foldercourse-container")
+    var foldercourseform = document.querySelector('.foldercourse-container-form')
+    // get component in foldercourse-container 
+    var folderImg= foldercourse.querySelector('img[name="FolderImg"]')
+    var folderName = foldercourse.querySelector('h5[name="FolderName"]')
+    var description = foldercourse.querySelector('span[name="Description"]')
+    var privacry = foldercourse.querySelector('p[name="privacry"]')
+    // get component in input
+    var inputFolderImg= foldercourseform.querySelector('img[name="FolderImg"]')
+    var inputFolderName = foldercourseform.querySelector('input[name="FolderName"]')
+    var inputDescription = foldercourseform.querySelector('textarea[name="Description"]')
+    var inputPrivacry = foldercourseform.querySelector('select[name="privacry"]')
+    // set value 
+    inputFolderImg.setAttribute("src", folderImg.src)
+    inputFolderName.setAttribute("value", folderName.innerHTML)
+    inputDescription.innerHTML= description.innerHTML
+    inputPrivacry.querySelector(`option[value="${privacry.innerHTML}"]`).selected = true
+    //alert("hello how r u?" + folderImg.src)
 }
 function deleteHanlder(){
     try {
