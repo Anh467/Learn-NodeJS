@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="../css/CustomerInfor.css">
+<script src="../js/CustomerInfor.js"></script>
+<form id="frm-sign-up" action="/authen/signup" method="post" enctype="multipart/form-data">
+<div class="container">
+    <label ><b>Username</b></label>
+    <input class="{{messageClass}}"type="text" placeholder="Enter Username" name="Account" value="{{Customer.Account}}"
+      pattern="[A-Za-z0-9]{10,}" title="không được chưa kí tự đặc biệt, và có ít nhất 10 kí tự" 
+      required
+    >
+
+
+    <div class="row d-flex">
+      <div class="col-md-6 ">
+          <div style="margin-bottom: 1.3%;">
+            <label><b>Full Name</b></label>
+            <input  class="{{messageClass}}" type="text" placeholder="Enter fullname" name="CustomerName" value="{{Customer.CustomerName}}"
+            required
+            >
+          </div>
+          <div>
+            <label ><b>Mail</b></label>
+            <input class="{{messageClass}}" type="text" placeholder="Enter mail" name="Mail" value="{{Customer.Mail}}"
+              pattern="^[a-zA-Z0-9]+@[a-zA-Z]+(\.[a-zA-Z0-9]+){1,}$"
+              title="Sai định dạng email"
+              required
+            >  
+          </div>
+      </div>
+      <div class="col-md-6">
+             <label ><b>Avatar </b></label>
+            <div class="my-input">
+                <input class="{{messageClass}}" type="file" placeholder="Enter Password" name="CustomerImg" value="{{Customer.CustomerImg}}"
+                onchange="changeImageOnInput(event)"  accept="image/*">
+                <img  src="{{Customer.CustomerImgPath}}" alt="">
+            </div>
+      </div>
+    </div>
+
+    <div class="row d-flex">
+      <div class="col-md-6">
+        <label ><b>Date Of Birth</b></label>
+        <input class="{{messageClass}}" type="date" placeholder="Enter Password" name="DateOfBirth" value="{{Customer.DateOfBirth}}"
+        required>
+      </div>
+      <div class="col-md-6">
+        <label ><b>Gender </b></label>
+        <div class="check-box-gender d-flex">
+          <div class="gender">
+            <input type="radio" id="gender" name="Gender" value="Male" 
+                checked
+              required>
+            <label> Male</label><br>
+          </div>
+          <div class="gender">
+            <input type="radio" id="gender" name="Gender" value="Female" 
+                checked
+              required>
+            <label>  Female</label><br>
+          </div>
+          <div class="gender">
+            <input type="radio" id="gender" name="Gender" value="Others" 
+                checked
+              required>
+            <label> Others</label><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit"  id="submit-sign-up-form">Confirm update</button>
+    <div class="d-flex">
+      <div class="ms-auto me-0">
+        <p class="text-danger">{{message}}</p>
+      </div>
+    </div>
+  </div>
+ 
+</form>
+
+             
