@@ -28,69 +28,112 @@ function changeImageOnInput(event) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+insertFolderCourse= function(formData){
+    $.ajax({
+        url: `/foldercourse`,
+        type: "POST",
+        processData: false,
+        contentType: false,
+        headers: {
+            'Content-Type': undefined,
+        },
+        data: formData,
+        success: function (data) {
+            var message= document.getElementById("message")
+            // message
+            message.innerHTML= data.message.value
+            message.setAttribute("style", `color: ${data.message.color};` )
+            //reset input 
+            // element folder in list
+            var folder_container = document.getElementById("folder-container")
+            var folderChild= ` 
+                                <div class="col">
+                                    <div class="card h-100">
+                                    <a href="/foldercourse/${data.FolderCourse.CustomerID}/${data.FolderCourse.FolderName}">
+                                        <img src="/img/user/${data.FolderCourse.CustomerID}/FolderCourse/${data.FolderCourse.FolderID}/${data.FolderCourse.FolderImg}" class="card-img-top h-70" 
+                                            alt="${data.FolderCourse.FolderName}">
+                                    </a>
+                                    <div class="h-30 card-body">
+                                        <div class="d-flex flex-row">
+                                        <h5 class="card-title">${data.FolderCourse.FolderName}</h5>
+                                        <p class="card-privacry">${data.FolderCourse.privacry}</p>
+                                        </div>
+                                        
+                                        <p class="card-text">
+                                        <span class="truncate-text ">${data.FolderCourse.Description}</span>
+                                        <a href="#" class="read-more ">Xem thêm</a>
+                                        </p>
+                                    </div>
+                                    </div>
+                                </div>
+                            `
+            folder_container.innerHTML += folderChild
+            
+        },
+        error: function (xhr) {
+            console.log("Có lỗi xảy ra");
+        }
+    });
+}
+updateFolderCourse = function(formData){
+    $.ajax({
+        url: `/foldercourse`,
+        type: "PUT",
+        processData: false,
+        contentType: false,
+        headers: {
+            'Content-Type': undefined,
+        },
+        data: formData,
+        success: function (data) {  
+            clearInput()
+            var FolderCourse = data.FolderCourse
+            var foldercourse = document.querySelector(`div[name="${FolderCourse.FolderID}"]`)
+            // get component in foldercourse-container 
+            var folderImg= foldercourse.querySelector('img[name="FolderImg"]')
+            var folderName = foldercourse.querySelector('h5[name="FolderName"]')
+            var description = foldercourse.querySelector('span[name="Description"]')
+            var privacry = foldercourse.querySelector('p[name="privacry"]')
+            // set value 
+           
+            folderImg.setAttribute("src", `/img/user/${data.CustomerID}/FolderCourse/${FolderCourse.FolderID}/${FolderCourse.FolderImg}`)
+            folderName.innerHTML =  FolderCourse.FolderName
+            description.innerHTML = FolderCourse.Description
+            privacry.innerHTML = FolderCourse.privacry
+        },
+        error: function (xhr) {
+            console.log("Có lỗi xảy ra");
+        }
+    });
+}
 $(document).ready(function(){
     $('form[name="form"]').on('submit', function(event){
         event.preventDefault();
         //get tag 
+        var spanID = $('span[name="span-id"]')
         var FolderImg = $('input[name="FolderImg"]')
         var FolderName = $('input[name="FolderName"]')
         var privacry = $('select[name="privacry"]')
         var Description= $('textarea[name="Description"]')
+        var Button= document.getElementById('button-submit')
         //send by form data 
         var formData= new FormData();
+        var text=  spanID.html()
         formData.append('FolderImg', FolderImg[0].files[0])
         formData.append('FolderName', FolderName.val())
         formData.append('privacry', privacry.val())
         formData.append('Description', Description.val())
+        formData.append('FolderID', spanID.html())
         //send ajax req 
-        $.ajax({
-            url: `/foldercourse`,
-            type: "POST",
-            processData: false,
-            contentType: false,
-            headers: {
-                'Content-Type': undefined,
-            },
-            data: formData,
-            success: function (data) {
-                var message= document.getElementById("message")
-                // message
-                message.innerHTML= data.message.value
-                message.setAttribute("style", `color: ${data.message.color};` )
-                //reset input 
-                // element folder in list
-                var folder_container = document.getElementById("folder-container")
-                var folderChild= ` 
-                                    <div class="col">
-                                        <div class="card h-100">
-                                        <a href="/foldercourse/${data.FolderCourse.CustomerID}/${data.FolderCourse.FolderName}">
-                                            <img src="/img/user/${data.FolderCourse.CustomerID}/FolderCourse/${data.FolderCourse.FolderID}/${data.FolderCourse.FolderImg}" class="card-img-top h-70" 
-                                                alt="${data.FolderCourse.FolderName}">
-                                        </a>
-                                        <div class="h-30 card-body">
-                                            <div class="d-flex flex-row">
-                                            <h5 class="card-title">${data.FolderCourse.FolderName}</h5>
-                                            <p class="card-privacry">${data.FolderCourse.privacry}</p>
-                                            </div>
-                                            
-                                            <p class="card-text">
-                                            <span class="truncate-text ">${data.FolderCourse.Description}</span>
-                                            <a href="#" class="read-more ">Xem thêm</a>
-                                            </p>
-                                        </div>
-                                        </div>
-                                    </div>
-                                `
-                folder_container.innerHTML += folderChild
-                
-            },
-            error: function (xhr) {
-                console.log("Có lỗi xảy ra");
-            }
-        });
+        var option = Button.innerHTML
+        if(option == "Create Folder")
+            insertFolderCourse(formData)
+        else if (option == "Update Folder")
+            updateFolderCourse(formData)
     })
 })
-function clearInput(event){
+function clearInput(){
     // get foldercourse-container
     var foldercourseform = document.querySelector('.foldercourse-container-form')
     // get component in input
@@ -126,6 +169,7 @@ function setToForm(event){
     var inputDescription = foldercourseform.querySelector('textarea[name="Description"]')
     var inputPrivacry = foldercourseform.querySelector('select[name="privacry"]')
     var inputSpanID = foldercourseform.querySelector('span[name="span-id"]')
+    var button= foldercourseform.querySelector('button[name="submit"]')
     // set value 
     inputFolderImg.setAttribute("src", folderImg.src)
     inputFolderName.setAttribute("value", folderName.innerHTML)

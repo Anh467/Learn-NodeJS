@@ -14,6 +14,8 @@ const route= express.Router()
     route.delete('/', folderCourseController.deleteFolderCourse)
     //[GET]
     route.get('/',  folderCourseController.index)
+    //[PUT]
+    route.put('/',upload.single('FolderImg'),  folderCourseController.updateFolderCourse)
     //[GET]
     route.get('/element',  folderCourseController.getElementFolderCourse)
 module.exports= route

@@ -7,11 +7,11 @@
   {{#if isAuthenticated}}
     {{#if isOwn}} 
       <div class="col">
-        <form name="form " class="h-100 foldercourse-container-form" enctype="multipart/form-data">
+        <form name="form" class="h-100 foldercourse-container-form" enctype="multipart/form-data">
           <div class="card h-100">
             <label for="fileInput"> 
               <img name="FolderImg" src="/img/common/add_image.png" class="card-img-top h-70" 
-                    alt="alt">
+                    alt="alt"/>
             </label>
             <span class="span-id" name="span-id"></span>
             <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="changeImageOnInput(event)" name="FolderImg"  > 
@@ -32,8 +32,8 @@
               </p>
               <div class="w-100 h-10 d-flex justify-content-around mt-2">
                 {{!-- AddNewFolderCourses(event,{{CustomerID}}) --}}
-                  <button type="submit" name="submit"{{!-- onclick="AddNewFolderCourses(event,'{{CustomerID}}')"  --}} >Update Folder</button>
-                  <button type="button" onclick="clearInput(event)">Clear input</button>
+                  <button type="submit" name="submit" id="button-submit">Create Folder</button>
+                  <button type="button" onclick="clearInput()">Clear input</button>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
     {{/if}}
   {{/if}}
   {{#each FolderCourses}}
-    <div class="col foldercourse-container" >
+    <div class="col foldercourse-container" name="{{this.FolderID}}">
       <div class="card h-100">
           <a href="/foldercourse/{{CustomerID}}/{{this.FolderName}}">
             <img name="FolderImg" src="/img/user/{{this.CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.FolderImg}}" class="card-img-top h-70" 

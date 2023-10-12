@@ -130,7 +130,70 @@ class CustomerController{
             })
         }
     }
+    //[PUT]
+    updateFolderCourse = async function(req, res){
+        try {
+            var user= req.session.User 
+            if( user == undefined ) throw new Error("You must be logged in  ")
+            const {FolderName, privacry, Description, FolderID }= req.body
+            var FolderImg =  req.file? req.file.originalname : undefined
+            const folderCourse = await FolderCourses.findOne({
+                where: {
+                    CustomerID : user.CustomerID,
+                    FolderID : FolderID
+                }
+            })
 
+            if(folderCourse == undefined) throw new Error(" You don't have permission to modify")
+
+            if(  FolderImg == undefined || FolderImg == folderCourse.FolderImg )
+                FolderImg = folderCourse.FolderImg
+            else                            
+                FolderImg = `${uuidv4()}.png`      
+            //set vị trí lưu ảnh 
+            var path_prj= path.join(PROJECT_PATH(), "img", "user", user.CustomerID,"FolderCourse",''+FolderID)
+
+            // tạo folder nếu nó k tồn tại 
+            if (!fs.existsSync(path_prj)) 
+                try {
+                    fs.mkdirSync(path_prj, { recursive: true });
+                } catch (error) {
+                    throw new ('Lỗi khi tạo thư mục:', error);
+                }
+
+            //resize ảnh lưu ảnh 
+            if (req.file) {
+                const fileUpload = new Resize(path_prj);
+                const filename = await fileUpload.save(req.file.buffer, imgName);
+            }
+            // build
+            folderCourse.set({
+                FolderImg: FolderImg,
+                FolderName: FolderName,
+                privacry: privacry, 
+                Description: Description
+            })
+            await folderCourse.save().then(data =>{
+                res.json({
+                    message:{
+                        value: `Update ${data} Folder course success!!!`,
+                        color: "green"
+                    },
+                    FolderCourse: data,
+                    CustomerID: user.CustomerID
+                })
+            }).catch(err =>{
+                throw new err.message
+            })
+        } catch (error) {
+            res.json({
+                message:{
+                    value: `ERR[${error}]Update folder course fail!!!: ${error.message}`,
+                    color: "red"
+                } 
+            })
+        }
+    }
     //[DELETE]
     deleteFolderCourse= async function(req, res){
         try {
@@ -179,6 +242,7 @@ class CustomerController{
             
         }
     }
+
 //Courses
     //[GET]
     course= function(req, res) {
