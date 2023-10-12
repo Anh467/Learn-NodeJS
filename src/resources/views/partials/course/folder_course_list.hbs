@@ -13,11 +13,12 @@
               <img name="FolderImg" src="/img/common/add_image.png" class="card-img-top h-70" 
                     alt="alt">
             </label>
+            <span class="span-id" name="span-id"></span>
             <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="changeImageOnInput(event)" name="FolderImg"  > 
             <div class="h-30 card-body mx-auto ">
               <div class="d-flex flex-row">
                 <h5 class="card-title">
-                  <input type="text" class="" placeholder="Course Name..." name="FolderName" maxlength="50"
+                  <input type="text" class="" placeholder="Course Name..." name="FolderName" maxlength="50" onchange="checkExistFolderName(event)"
                   required>
                 </h5>
                 <select class="card-privacry" name="privacry" required>
@@ -29,9 +30,10 @@
                 <textarea class="w-100 h-100" placeholder="Enter your description" name="Description"  maxlength="500"
                 required></textarea>
               </p>
-              <div class="w-100 h-10 d-flex justify-content-center mt-2">
+              <div class="w-100 h-10 d-flex justify-content-around mt-2">
                 {{!-- AddNewFolderCourses(event,{{CustomerID}}) --}}
-                  <button type="submit" {{!-- onclick="AddNewFolderCourses(event,'{{CustomerID}}')"  --}} >Confirm</button>
+                  <button type="submit" name="submit"{{!-- onclick="AddNewFolderCourses(event,'{{CustomerID}}')"  --}} >Update Folder</button>
+                  <button type="button" onclick="clearInput(event)">Clear input</button>
               </div>
             </div>
           </div>
@@ -47,9 +49,10 @@
                   alt="{{this.FolderName}}"/>
            
           </a>
+          <span class="span-id" name="span-id">{{this.FolderID}}</span>
           {{#if ../isAuthenticated}}
             {{#if ../isOwn}} 
-              <i class="fa-solid fa-pen edit-button" style="color: rgb(29, 23, 23)" onclick="myFunction(event)"></i>
+              <i class="fa-solid fa-pen edit-button" style="color: rgb(29, 23, 23)" onclick="setToForm(event)"></i>
             {{/if}}
           {{/if}}
           <div class="h-30 card-body">

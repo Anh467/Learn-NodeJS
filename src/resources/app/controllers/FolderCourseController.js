@@ -165,6 +165,20 @@ class CustomerController{
             })   
         }
     }
+
+    //[GET]
+    getElementFolderCourse = async function(req, res){
+       
+        try {
+            const {where} = req.body
+            FolderCourses.findOne(where)
+            .catch(data =>{
+                res.send(data)
+            })
+        } catch (error) {
+            
+        }
+    }
 //Courses
     //[GET]
     course= function(req, res) {
@@ -193,6 +207,7 @@ class CustomerController{
             })
         }
     }
+
 }
 
 module.exports= new CustomerController()

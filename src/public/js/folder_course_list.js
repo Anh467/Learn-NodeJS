@@ -90,8 +90,25 @@ $(document).ready(function(){
         });
     })
 })
-
-function myFunction(event){
+function clearInput(event){
+    // get foldercourse-container
+    var foldercourseform = document.querySelector('.foldercourse-container-form')
+    // get component in input
+    var inputFolderImg= foldercourseform.querySelector('img[name="FolderImg"]')
+    var inputFolderName = foldercourseform.querySelector('input[name="FolderName"]')
+    var inputDescription = foldercourseform.querySelector('textarea[name="Description"]')
+    var inputPrivacry = foldercourseform.querySelector('select[name="privacry"]')
+    var inputSpanID = foldercourseform.querySelector('span[name="span-id"]')
+    var button= foldercourseform.querySelector('button[name="submit"]')
+    // set value 
+    inputFolderImg.setAttribute("src", "/img/common/add_image.png")
+    inputFolderName.setAttribute("value", "")
+    inputDescription.innerHTML= ""
+    inputPrivacry.querySelector(`option[value="public"]`).selected = true
+    inputSpanID.innerHTML = ""
+    button.innerHTML = "Create Folder"
+}
+function setToForm(event){
     var input = event.target
     //
     // get foldercourse-container
@@ -102,16 +119,20 @@ function myFunction(event){
     var folderName = foldercourse.querySelector('h5[name="FolderName"]')
     var description = foldercourse.querySelector('span[name="Description"]')
     var privacry = foldercourse.querySelector('p[name="privacry"]')
+    var spanID = foldercourse.querySelector('span[name="span-id"]')
     // get component in input
     var inputFolderImg= foldercourseform.querySelector('img[name="FolderImg"]')
     var inputFolderName = foldercourseform.querySelector('input[name="FolderName"]')
     var inputDescription = foldercourseform.querySelector('textarea[name="Description"]')
     var inputPrivacry = foldercourseform.querySelector('select[name="privacry"]')
+    var inputSpanID = foldercourseform.querySelector('span[name="span-id"]')
     // set value 
     inputFolderImg.setAttribute("src", folderImg.src)
     inputFolderName.setAttribute("value", folderName.innerHTML)
     inputDescription.innerHTML= description.innerHTML
     inputPrivacry.querySelector(`option[value="${privacry.innerHTML}"]`).selected = true
+    inputSpanID.innerHTML = spanID.innerHTML
+    button.innerHTML = "Update Folder"
     //alert("hello how r u?" + folderImg.src)
 }
 function deleteHanlder(){
@@ -169,4 +190,27 @@ function getChoosenList(){
         }
     }
     return list
+}
+function checkExistFolderName(event){
+    try {
+        var inputFolderName = event.target
+        var inputValue = inputFolderName.value
+        $.ajax({
+            url: `/foldercourse/get`,
+            type: "GET",
+            processData: false,
+            contentType: 'application/json',
+            data: JSON.stringify({ FolderName: inputValue }),
+            success: function (data) {
+            },
+            error: function (xhr) {
+                throw new Error("Something wrong happen")
+            }
+        })
+    } catch (error) {
+        var message= document.getElementById('message')
+        message.innerHTML('message: '+ error.message)
+        message.setAttribute('color', red)
+    }
+   
 }
