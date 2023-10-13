@@ -87,7 +87,10 @@ updateFolderCourse = function(formData){
         },
         data: formData,
         success: function (data) {  
-            clearInput()
+            //var clear=  document.querySelector(`input[name="reset"]`)
+            //click event
+            //clear.click()
+            //get container element
             var FolderCourse = data.FolderCourse
             var foldercourse = document.querySelector(`div[name="${FolderCourse.FolderID}"]`)
             // get component in foldercourse-container 
@@ -96,11 +99,11 @@ updateFolderCourse = function(formData){
             var description = foldercourse.querySelector('span[name="Description"]')
             var privacry = foldercourse.querySelector('p[name="privacry"]')
             // set value 
-           
             folderImg.setAttribute("src", `/img/user/${data.CustomerID}/FolderCourse/${FolderCourse.FolderID}/${FolderCourse.FolderImg}`)
             folderName.innerHTML =  FolderCourse.FolderName
             description.innerHTML = FolderCourse.Description
             privacry.innerHTML = FolderCourse.privacry
+            
         },
         error: function (xhr) {
             console.log("Có lỗi xảy ra");
@@ -146,7 +149,7 @@ function clearInput(){
     // set value 
     inputFolderImg.setAttribute("src", "/img/common/add_image.png")
     inputFolderName.setAttribute("value", "")
-    inputDescription.innerHTML= ""
+    inputDescription.innerHTML = ""
     inputPrivacry.querySelector(`option[value="public"]`).selected = true
     inputSpanID.innerHTML = ""
     button.innerHTML = "Create Folder"
