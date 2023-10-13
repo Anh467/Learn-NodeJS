@@ -164,7 +164,7 @@ class CustomerController{
             //resize ảnh lưu ảnh 
             if (req.file) {
                 const fileUpload = new Resize(path_prj);
-                const filename = await fileUpload.save(req.file.buffer, imgName);
+                const filename = await fileUpload.save(req.file.buffer, FolderImg);
             }
             // build
             folderCourse.set({

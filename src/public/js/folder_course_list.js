@@ -42,7 +42,7 @@ insertFolderCourse= function(formData){
         success: function (data) {
             var message= document.getElementById("message")
             // message
-            message.innerHTML= data.message.value
+            message.innerHTML=  data.message.value
             message.setAttribute("style", `color: ${data.message.color};` )
             //reset input 
             // element folder in list
@@ -260,4 +260,22 @@ function checkExistFolderName(event){
         message.setAttribute('color', red)
     }
    
+}
+clearInput= function(event){
+    var buttonClear = event.target
+    var foldercourseform = buttonClear.closest(".foldercourse-container-form")
+    // get component in input
+    var inputFolderImg= foldercourseform.querySelector('img[name="FolderImg"]')
+    var inputFolderName = foldercourseform.querySelector('input[name="FolderName"]')
+    var inputDescription = foldercourseform.querySelector('textarea[name="Description"]')
+    var inputPrivacry = foldercourseform.querySelector('select[name="privacry"]')
+    var inputSpanID = foldercourseform.querySelector('span[name="span-id"]')
+    var button= foldercourseform.querySelector('button[name="submit"]')
+    //inputFolderImg
+    inputFolderImg.setAttribute("src", "/img/common/add_image.png")
+    inputFolderName.setAttribute("value", "")
+    inputDescription.innerHTML= ""
+    inputPrivacry.querySelector(`option[value="public"]`).selected = true
+    inputSpanID.innerHTML = ""
+    button.innerHTML = "Create Folder"
 }
