@@ -1,26 +1,84 @@
- <link rel="stylesheet" href="/css/folder_course_list.css">
- <script src="/js/folder_course_list.js"></script>
- <p>cusID: {{CustomerID}} Course: {{FolderName}}</p>
-<div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto" >
-     {{#each Courses}}
-        <div class="col">
+<link rel="stylesheet" href="/css/folder_course_list.css">
+<script src="/js/course_list.js"></script>
+<script src="/js/changge_image_on_input.js"></script>
+<script src="/js/read_more.js"></script>
+<p style="color: red;" id="message" style="{{message.color}}"> message: {{message.value}}</p>
+<p>cusID: {{CustomerID}} Course: {{FolderName}}</p>
+{{#if isAuthenticated}}
+  {{#if isOwn}} 
+    <button onclick="deleteHanlder()">Delete</button>
+  {{/if}}
+{{/if}}
+<div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto"  id="folder-container">
+  {{#if isAuthenticated}}
+    {{#if isOwn}} 
+      <div class="col">
+        <form name="form" class="h-100 foldercourse-container-form" enctype="multipart/form-data">
           <div class="card h-100">
-            <a href="/foldercourse/{{../CustomerID}}/{{this.FolderName}}/{{this.CourseName}}">
-              <img src="/img/user/{{../CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.CourseID}}/{{this.CourseImg}}" class="card-img-top h-70" 
-                    alt="{{this.FolderName}}">
-            </a>
-            <div class="h-30 card-body">
+            <label for="fileInput"> 
+              <img name="FolderImg" src="/img/common/add_image.png" class="card-img-top h-70" 
+                    alt="alt"/>
+            </label>
+            <span class="span-id" name="span-id"></span>
+            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="changeImageOnInput(event)" name="FolderImg"  > 
+            <div class="h-30 card-body mx-auto ">
               <div class="d-flex flex-row">
-                <h5 class="card-title">{{this.CourseName}}</h5>
-                <p class="card-privacry">{{this.privacry}}</p>
+                <h5 class="card-title">
+                  <input type="text" class="" placeholder="Course Name..." name="FolderName" maxlength="50" onchange="checkExistFolderName(event)"
+                  required>
+                </h5>
+                <select class="card-privacry" name="privacry" required>
+                      <option value="public">Public</option>   
+                      <option value="private">Private</option> 
+                </select>
               </div>
-              
-              <p class="card-text">
-                <span class="truncate-text ">{{this.Description}}</span>
-                <a href="#" class="read-more ">Xem thêm</a>
+              <p class="card-text h-50">
+                <textarea class="w-100 h-100" placeholder="Enter your description" name="Description"  maxlength="500"
+                required></textarea>
               </p>
+              <div class="w-100 h-10 d-flex justify-content-around mt-2">
+                {{!-- AddNewFolderCourses(event,{{CustomerID}}) --}}
+                  <button type="submit" name="submit" id="button-submit">Create Folder</button>
+                  <button name="reset" type="reset" onclick="clearInput(event)">Clear input</button>
+              </div>
             </div>
           </div>
-        </div>
-       {{/each}}
+        </form>
       </div>
+    {{/if}}
+  {{/if}}
+  {{#each Courses}}
+    <div class="col foldercourse-container" name="{{this.CourseID}}">
+      <div class="card h-100">
+          <a href="/foldercourse/{{CustomerID}}/{{this.CourseName}}">
+            <img name="FolderImg" src="/img/user/{{../CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.CourseID}}/{{this.CourseImg}}" class="card-img-top h-70" 
+                  alt="{{this.CourseName}}"/>
+           
+          </a>
+          <span class="span-id" name="span-id">{{this.CourseID}}</span>
+          {{#if ../isAuthenticated}}
+            {{#if ../isOwn}} 
+              <i class="fa-solid fa-pen edit-button" style="color: rgb(29, 23, 23)" onclick="setToForm(event)"></i>
+            {{/if}}
+          {{/if}}
+          <div class="h-30 card-body">
+            
+            <div class="d-flex flex-row">
+              {{#if ../isAuthenticated}}
+                {{#if ../isOwn}} 
+                  <input class="card-checkbox" type="checkbox" id="choosen" name="choosen" value="{{this.FolderID}}">
+                {{/if}}
+              {{/if}}
+              <h5 class="card-title" name="FolderName">{{this.CourseName}}</h5>
+              <p class="card-privacry" name="privacry">{{this.privacry}}</p>
+             
+            </div>
+            <p class="card-text">
+              <span class="truncate-text " name="Description">{{this.Description}}</span>
+              <a href="#" class="read-more ">Xem thêm</a>
+            </p>
+          </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

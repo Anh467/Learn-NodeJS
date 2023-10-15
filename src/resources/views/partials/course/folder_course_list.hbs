@@ -1,8 +1,13 @@
  <link rel="stylesheet" href="/css/folder_course_list.css">
- 
+ <script src="/js/read_more.js"></script>
+ <script src="/js/changge_image_on_input.js"></script>
  <script src="/js/folder_course_list.js"></script>
  <p style="color: red;" id="message" style="{{message.color}}"> message: {{message.value}}</p>
-  <button onclick="deleteHanlder()">Delete</button>
+{{#if isAuthenticated}}
+  {{#if isOwn}} 
+    <button onclick="deleteHanlder()">Delete</button>
+  {{/if}}
+{{/if}}
 <div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto"  id="folder-container">
   {{#if isAuthenticated}}
     {{#if isOwn}} 

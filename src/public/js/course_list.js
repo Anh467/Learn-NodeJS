@@ -1,7 +1,4 @@
 
-
-
-
 $(document).ready(function(){
     $('form[name="form"]').on('submit', function(event){
         event.preventDefault();
@@ -132,6 +129,46 @@ clearInput= function(event){
     inputSpanID.innerHTML = ""
     button.innerHTML = "Create Folder"
 }
+function deleteHanlder(){
+    try {
+        var list = getChoosenList()
+        var id = []
+        if(list.length <= 0) throw new Error("You must choose folder that need to delete")
+        var temp = ""
+        list.forEach(element => {
+            temp += `\n + [${element.id}] ${element.name}`
+            id.push(element.id)
+        });
+        if(!confirm(`Are you sure you want to delete[${list.length}] ${temp}`)) return
+        $.ajax({
+                url: `/foldercourse`,
+                type: "DELETE",
+                processData: false,
+                contentType: 'application/json',
+                data: JSON.stringify({ id: id }),
+                success: function (data) {
+                    var message= document.getElementById("message")
+                    // message
+                    message.innerHTML= data.message.value
+                    message.setAttribute("style", `color: ${data.message.color};` )
+                    // display none all div that be deleted
+                    var folderContainer= document.querySelectorAll(".foldercourse-container")
+                    for(let i= 0; i<folderContainer.length; i++){
+                        var divContainer = folderContainer[i]
+                        var choosen= divContainer.querySelector('input[name="choosen"]')
+                        if(id.indexOf(choosen.value) !== -1)
+                            divContainer.setAttribute("style", "display: none")
+                    }
+                },
+                error: function (xhr) {
+                    throw new Error(xhr.responseText)
+                }
+            }
+        )
+    } catch (error) {
+        alert("Some error happen: "+error.message)
+    }
+}
 insertFolderCourse= function(formData){
     $.ajax({
         url: `/foldercourse`,
@@ -151,16 +188,14 @@ insertFolderCourse= function(formData){
             // element folder in list
             var folder_container = document.getElementById("folder-container")
             var folderChild= ` 
-                                <div class="col foldercourse-container" name="${data.FolderCourse.FolderID}">
+                                <div class="col">
                                     <div class="card h-100">
                                     <a href="/foldercourse/${data.FolderCourse.CustomerID}/${data.FolderCourse.FolderName}">
                                         <img src="/img/user/${data.FolderCourse.CustomerID}/FolderCourse/${data.FolderCourse.FolderID}/${data.FolderCourse.FolderImg}" class="card-img-top h-70" 
                                             alt="${data.FolderCourse.FolderName}">
                                     </a>
-                                    <span class="span-id" name="span-id">${data.FolderCourse.FolderID}</span>
                                     <div class="h-30 card-body">
                                         <div class="d-flex flex-row">
-                                        <input class="card-checkbox" type="checkbox" id="choosen" name="choosen" value="${data.FolderCourse.FolderID}">
                                         <h5 class="card-title">${data.FolderCourse.FolderName}</h5>
                                         <p class="card-privacry">${data.FolderCourse.privacry}</p>
                                         </div>
@@ -214,44 +249,4 @@ updateFolderCourse = function(formData){
             console.log("Có lỗi xảy ra");
         }
     });
-}
-function deleteHanlder(){
-    try {
-        var list = getChoosenList()
-        var id = []
-        if(list.length <= 0) throw new Error("You must choose folder that need to delete")
-        var temp = ""
-        list.forEach(element => {
-            temp += `\n + [${element.id}] ${element.name}`
-            id.push(element.id)
-        });
-        if(!confirm(`Are you sure you want to delete[${list.length}] ${temp}`)) return
-        $.ajax({
-                url: `/foldercourse`,
-                type: "DELETE",
-                processData: false,
-                contentType: 'application/json',
-                data: JSON.stringify({ id: id }),
-                success: function (data) {
-                    var message= document.getElementById("message")
-                    // message
-                    message.innerHTML= data.message.value
-                    message.setAttribute("style", `color: ${data.message.color};` )
-                    // display none all div that be deleted
-                    var folderContainer= document.querySelectorAll(".foldercourse-container")
-                    for(let i= 0; i<folderContainer.length; i++){
-                        var divContainer = folderContainer[i]
-                        var choosen= divContainer.querySelector('input[name="choosen"]')
-                        if(id.indexOf(choosen.value) !== -1)
-                            divContainer.setAttribute("style", "display: none")
-                    }
-                },
-                error: function (xhr) {
-                    throw new Error(xhr.responseText)
-                }
-            }
-        )
-    } catch (error) {
-        alert("Some error happen: "+error.message)
-    }
 }
