@@ -14,17 +14,20 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 });
 const FolderCourses= db.foldercourses
 const Courses= db.courses
+const Customers= db.customers
 class CustomerController{
     
 //FolderCourses
     //[GET]
-    index=  function(req, res) {
+    index= async function(req, res) {
         try {
             var isOwn= false
+            // setting for search
             var condition = {
                 attributes: ['FolderName', 'FolderImg', 'Description', 'privacry', 'CustomerID', 'FolderID'],
                 raw : true,
             }
+            // check person access this folder couser who own this one or not
             var CustomerID = req.params.customerid
             if(CustomerID== "" || CustomerID == undefined ) throw new Error("You must be logged in")
             var CustomerIDSession= (req.session.User== undefined || req.session.User.CustomerID== "")? "": req.session.User.CustomerID
@@ -39,18 +42,51 @@ class CustomerController{
                     privacry : "public"
                 }
             }
+            // get usesr
+            var customer
+            await Customers.findOne({
+                attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer'],
+                where:{
+                    CustomerID: CustomerID
+                }
+            }).then(data =>{
+                customer = data
+            })
+            .catch(err =>{
+                throw err
+            })
+            // get FolderCourses
             FolderCourses.findAll(condition).then(data=>{
                 if(!data) throw ("Không tìm thấy kết quả")
+                /*
+                res.status(200).send({
+                    FolderCourses: data,
+                    isOwn: isOwn,
+                    customerOwnFolderCourse: customer,
+                    message:{
+                        value: `Access ${data.length} Folder Coures`,
+                        color: "green"
+                    }    
+                })
+                */
                 res.status(200).render('course/folder_course_list',{
                     FolderCourses: data,
-                    isOwn: isOwn
+                    isOwn: isOwn,
+                    customerOwnFolderCourse: customer,
+                    message:{
+                        value: `Access ${data.length} Folder Coures`,
+                        color: "green"
+                    }    
                 })
             }).catch(err=>{
                 throw err
             })
         } catch (error) {
             res.status(500).render('course/folder_course_list',{
-                error: "Folder not found: "+error.message
+                message:{
+                    value: `ERR[${error}]Lấy danh sách thư mục không thành công!!!: ${error.message}`,
+                    color: "red"
+                } 
             })
         }
     }

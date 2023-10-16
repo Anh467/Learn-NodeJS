@@ -1,7 +1,3 @@
-
-
-
-
 $(document).ready(function(){
     $('form[name="form"]').on('submit', function(event){
         event.preventDefault();

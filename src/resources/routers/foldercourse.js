@@ -18,4 +18,7 @@ const route= express.Router()
     route.put('/',upload.single('FolderImg'),  folderCourseController.updateFolderCourse)
     //[GET]
     route.get('/element',  folderCourseController.getElementFolderCourse)
+// quiz 
+     //[GET]
+     route.get('/:customerid/:foldername/:coursename', folderCourseController.index)
 module.exports= route

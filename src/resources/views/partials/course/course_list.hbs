@@ -50,7 +50,7 @@
   {{#each Courses}}
     <div class="col foldercourse-container" name="{{this.CourseID}}">
       <div class="card h-100">
-          <a href="/foldercourse/{{CustomerID}}/{{this.CourseName}}">
+          <a href="/foldercourse/{{../CustomerID}}/{{../FolderName}}/{{this.CourseName}}">
             <img name="FolderImg" src="/img/user/{{../CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.CourseID}}/{{this.CourseImg}}" class="card-img-top h-70" 
                   alt="{{this.CourseName}}"/>
            
