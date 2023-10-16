@@ -58,21 +58,30 @@ class CustomerController{
             // get FolderCourses
             FolderCourses.findAll(condition).then(data=>{
                 if(!data) throw ("Không tìm thấy kết quả")
-                /*
+                 /*
                 res.status(200).send({
                     FolderCourses: data,
                     isOwn: isOwn,
-                    customerOwnFolderCourse: customer,
+                    Customer: customer,
                     message:{
                         value: `Access ${data.length} Folder Coures`,
                         color: "green"
                     }    
                 })
-                */
+               */
+                // attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer'],
                 res.status(200).render('course/folder_course_list',{
                     FolderCourses: data,
                     isOwn: isOwn,
-                    customerOwnFolderCourse: customer,
+                    Customer: {
+                        CustomerID: customer.CustomerID,
+                        CustomerName: customer.CustomerName,
+                        CustomerImg: customer.CustomerImg,
+                        Mail: customer.Mail,
+                        DateOfBirth: customer.DateOfBirth,
+                        Gender: customer.Gender,
+                        RoleCustomer: customer.RoleCustomer,
+                    },
                     message:{
                         value: `Access ${data.length} Folder Coures`,
                         color: "green"

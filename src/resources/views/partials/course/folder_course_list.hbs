@@ -5,21 +5,24 @@
  <script src="/js/folder_course_list.js"></script>
 
  <p style="color: {{message.color}};" id="message" style=""> message: {{message.value}}</p>
-  <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <h2>Float Right</h2>
-            <p style="shape-outside: circle(50%);">In this example, the image will float to the right in the paragraph, and the text in the paragraph will wrap around the image.</p>
-            <p><img class="rounded-circle shape-circle" src="/img/user/{{customerOwnFolderCourse.CustomerID}}/avatar/{{customerOwnFolderCourse.CustomerImg}}" 
-                alt="Pineapple" style=""> 
-                    <strong>Author:</strong>  {{customerOwnFolderCourse.CustomerName}} <br>
-                    <strong>Mail:</strong>  {{customerOwnFolderCourse.Mail}}<br>
-                    <strong>Date Of Birth:</strong> {{customerOwnFolderCourse.DateOfBirth}}<br>
-                    <strong>Introduce:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante ligula, facilisis sed ornare eu, lobortis in odio. Praesent convallis urna a lacus interdum ut hendrerit risus congue. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta. Cras ac leo purus. Mauris quis diam velit
-            </p>
-        </div>
-        <div class="col-md-1"></div>
-    </div>
+<div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
+          <h2>Float Right</h2>
+          <p style="shape-outside: circle(50%);">In this example, the image will float to the right in the paragraph, and the text in the paragraph will wrap around the image.</p>
+          <p> <a href="http://localhost:3000/customer">
+                <img class="rounded-circle shape-circle" 
+                  src="/img/user/{{Customer.CustomerID}}/avatar/{{Customer.CustomerImg}}" 
+                  alt="Pineapple" style=""/> 
+              </a>
+                  <strong>Author:</strong>  {{Customer.CustomerName}} <br>
+                  <strong>Mail:</strong>  {{Customer.Mail}}<br>
+                  <strong>Date Of Birth:</strong> {{Customer.DateOfBirth}}<br>
+                  <strong>Introduce:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante ligula, facilisis sed ornare eu, lobortis in odio. Praesent convallis urna a lacus interdum ut hendrerit risus congue. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta. Cras ac leo purus. Mauris quis diam velit
+          </p>
+      </div>
+      <div class="col-md-1"></div>
+</div>
 {{#if isAuthenticated}}
   {{#if isOwn}} 
     <button onclick="deleteHanlder()">Delete</button>
@@ -66,7 +69,7 @@
   {{#each FolderCourses}}
     <div class="col foldercourse-container" name="{{this.FolderID}}">
       <div class="card h-100">
-          <a href="/foldercourse/{{CustomerID}}/{{this.FolderName}}">
+          <a href="/foldercourse/{{this.CustomerID}}/{{this.FolderName}}">
             <img name="FolderImg" src="/img/user/{{this.CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.FolderImg}}" class="card-img-top h-70" 
                   alt="{{this.FolderName}}"/>
            
