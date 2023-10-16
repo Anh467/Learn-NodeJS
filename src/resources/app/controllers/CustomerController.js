@@ -108,7 +108,7 @@ class CustomerController{
             var customerIDSession = user ? user.CustomerID : undefined
             // get customer information
             var customer = await Customer.findOne({
-                attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer'],
+                attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer', 'Intro'],
                 where:{
                     CustomerID: customerID
                 }
@@ -124,6 +124,7 @@ class CustomerController{
                     CustomerName: customer.CustomerName,
                     Mail: customer.Mail,
                     DateOfBirth: customer.DateOfBirth,
+                    Intro: customer.Intro
                 }
             })
         } catch (error) {

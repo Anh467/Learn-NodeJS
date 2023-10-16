@@ -38,6 +38,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
       defaultValue: Sequelize.literal("GETDATE()"), // Sử dụng hàm GETDATE() của SQL Server
     },
+    Intro: {
+      type: Sequelize.STRING(1000),
+    },
   }, {
     tableName: 'CUSTOMER', 
   });
