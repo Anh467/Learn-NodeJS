@@ -1,4 +1,6 @@
 const db= require('../models')
+const Customer= db.customers
+//
 const ROLE_STUDENT= "STUDENT"
 //for add image
 const path= require('path')
@@ -8,7 +10,7 @@ const Resize = require('../../common/resize');
 const PROJECT_PATH= require('../../../public/getProjectPath')
 //
 const ROLE_USER= "USER"
-const Customer= db.customers
+
 class AuthenController{
 // Common
     //[GET]

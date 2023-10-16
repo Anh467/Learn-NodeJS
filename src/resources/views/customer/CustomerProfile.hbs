@@ -1,0 +1,24 @@
+    <link rel="stylesheet" href="../css/CustomerProfile.css">
+    <p style="color: {{message.color}};" id="message" style=""> message: {{message.value}}</p>
+    <div class="row">
+        <div class="col-md-1 my-auto"></div>
+        <div class="col-md-3 my-auto">
+            <p>
+                <img class="customer-avatar rounded-circle" src="/img/user/{{customer.CustomerID}}/avatar/{{customer.CustomerImg}}" 
+                alt="Pineapple"> 
+                
+            </p>
+            <div>
+                <button class="button-follow mx-auto">Follow <i class="fa-solid fa-plus"></i></button>
+            </div>
+            <div>
+                <button class="button-follow mx-auto">UnFollow <i class="fa-solid fa-minus"></i></i></button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <strong>Author:</strong>  {{customer.CustomerName}} <br>
+            <strong>Mail:</strong>  {{customer.Mail}}<br>
+            <strong>Date Of Birth:</strong>  {{customer.DateOfBirth}}<br>
+            <strong>Introduce:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Mauris ante ligula, facilisis sed ornare eu, lobortis in odio. Praesent convallis urna a lacus interdum ut hendrerit risus congue. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta. Cras ac leo purus. Mauris quis diam velit
+        </div>
+  </div>

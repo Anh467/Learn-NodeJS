@@ -4,11 +4,12 @@ const path= require('path')
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid')
 const Resize = require('../../common/resize');
-const PROJECT_PATH= require('../../../public/getProjectPath')
+const PROJECT_PATH= require('../../../public/getProjectPath');
+const customer = require('../models/customer');
 //
 const Customer= db.customers
 class CustomerController{
-    index=  async function(req, res) {
+    index=  async (req, res) => {
         // let limit  = req.params.limit
         // let offset  = req.params.offset
         try {
@@ -43,7 +44,7 @@ class CustomerController{
         //res.render('news')
     }
 
-    update = async function (req, res) {
+    update = async (req, res) => {
         const{ CustomerName, Mail, DateOfBirth, Gender, CustomerImg} = req.body
         try {
             var user = req.session.User 
@@ -95,6 +96,43 @@ class CustomerController{
                     color: "red"
                 } 
             });
+        }
+    }
+
+    userProfile = async (req, res) => {
+        try {
+            // get param id user
+            var customerID = req.params.customerid
+            // get session id user
+            var user = req.session.user
+            var customerIDSession = user ? user.CustomerID : undefined
+            // get customer information
+            var customer = await Customer.findOne({
+                attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer'],
+                where:{
+                    CustomerID: customerID
+                }
+            })
+            // check existing of user
+            if(!customer)  throw new Error("User not found")
+            // res
+            res.status(200).render('customer/CustomerProfile',{
+                isOwn: (customerID == customerIDSession),
+                customer: {
+                    CustomerID: customer.CustomerID,
+                    CustomerImg: customer.CustomerImg,
+                    CustomerName: customer.CustomerName,
+                    Mail: customer.Mail,
+                    DateOfBirth: customer.DateOfBirth,
+                }
+            })
+        } catch (error) {
+            res.status(500).render('customer/CustomerProfile',{
+                message:{
+                    value: `ERR: Access user profile fail!!!: ${error.message}`,
+                    color: "red"
+                } 
+            })
         }
     }
 }
