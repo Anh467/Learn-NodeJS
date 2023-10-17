@@ -35,6 +35,7 @@ module.exports= (sequelize, Sequelize) => {
             defaultValue: Sequelize.literal("GETDATE()"), 
         },
     }, {
+        hasTrigger: true,
         tableName:'Course',
         indexes: [
             {

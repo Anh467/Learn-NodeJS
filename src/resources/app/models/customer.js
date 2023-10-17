@@ -42,6 +42,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING(1000),
     },
   }, {
+    hasTrigger: true,
     tableName: 'CUSTOMER', 
   });
 

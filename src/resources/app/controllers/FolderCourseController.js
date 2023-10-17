@@ -43,18 +43,13 @@ class CustomerController{
                 }
             }
             // get usesr
-            var customer
-            await Customers.findOne({
-                attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer'],
+            var customer = await Customers.findOne({
+                attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer', 'Intro'],
                 where:{
                     CustomerID: CustomerID
                 }
-            }).then(data =>{
-                customer = data
             })
-            .catch(err =>{
-                throw err
-            })
+            if(!customer) throw new Error("User not found");
             // get FolderCourses
             FolderCourses.findAll(condition).then(data=>{
                 if(!data) throw ("Không tìm thấy kết quả")
@@ -81,6 +76,7 @@ class CustomerController{
                         DateOfBirth: customer.DateOfBirth,
                         Gender: customer.Gender,
                         RoleCustomer: customer.RoleCustomer,
+                        Intro: customer.Intro
                     },
                     message:{
                         value: `Access ${data.length} Folder Coures`,
@@ -91,7 +87,7 @@ class CustomerController{
                 throw err
             })
         } catch (error) {
-            res.status(500).render('course/folder_course_list',{
+            res.status(500).render('errorPage',{
                 message:{
                     value: `ERR[${error}]Lấy danh sách thư mục không thành công!!!: ${error.message}`,
                     color: "red"

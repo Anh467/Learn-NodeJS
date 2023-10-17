@@ -1,24 +1,66 @@
-    <link rel="stylesheet" href="../css/CustomerProfile.css">
-    <p style="color: {{message.color}};" id="message" style=""> message: {{message.value}}</p>
-    <div class="row">
-        <div class="col-md-1 my-auto"></div>
-        <div class="col-md-3 my-auto">
-            <p>
-                <img class="customer-avatar rounded-circle" src="/img/user/{{customer.CustomerID}}/avatar/{{customer.CustomerImg}}" 
-                alt="Pineapple"> 
-                
+<link rel="stylesheet" href="../css/CustomerProfile.css">
+<link rel="stylesheet" href="/css/folder_course_list.css">
+<link rel="stylesheet" href="/css/common.css">
+<script src="/js/read_more.js"></script>
+<script src="/js/changge_image_on_input.js"></script>
+<script src="/js/folder_course_list.js"></script>
+<p style="color: {{message.color}};" id="message" style=""> message: {{message.value}}</p>
+<div class="row">
+<div class="col-md-1 my-auto"></div>
+<div class="col-md-3 my-auto">
+    <p>
+        <img class="customer-avatar rounded-circle" src="/img/user/{{customer.CustomerID}}/avatar/{{customer.CustomerImg}}" 
+        alt="Pineapple"> 
+        
+    </p>
+    <div>
+        <button class="button-follow mx-auto">Follow <i class="fa-solid fa-plus"></i></button>
+    </div>
+    <div>
+        <button class="button-follow mx-auto">UnFollow <i class="fa-solid fa-minus"></i></i></button>
+    </div>
+</div>
+<div class="col-md-6">
+    <strong>Author:</strong>  {{customer.CustomerName}} <br>
+    <strong>Mail:</strong>  {{customer.Mail}}<br>
+    <strong>Date Of Birth:</strong>  {{customer.DateOfBirth}}<br>
+    <strong>Introduce:</strong> {{customer.Intro}}
+</div>
+</div>
+<p>Most popular:</p>
+<div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto"  id="folder-container">
+  {{#each FolderCourses}}
+    <div class="col foldercourse-container" name="{{this.FolderID}}">
+      <div class="card h-100">
+          <a href="/foldercourse/{{this.CustomerID}}/{{this.FolderName}}">
+            <img name="FolderImg" src="/img/user/{{this.CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.FolderImg}}" class="card-img-top h-70" 
+                  alt="{{this.FolderName}}"/>
+           
+          </a>
+          <span class="span-id" name="span-id">{{this.FolderID}}</span>
+          {{#if ../isAuthenticated}}
+            {{#if ../isOwn}} 
+              <i class="fa-solid fa-pen edit-button" style="color: rgb(29, 23, 23)" onclick="setToForm(event)"></i>
+            {{/if}}
+          {{/if}}
+          <div class="h-30 card-body">
+            
+            <div class="d-flex flex-row">
+              {{#if ../isAuthenticated}}
+                {{#if ../isOwn}} 
+                  <input class="card-checkbox" type="checkbox" id="choosen" name="choosen" value="{{this.FolderID}}">
+                {{/if}}
+              {{/if}}
+              <h5 class="card-title" name="FolderName">{{this.FolderName}}</h5>
+              <p class="card-privacry" name="privacry">{{this.privacry}}</p>
+             
+            </div>
+            <p class="card-text">
+              <span class="truncate-text " name="Description">{{this.Description}}</span>
+              <a href="#" class="read-more ">Xem thêm</a>
             </p>
-            <div>
-                <button class="button-follow mx-auto">Follow <i class="fa-solid fa-plus"></i></button>
-            </div>
-            <div>
-                <button class="button-follow mx-auto">UnFollow <i class="fa-solid fa-minus"></i></i></button>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <strong>Author:</strong>  {{customer.CustomerName}} <br>
-            <strong>Mail:</strong>  {{customer.Mail}}<br>
-            <strong>Date Of Birth:</strong>  {{customer.DateOfBirth}}<br>
-            <strong>Introduce:</strong> {{customer.Intro}}
-        </div>
-  </div>
+          </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

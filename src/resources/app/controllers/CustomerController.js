@@ -1,4 +1,4 @@
-const db= require('../models')
+
 //for add image
 const path= require('path')
 const fs = require('fs');
@@ -7,7 +7,9 @@ const Resize = require('../../common/resize');
 const PROJECT_PATH= require('../../../public/getProjectPath');
 const customer = require('../models/customer');
 //
+const db= require('../models')
 const Customer= db.customers
+const FolderCourses= db.foldercourses
 class CustomerController{
     index=  async (req, res) => {
         // let limit  = req.params.limit
@@ -33,10 +35,12 @@ class CustomerController{
                 throw new Error(err)
             })
         } catch (error) {
-            res.status(500).render( 'home', {
+            res.status(500).render( 'errorPage', {
                 message:{
                     value: `ERR[${error}]Đã có lỗi xảy ra: ${error.message}`,
-                    color: "red"
+                    color: "red",
+                    href: "/",
+                    hrefText: "Back to home"
                 } 
             });
         }
@@ -111,27 +115,46 @@ class CustomerController{
                 attributes: ['CustomerID', 'CustomerName', 'CustomerImg', 'Mail', 'DateOfBirth', 'Gender', 'RoleCustomer', 'Intro'],
                 where:{
                     CustomerID: customerID
-                }
+                },
+                raw: true
             })
             // check existing of user
             if(!customer)  throw new Error("User not found")
-            // res
-            res.status(200).render('customer/CustomerProfile',{
+            // get most 3 foldercourse of this customer
+            const folderCourses = await FolderCourses.findAll({
+                limit: 3,
+                offset: 0,
+                where: {
+                    CustomerID: customerID,
+                    privacry: 'public'
+                },
+                raw: true
+            });
+            
+            // Res
+            res.status(200).render('customer/CustomerProfile', {
                 isOwn: (customerID == customerIDSession),
-                customer: {
-                    CustomerID: customer.CustomerID,
-                    CustomerImg: customer.CustomerImg,
-                    CustomerName: customer.CustomerName,
-                    Mail: customer.Mail,
-                    DateOfBirth: customer.DateOfBirth,
-                    Intro: customer.Intro
-                }
-            })
+                customer: customer,
+                FolderCourses: folderCourses
+            });
+            //test
+            // res.status(200).send({
+            //     isOwn: (customerID == customerIDSession),
+            //     customer: {
+            //         CustomerID: customer.CustomerID,
+            //         CustomerImg: customer.CustomerImg,
+            //         CustomerName: customer.CustomerName,
+            //         Mail: customer.Mail,
+            //         DateOfBirth: customer.DateOfBirth,
+            //         Intro: customer.Intro
+            //     },
+            //     FolderCourses: folderCourses
+            // });
         } catch (error) {
             res.status(500).render('customer/CustomerProfile',{
                 message:{
                     value: `ERR: Access user profile fail!!!: ${error.message}`,
-                    color: "red"
+                    color: "red",
                 } 
             })
         }
