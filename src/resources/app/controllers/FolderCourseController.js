@@ -15,7 +15,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const FolderCourses= db.foldercourses
 const Courses= db.courses
 const Customers= db.customers
-class CustomerController{
+class FolderCourseController{
     
 //FolderCourses
     //[GET]
@@ -283,54 +283,7 @@ class CustomerController{
             
         }
     }
-
-//Courses
-    //[GET]
-    course= function(req, res) {
-        var isOwn= false
-        const customerid= req.params.customerid
-        const foldername= req.params.foldername
-        try{
-            var CustomerIDSession = req.session.User? req.session.User.CustomerID : undefined
-            var condition = {
-                raw : true,
-            }
-            // check this user is own this course 
-            if(CustomerIDSession == customerid){
-                isOwn= true
-                condition.where= {
-                    FolderID: {
-                        [Op.eq]: sequelize.literal(`(SELECT TOP (1) FolderID FROM dbo.FolderCourse WHERE FolderName = N'${foldername}' and CustomerID= '${customerid}') `),
-                      },
-                }
-            }else{
-                condition.where= {
-                    FolderID: {
-                        [Op.eq]: sequelize.literal(`(SELECT TOP (1) FolderID FROM dbo.FolderCourse WHERE FolderName = N'${foldername}' and CustomerID= '${customerid}') `),
-                      },
-                    privacry : "public"
-                }
-            }
-            Courses.findAll(condition).then(data =>{
-                res.status(200).render('course/course_list',{
-                    Courses: data,
-                    CustomerID:customerid,
-                    FolderName: foldername,
-                    isOwn: isOwn
-                })
-            }).catch(err=>{
-                throw err
-            })
-        }catch(error){
-            res.status(500).render('course/course_list',{
-                message:{
-                    value: `ERR[${error}]Tạo mới thư mục khóa học không thành công!!!: ${error.message}`,
-                    color: "red"
-                } 
-            })
-        }
-    }
-
+ 
 }
 
-module.exports= new CustomerController()
+module.exports= new FolderCourseController() 

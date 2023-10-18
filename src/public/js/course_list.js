@@ -10,7 +10,7 @@ $(document).ready(function(){
         var Description= $('textarea[name="Description"]')
         var Button= document.getElementById('button-submit')
         //send by form data 
-        var formData= new FormData();
+        var formData= new FormData(); 
         var text=  spanID.html()
         formData.append('FolderImg', FolderImg[0].files[0])
         formData.append('FolderName', FolderName.val())
@@ -72,7 +72,7 @@ function setToForm(event){
     //alert("hello how r u?" + folderImg.src)
 }
 
-function getChoosenList(){
+function getChoosenList(){ 
     var list = []
     var folderContainer= document.querySelectorAll(".foldercourse-container")
     for(let i= 0; i<folderContainer.length; i++){
@@ -133,7 +133,7 @@ function deleteHanlder(){
     try {
         var list = getChoosenList()
         var id = []
-        if(list.length <= 0) throw new Error("You must choose folder that need to delete")
+        if(list.length <= 0) throw new Error("You must choose course that need to delete")
         var temp = ""
         list.forEach(element => {
             temp += `\n + [${element.id}] ${element.name}`
@@ -141,7 +141,7 @@ function deleteHanlder(){
         });
         if(!confirm(`Are you sure you want to delete[${list.length}] ${temp}`)) return
         $.ajax({
-                url: `/foldercourse`,
+                url: `/course`,
                 type: "DELETE",
                 processData: false,
                 contentType: 'application/json',

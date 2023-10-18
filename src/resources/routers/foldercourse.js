@@ -2,13 +2,7 @@ const folderCourseController= require('../app/controllers/FolderCourseController
 const upload= require('../common/uploadMiddleware');
 const express= require('express');
 const route= express.Router()
-// Courses
-    //[GET]
-    route.get('/:customerid/:foldername', folderCourseController.course)
-    //[POST]
-    route.post('/:customerid/:foldername', folderCourseController.course)
-    //[PUT]
-    route.put('/:customerid/:foldername', folderCourseController.course)
+
 // FolderCourses
     //[GET]
     route.get('/:customerid', folderCourseController.index)
