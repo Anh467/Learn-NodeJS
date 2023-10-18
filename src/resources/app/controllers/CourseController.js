@@ -24,17 +24,8 @@ class CourseController{
         var isOwn= false
         // get param 
         const foldername= req.params.foldername
-        // get foldercourse 
-        var customerOwnCourse =  await FolderCourses.findOne({
-            attributes: ['CustomerID'],
-            where :{        
-                FolderID: {
-                    [Op.eq]: sequelize.literal(`(SELECT TOP (1) FolderID FROM dbo.FolderCourse WHERE FolderName = N'${foldername}')`),
-                }
-            }
-        })
         // get user's customerid who own this one 
-        const customerid=  customerOwnCourse.CustomerID
+        const customerid=  req.params.customerid
         try{
             var CustomerIDSession = req.session.User? req.session.User.CustomerID : undefined
             var condition = {
@@ -61,7 +52,8 @@ class CourseController{
                     Courses: data,
                     CustomerID: customerid,
                     FolderName: foldername,
-                    isOwn: isOwn
+                    isOwn: isOwn,
+                    title: "Course"
                 })
             }).catch(err=>{
                 throw err
@@ -71,7 +63,8 @@ class CourseController{
                 message:{
                     value: `ERR[${error}]Tạo mới thư mục khóa học không thành công!!!: ${error.message}`,
                     color: "red"
-                } 
+                },
+                title: "Course"
             })
         }
     }

@@ -4,7 +4,7 @@ const express= require('express');
 const route= express.Router()
 // Courses
     //[GET]
-    route.get('/:foldername', courseController.course)
+    route.get('/:customerid/:foldername', courseController.course)
     //[DELETE]
     route.delete('/', courseController.deleteCourse)
     //[POST]

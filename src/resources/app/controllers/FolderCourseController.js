@@ -81,7 +81,8 @@ class FolderCourseController{
                     message:{
                         value: `Access ${data.length} Folder Coures`,
                         color: "green"
-                    }    
+                    }, 
+                    title: "Folder Course"
                 })
             }).catch(err=>{
                 throw err
@@ -160,14 +161,16 @@ class FolderCourseController{
                 message:{
                     value: `Tạo thành công thư mục ${folderImg}`,
                     color: "green"
-                }
+                }, 
+                title: "Folder Course"
             })
         } catch (error) {
             res.json({
                 message:{
                     value: `ERR[${error}]Tạo mới thư mục khóa học không thành công!!!: ${error.message}`,
                     color: "red"
-                } 
+                }, 
+                title: "Folder Course"
             })
         }
     }
@@ -221,7 +224,8 @@ class FolderCourseController{
                         color: "green"
                     },
                     FolderCourse: data,
-                    CustomerID: user.CustomerID
+                    CustomerID: user.CustomerID, 
+                    title: "Folder Course"
                 })
             }).catch(err =>{
                 throw new err.message
@@ -231,7 +235,8 @@ class FolderCourseController{
                 message:{
                     value: `ERR[${error}]Update folder course fail!!!: ${error.message}`,
                     color: "red"
-                } 
+                }, 
+                title: "Folder Course" 
             })
         }
     }
@@ -253,7 +258,8 @@ class FolderCourseController{
                     message:{
                         value: `Đã xóa thành công ${data} FolderCourses `,
                         color: "Green"
-                    } 
+                    }, 
+                    title: "Folder Course" 
                 })  
             }).catch(err =>{
                 throw new Error(err.message)
@@ -265,7 +271,8 @@ class FolderCourseController{
                 message:{
                     value: `ERR[${error}]Đã có lỗi xảy ra khi cố gắng xóa thư mục!!!: ${error.message}`,
                     color: "red"
-                } 
+                }, 
+                title: "Folder Course" 
             })   
         }
     }
