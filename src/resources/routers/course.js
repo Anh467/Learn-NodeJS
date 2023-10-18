@@ -6,9 +6,9 @@ const route= express.Router()
     //[GET]
     route.get('/:customerid/:foldername', courseController.course)
     //[DELETE]
-    route.delete('/', courseController.deleteCourse)
+    route.delete('/:customerid/:foldername', courseController.deleteCourse)
     //[POST]
-    route.post('/', courseController.newCourse)
+    route.post('/:customerid/:foldername',upload.single('FolderImg') , courseController.newCourse)
     //[PUT]
-    route.put('/:coursename', courseController.updateCourse)
+    route.put('/:coursename',upload.single('FolderImg') , courseController.updateCourse)
 module.exports= route

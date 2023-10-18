@@ -31,19 +31,22 @@ class CourseController{
             var condition = {
                 raw : true,
             }
+            var folderCourse = await FolderCourses.findOne({
+                attributes: ['FolderID'],
+                where:{
+                    FolderName: foldername,
+                    CustomerID : customerid
+                }
+            })
             // check this user is own this course 
             if(CustomerIDSession == customerid){
                 isOwn= true
                 condition.where= {
-                    FolderID: {
-                        [Op.eq]: sequelize.literal(`(SELECT TOP (1) FolderID FROM dbo.FolderCourse WHERE FolderName = N'${foldername}' and CustomerID= '${customerid}') `),
-                      },
+                    FolderID: folderCourse.FolderID
                 }
             }else{
                 condition.where= {
-                    FolderID: {
-                        [Op.eq]: sequelize.literal(`(SELECT TOP (1) FolderID FROM dbo.FolderCourse WHERE FolderName = N'${foldername}' and CustomerID= '${customerid}') `),
-                      },
+                    FolderID: folderCourse.FolderID,
                     privacry : "public"
                 }
             }
@@ -52,6 +55,7 @@ class CourseController{
                     Courses: data,
                     CustomerID: customerid,
                     FolderName: foldername,
+                    FolderID: folderCourse.FolderID,
                     isOwn: isOwn,
                     title: "Course"
                 })
@@ -71,11 +75,78 @@ class CourseController{
     //[POST]
     newCourse = async function(req, res){
         try{
+            // get param
+            const customerid= req.params.customerid
+            const foldername= req.params.foldername
+            // get req body 
+            const {FolderID, FolderName, privacry, Description}= req.body
+            //check login 
+            if(!req.session.User) throw new Error("You must be logged in")
+            const CustomerID= req.session.User.CustomerID
+            // check permission 
+            if (customerid != CustomerID) throw new Error("You don't have permission to create")
+            var CourseID 
+            var courseImg= `${uuidv4()}.png`
+            var courses= Courses.build({
+                FolderID: FolderID,
+                CourseImg: courseImg,
+                CourseName: FolderName,
+                Description: Description,
+                privacry: privacry
+            }) 
+            await Courses.findOne({
+                where:{
+                    CourseName: FolderName,
+                    FolderID: FolderID
+                }
+            }).then(data => {
+                if( data ) 
+                    throw new Error(`Khóa học với tên là ${FolderName} đã tồn tại`)
+            })
 
+            await courses.save({
+                raw: true
+            }).then(data => {
+                            if(data)
+                                CourseID= data.CourseID
+                            else throw new Error(`Đã có lỗi xảy ra, tạo thư mục khóa học mới không thành công`)
+                        })
+                        .catch(err =>{
+                            throw new Error(err.message)
+                        })
+            //set vị trí lưu ảnh 
+            var path_prj= path.join(PROJECT_PATH(), "img", "user", CustomerID,"FolderCourse",''+FolderID, ''+CourseID)
+            // tạo folder nếu nó k tồn tại 
+            if (!fs.existsSync(path_prj)) 
+                try {
+                    fs.mkdirSync(path_prj, { recursive: true });
+                } catch (error) {
+                    throw new ('Lỗi khi tạo thư mục:', error);
+                }
+
+            //first way to upload file 
+            //resize ảnh lưu ảnh 
+            if (req.file) {
+                const fileUpload = new Resize(path_prj);
+                const filename = await fileUpload.save(req.file.buffer, courseImg);
+            }
+            
+            // chuyển hướng người dùng về trang chủ  
+            res.json({
+                Course:courses,
+                message:{
+                    value: `Tạo thành công thư mục ${FolderName}`,
+                    color: "green"
+                }, 
+                title: "Folder Course",
+                CustomerID: CustomerID,
+                FolderID: FolderID, 
+                FolderName: foldername
+            })
         }catch(err){
             res.json({
                 message:{
-                    value: `ERR There are some error happen!!!: ${error.message}`,
+                    value: `ERR There are some error happen!!!: ${err.message}`,
                     color: "red"
                 } 
             })

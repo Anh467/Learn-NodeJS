@@ -2,8 +2,9 @@
 $(document).ready(function(){
     $('form[name="form"]').on('submit', function(event){
         event.preventDefault();
+
         //get tag 
-        var spanID = $('span[name="span-id"]')
+        var FolderID = document.getElementById('FolderID').innerHTML
         var FolderImg = $('input[name="FolderImg"]')
         var FolderName = $('input[name="FolderName"]')
         var privacry = $('select[name="privacry"]')
@@ -11,12 +12,11 @@ $(document).ready(function(){
         var Button= document.getElementById('button-submit')
         //send by form data 
         var formData= new FormData(); 
-        var text=  spanID.html()
         formData.append('FolderImg', FolderImg[0].files[0])
         formData.append('FolderName', FolderName.val())
         formData.append('privacry', privacry.val())
         formData.append('Description', Description.val())
-        formData.append('FolderID', spanID.html())
+        formData.append('FolderID', FolderID)
         //send ajax req 
         var option = Button.innerHTML
         if(option == "Create Folder")
@@ -131,6 +131,8 @@ clearInput= function(event){
 }
 function deleteHanlder(){
     try {
+        var folderName = document.getElementById("FolderName").innerHTML
+        var customerID = document.getElementById("CustomerID").innerHTML
         var list = getChoosenList()
         var id = []
         if(list.length <= 0) throw new Error("You must choose course that need to delete")
@@ -141,7 +143,7 @@ function deleteHanlder(){
         });
         if(!confirm(`Are you sure you want to delete[${list.length}] ${temp}`)) return
         $.ajax({
-                url: `/course`,
+                url: `/course/${customerID}/${folderName}`,
                 type: "DELETE",
                 processData: false,
                 contentType: 'application/json',
@@ -170,8 +172,11 @@ function deleteHanlder(){
     }
 }
 insertFolderCourse= function(formData){
+    // get infor
+    var folderName = document.getElementById("FolderName").innerHTML
+    var customerID = document.getElementById("CustomerID").innerHTML
     $.ajax({
-        url: `/foldercourse`,
+        url: `/course/${customerID}/${folderName}`,
         type: "POST",
         processData: false,
         contentType: false,
@@ -187,24 +192,31 @@ insertFolderCourse= function(formData){
             //reset input 
             // element folder in list
             var folder_container = document.getElementById("folder-container")
+            var course = data.Course
             var folderChild= ` 
-                                <div class="col">
+                                    <div class="col foldercourse-container" name="${course.CourseID}">
+                                    <p name="FolderID" class="d-none">${data.FolderID} </p>
                                     <div class="card h-100">
-                                    <a href="/foldercourse/${data.FolderCourse.CustomerID}/${data.FolderCourse.FolderName}">
-                                        <img src="/img/user/${data.FolderCourse.CustomerID}/FolderCourse/${data.FolderCourse.FolderID}/${data.FolderCourse.FolderImg}" class="card-img-top h-70" 
-                                            alt="${data.FolderCourse.FolderName}">
-                                    </a>
-                                    <div class="h-30 card-body">
-                                        <div class="d-flex flex-row">
-                                        <h5 class="card-title">${data.FolderCourse.FolderName}</h5>
-                                        <p class="card-privacry">${data.FolderCourse.privacry}</p>
-                                        </div>
+                                        <a href="/foldercourse/${data.CustomerID}/${data.FolderName}/${course.CourseName}">
+                                        <img name="FolderImg" src="/img/user/${data.CustomerID}/FolderCourse/${data.FolderID}/${course.CourseID}/${course.CourseImg}" class="card-img-top h-70" 
+                                                alt="${course.CourseName}"/>
                                         
+                                        </a>
+                                        <span class="span-id" name="span-id">${course.CourseID}</span>
+                                        <i class="fa-solid fa-pen edit-button" style="color: rgb(29, 23, 23)" onclick="setToForm(event)"></i>
+                                        <div class="h-30 card-body">
+                                        
+                                        <div class="d-flex flex-row">
+                                            <input class="card-checkbox" type="checkbox" id="choosen" name="choosen" value="${course.CourseID}">
+                                            <h5 class="card-title" name="FolderName">${course.CourseName}</h5>
+                                            <p class="card-privacry" name="privacry">${course.privacry}</p>
+                                        
+                                        </div>
                                         <p class="card-text">
-                                        <span class="truncate-text ">${data.FolderCourse.Description}</span>
-                                        <a href="#" class="read-more ">Xem thêm</a>
+                                            <span class="truncate-text " name="Description">${course.Description}</span>
+                                            <a href="#" class="read-more ">Xem thêm</a>
                                         </p>
-                                    </div>
+                                        </div>
                                     </div>
                                 </div>
                             `
@@ -212,7 +224,7 @@ insertFolderCourse= function(formData){
             
         },
         error: function (xhr) {
-            console.log("Có lỗi xảy ra");
+            alert("error")
         }
     });
 }
