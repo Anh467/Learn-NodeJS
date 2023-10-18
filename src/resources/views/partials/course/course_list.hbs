@@ -2,12 +2,14 @@
 <script src="/js/course_list.js"></script>
 <script src="/js/changge_image_on_input.js"></script>
 <script src="/js/read_more.js"></script>
+<h3>Folder course: {{FolderName}}</h3>
 <p style="color: red;" id="message" style="{{message.color}}"> message: {{message.value}}</p>
 <p>cusID: {{CustomerID}} Course: {{FolderName}}</p>
+
 {{#if isAuthenticated}}
   {{#if isOwn}} 
     <button onclick="deleteHanlder()">Delete</button>
-  {{/if}}
+  {{/if}} 
 {{/if}}
 <div class="container row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-evenly mx-auto"  id="folder-container">
   {{#if isAuthenticated}}
@@ -49,6 +51,7 @@
   {{/if}}
   {{#each Courses}}
     <div class="col foldercourse-container" name="{{this.CourseID}}">
+      <p name="FolderID" class="d-none">{{this.FolderID}} </p>
       <div class="card h-100">
           <a href="/foldercourse/{{../CustomerID}}/{{../FolderName}}/{{this.CourseName}}">
             <img name="FolderImg" src="/img/user/{{../CustomerID}}/FolderCourse/{{this.FolderID}}/{{this.CourseID}}/{{this.CourseImg}}" class="card-img-top h-70" 
