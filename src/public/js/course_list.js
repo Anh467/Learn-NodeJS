@@ -1,10 +1,15 @@
-
+function displayMessage(message) {
+    var messageContainer= document.getElementById('message')
+    messageContainer.innerHTML = 'message: '+ message.value
+    messageContainer.style.color = message.color; 
+  }
 $(document).ready(function(){
     $('form[name="form"]').on('submit', function(event){
         event.preventDefault();
 
         //get tag 
         var FolderID = document.getElementById('FolderID').innerHTML
+        var CourseID = $('span[name="span-id"]')
         var FolderImg = $('input[name="FolderImg"]')
         var FolderName = $('input[name="FolderName"]')
         var privacry = $('select[name="privacry"]')
@@ -13,6 +18,7 @@ $(document).ready(function(){
         //send by form data 
         var formData= new FormData(); 
         formData.append('FolderImg', FolderImg[0].files[0])
+        formData.append('CourseID', CourseID.html())
         formData.append('FolderName', FolderName.val())
         formData.append('privacry', privacry.val())
         formData.append('Description', Description.val())
@@ -151,8 +157,8 @@ function deleteHanlder(){
                 success: function (data) {
                     var message= document.getElementById("message")
                     // message
-                    message.innerHTML= data.message.value
-                    message.setAttribute("style", `color: ${data.message.color};` )
+                     // message
+                    displayMessage(data.message)
                     // display none all div that be deleted
                     var folderContainer= document.querySelectorAll(".foldercourse-container")
                     for(let i= 0; i<folderContainer.length; i++){
@@ -168,7 +174,11 @@ function deleteHanlder(){
             }
         )
     } catch (error) {
-        alert("Some error happen: "+error.message)
+        // message
+        displayMessage({
+            value: error.message,
+            color: 'red'
+        })
     }
 }
 insertFolderCourse= function(formData){
@@ -187,8 +197,8 @@ insertFolderCourse= function(formData){
         success: function (data) {
             var message= document.getElementById("message")
             // message
-            message.innerHTML=  data.message.value
-            message.setAttribute("style", `color: ${data.message.color};` )
+            // message
+            displayMessage(data.message)
             //reset input 
             // element folder in list
             var folder_container = document.getElementById("folder-container")
@@ -229,8 +239,11 @@ insertFolderCourse= function(formData){
     });
 }
 updateFolderCourse = function(formData){
+    // get infor
+    var folderName = document.getElementById("FolderName").innerHTML
+    var customerID = document.getElementById("CustomerID").innerHTML
     $.ajax({
-        url: `/foldercourse`,
+        url: `/course/${customerID}/${folderName}`,
         type: "PUT",
         processData: false,
         contentType: false,
@@ -243,19 +256,20 @@ updateFolderCourse = function(formData){
             //click event
             //clear.click()
             //get container element
-            var FolderCourse = data.FolderCourse
-            var foldercourse = document.querySelector(`div[name="${FolderCourse.FolderID}"]`)
+            var course = data.Course
+            var Courses = document.querySelector(`div[name="${course.CourseID}"]`)
             // get component in foldercourse-container 
-            var folderImg= foldercourse.querySelector('img[name="FolderImg"]')
-            var folderName = foldercourse.querySelector('h5[name="FolderName"]')
-            var description = foldercourse.querySelector('span[name="Description"]')
-            var privacry = foldercourse.querySelector('p[name="privacry"]')
+            var folderImg= Courses.querySelector('img[name="FolderImg"]')
+            var folderName = Courses.querySelector('h5[name="FolderName"]')
+            var description = Courses.querySelector('span[name="Description"]')
+            var privacry = Courses.querySelector('p[name="privacry"]')
             // set value 
-            folderImg.setAttribute("src", `/img/user/${data.CustomerID}/FolderCourse/${FolderCourse.FolderID}/${FolderCourse.FolderImg}`)
-            folderName.innerHTML =  FolderCourse.FolderName
-            description.innerHTML = FolderCourse.Description
-            privacry.innerHTML = FolderCourse.privacry
-            
+            folderImg.setAttribute("src", `/img/user/${data.CustomerID}/FolderCourse/${data.FolderID}/${course.CourseID}/${course.CourseImg}`)
+            folderName.innerHTML =  course.CourseName
+            description.innerHTML = course.Description
+            privacry.innerHTML = course.privacry
+            // message
+            displayMessage(data.message)
         },
         error: function (xhr) {
             console.log("Có lỗi xảy ra");

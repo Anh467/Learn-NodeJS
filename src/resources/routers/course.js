@@ -10,5 +10,5 @@ const route= express.Router()
     //[POST]
     route.post('/:customerid/:foldername',upload.single('FolderImg') , courseController.newCourse)
     //[PUT]
-    route.put('/:coursename',upload.single('FolderImg') , courseController.updateCourse)
+    route.put('/:customerid/:foldername',upload.single('FolderImg') , courseController.updateCourse)
 module.exports= route

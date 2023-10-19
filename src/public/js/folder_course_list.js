@@ -1,3 +1,8 @@
+function displayMessage(message) {
+    var messageContainer= document.getElementById('message')
+    messageContainer.innerHTML = 'message: '+ message.value
+    messageContainer.style.color = message.color; 
+  }
 $(document).ready(function(){
     $('form[name="form"]').on('submit', function(event){
         event.preventDefault();
@@ -104,9 +109,10 @@ function checkExistFolderName(event){
             }
         })
     } catch (error) {
-        var message= document.getElementById('message')
-        message.innerHTML('message: '+ error.message)
-        message.setAttribute('color', red)
+        displayMessage({
+            value: error.message,
+            color: 'red'
+        })
     }
    
 }
@@ -204,7 +210,8 @@ updateFolderCourse = function(formData){
             folderName.innerHTML =  FolderCourse.FolderName
             description.innerHTML = FolderCourse.Description
             privacry.innerHTML = FolderCourse.privacry
-            
+            //
+            displayMessage(data.message)
         },
         error: function (xhr) {
             console.log("Có lỗi xảy ra");
@@ -231,8 +238,7 @@ function deleteHanlder(){
                 success: function (data) {
                     var message= document.getElementById("message")
                     // message
-                    message.innerHTML= data.message.value
-                    message.setAttribute("style", `color: ${data.message.color};` )
+                    displayMessage(data.message)
                     // display none all div that be deleted
                     var folderContainer= document.querySelectorAll(".foldercourse-container")
                     for(let i= 0; i<folderContainer.length; i++){
@@ -248,6 +254,9 @@ function deleteHanlder(){
             }
         )
     } catch (error) {
-        alert("Some error happen: "+error.message)
+        displayMessage({
+            value: error.message,
+            color: 'red'
+        })
     }
 }

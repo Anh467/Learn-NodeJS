@@ -16,7 +16,6 @@ const FolderCourses= db.foldercourses
 const Courses= db.courses
 const Customers= db.customers
 class FolderCourseController{
-    
 //FolderCourses
     //[GET]
     index= async function(req, res) {
@@ -228,7 +227,7 @@ class FolderCourseController{
                     title: "Folder Course"
                 })
             }).catch(err =>{
-                throw new err.message
+                throw new Error(`Folder Name ${FolderName} already exists`)
             })
         } catch (error) {
             res.json({

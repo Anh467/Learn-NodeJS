@@ -155,11 +155,73 @@ class CourseController{
     //[PUT]
     updateCourse = async function(req, res){
         try{
+               
+            // get param
+            const customerid= req.params.customerid
+            const foldername= req.params.foldername
+            // get req body 
+            const {CourseID, FolderID, FolderName, privacry, Description}= req.body
+            // get session
+            const user = req.session.User
+            const customerIDSession = user? user.CustomerID : undefined
+            // check login
+            if(!customerIDSession) throw new Error("You must log in to update")
+            // check permission
+            if(customerIDSession != customerid) throw new Error("You don't have permission to update")
+            // get course
+            var course = await Courses.findOne({
+                where:{
+                    CourseID: CourseID
+                }
+            })
+            // get image name
+            var couresImg =  req.file? req.file.originalname : undefined
+            if(  couresImg == undefined || couresImg == course.FolderImg )
+                couresImg = course.CourseImg
+            else                            
+                couresImg = `${uuidv4()}.png`
+            //set vị trí lưu ảnh 
+            var path_prj= path.join(PROJECT_PATH(), "img", "user", customerid,"FolderCourse",''+FolderID, ''+CourseID)
 
+            // tạo folder nếu nó k tồn tại 
+            if (!fs.existsSync(path_prj)) 
+                try {
+                    fs.mkdirSync(path_prj, { recursive: true });
+                } catch (error) {
+                    throw new ('Lỗi khi tạo thư mục:', error);
+                }
+
+            //resize ảnh lưu ảnh 
+            if (req.file) {
+                const fileUpload = new Resize(path_prj);
+                const filename = await fileUpload.save(req.file.buffer, couresImg);
+            }
+            // build
+            course.set({
+                CourseImg: couresImg,
+                CourseName: FolderName,
+                privacry: privacry, 
+                Description: Description
+            })   
+            // save
+            await course.save().then(data =>{
+                res.json({
+                    message:{
+                        value: `Update ${data} Folder course success!!!`,
+                        color: "green"
+                    },
+                    Course: data,
+                    CustomerID: customerid, 
+                    title: "Course",
+                    FolderID: FolderID
+                })
+            }).catch(err =>{
+                throw new "CourseName already exists"
+            })
         }catch(err){
             res.json({
                 message:{
-                    value: `ERR There are some error happen!!!: ${error.message}`,
+                    value: `ERR There are some error happen!!!: ${err.message}`,
                     color: "red"
                 } 
             })
