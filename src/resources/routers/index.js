@@ -3,6 +3,7 @@ const authenRouter = require('./authen')
 const filterAuthen= require('./filterAuthen')
 const folderCourse= require('./foldercourse')
 const course= require('./course')
+const quiz = require('./quiz')
 function route(app){
     //filter
     app.use(['/*','/*/*'],filterAuthen)
@@ -18,6 +19,7 @@ function route(app){
     app.use('/foldercourse', folderCourse)
     //Courses
     app.use('/course', course)
+    app.use('/quiz', quiz)
     // //news
     // app.get('/news', function(req, res) {
     // res.render('news')

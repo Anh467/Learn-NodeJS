@@ -1,0 +1,46 @@
+<p id="current" >Current: 0</p>
+  <p id="total">Total: 0</p>
+  <input type="number" id="number">
+  <button onclick="reachTo()">Reach to</button>
+  <script src="/js/quiz_list.js"></script>
+  <link rel="stylesheet" href="/css/quiz_list.css">
+  <div class="row mx-auto container m-0 w-100">
+    <div id="carouselExampleIndicators" class="carousel slide mx-auto col-md-5" data-bs-touch="false" data-bs-interval="false">
+        <div class="carousel-indicators" style="display: none;">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        </div>
+        <div class="carousel-inner w-100 h-100">
+          <div class="carousel-item active w-100 h-100 " style="background-color: black;">     
+          <div class="w-100 h-100 d-flex align-items-center justify-content-center flip-card">
+            <div class="flip-card-inner ">
+              
+              <div class="flip-card-front w-100 h-100 d-flex align-items-center justify-content-center">
+                <div class="mx-auto " style="width: 90%; margin-bottom: 0;">
+                  <p style="color: azure; margin: 0px 0px 10px 0px;">1. Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?</p>
+                  <p>1. Hành tinh thứ 1Hành tinh thứ 1</p>
+                  <p>2. Hành tinh thứ 2Hành tinh thứ 1</p>
+                  <p>3. Hành tinh thứ 3Hành tinh thứ 1</p>
+                  <p>4. Hành tinh thứ 4Hành tinh thứ 1</p>
+                </div>
+              </div>
+              <div class="flip-card-back w-100 h-100 d-flex align-items-center justify-content-center">
+                <div class="row" style="display: flex; flex-wrap: wrap;">
+                  <p>1. Hành tinh thứ 1Hành tinh thứ 1</p>
+                  <p>2. Hành tinh thứ 2Hành tinh thứ 1</p>                                                    
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+    <button onclick="loadmore()">Load more</button>
