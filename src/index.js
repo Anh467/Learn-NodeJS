@@ -1,12 +1,20 @@
+// import mongoose 
+const mongoose = require('mongoose')
+// import library express framework 
 const express= require('express')
 const session = require('express-session');
+// declare express
+const app= express()
+// import morgan 
 const morgan = require('morgan')
+// import body parse 
 const bodyParser = require('body-parser');
+// import handle bả 
 const exphbs = require('express-handlebars')
 const path = require('path')
 const port= 3000
 const route= require('./resources/routers')
-const app= express()
+
 
 //session
 app.use(session({
