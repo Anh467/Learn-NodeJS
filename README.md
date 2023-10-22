@@ -1,5 +1,5 @@
 # QuizIrcnV
-## Đây là dự án của mình làm chủ yếu bằng 
+## Đây là dự án cá nhân của mình làm chủ yếu bằng 
 - **Server**    : NodeJS
 - **Front-End** : Sử dụng html, css, JavaScript, scss và handlebar
 - **Back-End**  : NoSQL(MongoDB), SQL(SQL SERVER)
