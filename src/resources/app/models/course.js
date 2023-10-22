@@ -34,6 +34,9 @@ module.exports= (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             defaultValue: Sequelize.literal("GETDATE()"), 
         },
+        QuizzesID:{
+            type: Sequelize.STRING(36)
+        }
     }, {
         hasTrigger: true,
         tableName:'Course',

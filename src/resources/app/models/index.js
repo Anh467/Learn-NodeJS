@@ -15,15 +15,26 @@ const sequelize = new Sequelize(sqlServer.DB, sqlServer.USER, sqlServer.PASSWORD
   dialect: sqlServer.dialect,
 });
 // connect to db(nosql) by mongoose orm 
-
+  //const mongooseDB = require('../../config/db')
+  mongoose.connect( mongoDB.url +'/' + mongoDB.DB )
+// connect
+  //mongooseDB.connect()
 // declare model db for store
 const db = {};
 // model of Sequelize
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
-db.customers = require("./customer")(sequelize, Sequelize);
-db.foldercourses = require("./foldercourse")(sequelize, Sequelize);
-db.courses = require("./course")(sequelize, Sequelize);
+// add to store in variable db
+  // sql
+  const customers = require("./customer")(sequelize, Sequelize)
+  const foldercourses = require("./foldercourse")(sequelize, Sequelize)
+  const courses = require("./course")(sequelize, Sequelize)
+  // nosql
+  const quizzes = require("./quiz")
+  // add
+  db.customers = customers
+  db.foldercourses = foldercourses
+  db.courses = courses
+  db.quizzes =  quizzes
 // model of Mongoose
 module.exports = db;
