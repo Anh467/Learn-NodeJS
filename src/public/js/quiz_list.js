@@ -1,4 +1,5 @@
-var questionTotal = [
+var questionTotal=[]    
+/*var questionTotal = [
     {
         question: "Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?",
         answer: [
@@ -165,7 +166,7 @@ var questionTotal = [
             }
         ]
     }
-  ];
+  ];*/
   var questionLoadMore =  [
     {
         question: "Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?",
@@ -329,9 +330,37 @@ var questionTotal = [
     }
     setTotal()
   }
-  addEventListener("load", (event) => {
-    loadQuestion(questionTotal)
-    setCurrent()
+  getDataByAjax = function(CourseID) {
+    try {
+        $.ajax({
+            url: `/quiz/${CourseID}`,
+            type: "GET",
+            contentType: "application/json",
+            //data: JSON.stringify(input),
+            success: function(data) {
+                loadQuestion(data.quizzes.questions);
+                console.log("data.quizzes: " + JSON.stringify(data.quizzes));
+                setCurrent();
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    } catch (e) {
+        alert(e.message);
+    }
+}
+
+   addEventListener("load", (event) => {
+    try {
+        var CourseID= document.getElementById('CourseID').innerHTML
+        getDataByAjax(CourseID)
+       // loadQuestion(questionTotal)
+        setCurrent()
+    } catch (error) {
+        alert(error.message)
+    }
+    
   });
   function reachTo(){
       try {
