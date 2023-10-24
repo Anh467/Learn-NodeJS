@@ -20,8 +20,34 @@ const Quizzes = db.quizzes
 class CourseController{
 //common
 //Courses
+    //[POST]
+    update = async function(req, res){
+      try {
+        // get req params
+        const {quizzesid, index} = req.params
+        // get req body
+        const {param} = req.body
+        //
+        var temp = `questions.${index}`
+        const filter = { _id: quizzesid }; 
+        const update = {
+          $set: { [temp]: param } 
+        };
+        // update
+        var quiz= await Quizzes.findOneAndUpdate(filter, update, { new: true });
+        res.status(200).json(quiz.questions[index])
+      } catch (error) {
+        res.status(500).send({
+          message:{
+              value: `${error.message}`,
+              color: "red"
+          },
+          title: "Quiz"
+        })
+      }
+    }
     //[GET]
-    get = async function(req, res){
+    gets = async function(req, res){
       try {
         const quizzesid = req.params.quizzesid
         await Quizzes.findById(quizzesid)
