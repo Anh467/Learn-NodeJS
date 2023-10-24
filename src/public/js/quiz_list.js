@@ -315,9 +315,52 @@ var questionTotal=[]
             </div>
           </div>`
   }
-  
+  function getDetailAnswer(pList){
+    var temp = ""
+    for(let i = 0; i < pList.length; i++)
+        temp += ` <li>${String.fromCharCode(65 + i)}. ${pList[i].value} <i class="fa-solid ${pList[i].isCorrect?"fa-check":"fa-xmark"}"></i></li>`
+    return temp
+  }
+  function getDetailContainer(input, i){
+    var pList= input.answer
+    var question= input.question
+    var isOwn = document.getElementById("isOwn").innerHTML
+    return `<div class="contain-detail " >
+                <div style="display: inline;" class="w-50" >
+                <span class="textarea question w-90 border-none" 
+                    role="textbox" 
+                    contentEditable = "false">
+                    ${i + 1}. ${question}
+                </span>
+               
+                <i class=" fa-solid fa-play rotate-ele-0 " 
+                    onclick="toggleDetails(event)"
+                    title="Click to list answer!">
+                </i>
+                ${(isOwn=="true")?` <i class="fa-style fa-solid fa-pen " 
+                                        style="display: inline;" 
+                                        onclick="editEvent(event)"
+                                        title="Click to edit question!">
+                                    </i>
+                                    <i class="fa-style fa-solid fa-square-check " 
+                                        style="display: inline;" 
+                                        onclick="saveQuestionEvent(event)"
+                                        title="Click to save edit!">
+                                    </i>`: ""}
+                
+                
+                </div>
+                <div class= "details display-none" style="background-color: none; border: none;">
+                <ul>
+                    ${getDetailAnswer(pList)}
+                </ul>
+                </div>
+                
+            </div>`
+  }
   function loadQuestion(question) {
     var carousel_indicator = document.querySelector(".carousel-indicators");
+    var detail = document.querySelector("#detail");
     var carousel_indicatorButton = carousel_indicator.querySelectorAll("button");
     var carousel_inner = document.querySelector(".carousel-inner");
     var init = carousel_indicatorButton.length
@@ -327,13 +370,14 @@ var questionTotal=[]
     for (let i = 0 + init; i < question.length + init; i++) {
       carousel_indicator.innerHTML = carousel_indicator.innerHTML + getCarouselIndicatorsButton(i);
       carousel_inner.innerHTML = carousel_inner.innerHTML + getCarouselItemDiv(question[i-init], i);
+      detail.innerHTML = detail.innerHTML + getDetailContainer(question[i-init], i)
     }
     setTotal()
   }
-  getDataByAjax = function(CourseID) {
+  getDataByAjax = function(QuizzesID) {
     try {
         $.ajax({
-            url: `/quiz/${CourseID}`,
+            url: `/quiz/${QuizzesID}`,
             type: "GET",
             contentType: "application/json",
             //data: JSON.stringify(input),
@@ -349,12 +393,12 @@ var questionTotal=[]
     } catch (e) {
         alert(e.message);
     }
-}
+    }
 
    addEventListener("load", (event) => {
     try {
-        var CourseID= document.getElementById('CourseID').innerHTML
-        getDataByAjax(CourseID)
+        var QuizzesID= document.getElementById('QuizzesID').innerHTML
+        getDataByAjax(QuizzesID)
        // loadQuestion(questionTotal)
         setCurrent()
     } catch (error) {
@@ -426,4 +470,31 @@ var questionTotal=[]
           // Thực hiện hành động cần thiết ở đây
       });
   });
-  
+  function toggleDetails(event) {
+    //var button = event.target
+    var iconDropDown = event.target
+    var containDetail = iconDropDown.closest('.contain-detail')
+    var details = containDetail.querySelector('.details')
+
+    iconDropDown.classList.toggle('rotate-ele-90')
+    iconDropDown.classList.toggle('rotate-ele-0')
+    details.classList.toggle('display-block')
+    details.classList.toggle('display-none')
+  }
+  function editEvent(event){
+    var iconEdit = event.target
+    var containDetail = iconEdit.closest('.contain-detail')
+    var details = containDetail.querySelector('.details') 
+    var question = containDetail.querySelector('.question')
+
+    iconEdit.classList.toggle('fa-pen')
+    iconEdit.classList.toggle('fa-lock')
+    question.classList.toggle('border-none')
+    question.classList.toggle('border-solid')
+    // Đảm bảo phần tử <span> có thể chỉnh sửa
+    var tempCheck 
+    if (question.contentEditable.toString() === "false")
+      tempCheck = true
+    else tempCheck = false
+    question.contentEditable = tempCheck;
+  }

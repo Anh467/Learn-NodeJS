@@ -5,10 +5,12 @@
   <script src="/js/quiz_list.js"></script>
   <link rel="stylesheet" href="/css/quiz_list.css">
   <div> 
+     <p id="isOwn">{{isOwn}}</p>
     <p id="CourseID">{{CourseID}}</p>
     <p id="CourseName">{{CourseName}}</p>
     <p id="CustomerID">{{CustomerID}}</p>
     <p id="QuizzesID">{{QuizzesID}}</p>
+    <p id="QuizzesID">{{isOwn}}</p>
   </div>
   <div class="row mx-auto container m-0 w-100">
     <div id="carouselExampleIndicators" class="carousel slide mx-auto col-md-5" data-bs-touch="false" data-bs-interval="false">
@@ -47,6 +49,44 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
+    </div>
+    
+  </div>
+  <div class="w-50"  id="detail" style="margin-left: auto; margin-right: auto;">
+      <div class="contain-detail " >
+          <div style="display: inline;" class="w-50" >
+            <span class="textarea question w-90 border-none" 
+              role="textbox" 
+              contentEditable = "false">
+              1. Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?
+            </span>
+            <i class=" fa-solid fa-play rotate-ele-0 " 
+              onclick="toggleDetails(event)"
+              title="Click to list answer!">
+            </i>
+            <i class="fa-style fa-solid fa-pen " 
+              style="display: inline;" 
+              onclick="editEvent(event)"
+              title="Click to edit question!">
+            </i>
+            <i class="fa-style fa-solid fa-square-check " 
+              style="display: inline;" 
+              onclick="saveQuestionEvent(event)"
+              title="Click to save edit!">
+            </i>
+            
+          </div>
+           
+          
+          <div class= "details display-none" style="background-color: none; border: none;">
+            <ul>
+              <li>1. Hành tinh thứ 1Hành tinh thứ 1 <i class="fa-solid fa-check"></i></li>
+              <li>2. Hành tinh thứ 2Hành tinh thứ 1 <i class="fa-solid fa-check"></i></li>
+              <li>3. Hành tinh thứ 3Hành tinh thứ 1 <i class="fa-solid fa-xmark"></i></li>
+              <li>4. Hành tinh thứ 4Hành tinh thứ 1 <i class="fa-solid fa-xmark"></i></li>
+            </ul>
+          </div>
+          
       </div>
     </div>
-    <button onclick="loadmore()">Load more</button>
+  <button onclick="loadmore()">Load more</button>

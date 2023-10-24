@@ -46,3 +46,77 @@
     color: white;
     transform: rotateY(180deg);
   }
+
+  
+
+.display-block{
+  position: static;
+  top: auto;
+  left: auto;
+
+  height: auto !important;
+  
+  opacity: 1;
+  transform: translateY(0);
+  transition: all .5s ease;
+}
+.display-none{
+  position: relative;
+  top: -9999px;
+  left: -9999px;
+
+  height: 0 !important;
+  opacity: 0;
+  transition: all .5s ease;
+}
+
+.rotate-ele-90{
+  transform: rotate(90deg) !important;
+  transition: transform 1s;
+}
+.rotate-ele-0{
+  transform: rotate(0deg) !important;
+  transition: transform 1s;
+}
+.fa-check{
+  color: green;
+}
+.fa-xmark{
+  color: red;
+}
+
+.textarea {
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 1px 6px;
+}
+.textarea {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  resize: both;
+  min-height: 40px;
+  line-height: 20px;
+}
+.textarea[contenteditable]:empty::before {
+  content: "Placeholder still possible";
+  color: gray;
+}
+.fa-style{
+  padding: 5px 20px 5px 20px;
+  background-color: rgb(176, 176, 244);
+  border-radius: 10px;
+  border: 2px solid black;
+  margin: 0px 5px 0px 5px;
+}
+.question{
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.border-solid{
+  border: 1px solid black !important
+}
+.border-none{
+  border:none !important
+}

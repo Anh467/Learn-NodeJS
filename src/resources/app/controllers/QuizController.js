@@ -23,18 +23,16 @@ class CourseController{
     //[GET]
     get = async function(req, res){
       try {
-        const courseid = req.params.courseid
-        await Quizzes.findOne({
-                      courseid: courseid
-                    }) //findById(quizzesid)
-                  .then(data =>{
-                    if(data == undefined) throw new Error("Can't find data")
-                    if(data.length == 0) throw  new Error('Get list quiz failed');
-                    res.status(200).send({
-                      quizzes: data,
-                      title: "Quiz"
-                    });
-                  })
+        const quizzesid = req.params.quizzesid
+        await Quizzes.findById(quizzesid)
+                    .then(data =>{
+                      if(data == undefined) throw new Error("Can't find data")
+                      if(data.length == 0) throw  new Error('Get list quiz failed');
+                      res.status(200).send({
+                        quizzes: data,
+                        title: "Quiz"
+                      });
+                    })
         
       } catch (error) {
         res.status(500).send({
@@ -49,6 +47,9 @@ class CourseController{
     //[GET]
     index = async function(req, res){
       try {
+        // get session
+        const User= req.session.User
+        const customerIDSession = (User) ? User.CustomerID : undefined
         // get request params
         const customerid = req.params.customerid
         const coursename = req.params.coursename
@@ -76,7 +77,8 @@ class CourseController{
           CourseID: course.CourseID,
           CourseName: course.CourseName,
           CustomerID: customerid,
-          QuizzesID: course.QuizzesID
+          QuizzesID: course.QuizzesID,
+          isOwn: (customerIDSession == customerid)
         })  
       } catch (error) {
         res.status(500).render('course/quiz_list',{
@@ -84,7 +86,8 @@ class CourseController{
               value: `${error.message}`,
               color: "red"
           },
-          title: "Quiz"
+          title: "Quiz",
+          isOwn: (customerIDSession == customerid)
       })
       }
     }

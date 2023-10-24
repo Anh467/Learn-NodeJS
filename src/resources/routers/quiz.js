@@ -6,5 +6,5 @@ const route= express.Router()
     //[GET]
     route.get('/:customerid/:foldername/:coursename', courseController.index)
     //[GET]
-    route.get('/:courseid', courseController.get)
+    route.get('/:quizzesid', courseController.get)
 module.exports= route
