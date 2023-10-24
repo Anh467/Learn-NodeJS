@@ -7,6 +7,10 @@ const route= express.Router()
     route.get('/:customerid/:foldername/:coursename', courseController.index)
     //[GET]
     route.get('/:quizzesid', courseController.gets)
+    //[PUT]
+    route.put('/:quizzesid/:index', courseController.update)
     //[POST]
-    route.post('/:quizzesid/:index', courseController.update)
+    route.post('/:quizzesid', courseController.create)
+    //[DELETE]
+    route.delete('/:quizzesid/:index', courseController.delete)
 module.exports= route
