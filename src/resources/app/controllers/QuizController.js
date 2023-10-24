@@ -22,6 +22,42 @@ class CourseController{
 //Courses
     //[DELETE]
     delete = async function(req, res){
+      try {
+        // get req params
+        const {quizzesid, index} = req.params
+        // delete
+        // unset
+        var quiz= await Quizzes.updateOne({
+                                            _id: quizzesid
+                                          }, {
+                                            $unset : { 
+                                              [`questions.${index}`]: 1
+                                            }
+                                          }, { 
+                                              new: true 
+                                            });
+        // delete null
+        var quiz= await Quizzes.updateOne({
+          _id: quizzesid
+        }, {
+          $pull : { 
+            questions: null
+          }
+        }, { new: true });
+        // res
+        res.status(200).send({
+          delete: "done",
+          quiz: quiz
+        })
+      } catch (error) {
+        res.status(500).send({
+          message:{
+              value: `${error.message}`,
+              color: "red"
+          },
+          title: "Quiz"
+        })
+      }
     }
     //[POST]
     create = async function(req, res){
