@@ -283,8 +283,10 @@
   function getCarouselIndicatorsButton(i){
     
     if(i == GB_Index)
-      return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" class="active" aria-current="true" aria-label="Slide ${i+1}"></button>`;
-    return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" aria-label="Slide ${i+1}"></button>`;
+      return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" class="active" aria-current="true" aria-label="Slide ${i+1}">
+            </button>`;
+    return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" aria-label="Slide ${i+1}">
+        </button>`;
   }
   function getAnswerP(pList, check){
     var temp = ""
@@ -301,7 +303,9 @@
   function getCarouselItemDiv(input, i){
     var pList= input.answer
     var question= input.question
-    return `<div class="carousel-item ${i == GB_Index ? "active" : ""} w-100 h-100 " style="background-color: black;">     
+    return `
+        
+        <div class="carousel-item ${i == GB_Index ? "active" : ""} w-100 h-100 " style="background-color: black;">     
             <div class="w-100 h-100 d-flex align-items-center justify-content-center flip-card">
               <div class="flip-card-inner ">
                 <div class="flip-card-front w-100 h-100 d-flex align-items-center justify-content-center">
@@ -317,28 +321,46 @@
                 </div>
               </div>
             </div>
-          </div>`
+        </div>`
   }
   function getDetailAnswer(pList){
+    var isOwn = document.getElementById("isOwn").innerHTML
     var temp = ""
     for(let i = 0; i < pList.length; i++)
-        temp += ` <li>${String.fromCharCode(65 + i)}. ${pList[i].value} <i class="fa-solid ${pList[i].isCorrect?"fa-check":"fa-xmark"}"></i></li>`
+        temp += `   
+                    <li name="answer"> 
+                        ${String.fromCharCode(65 + i)}. <span name="value" ${(isOwn=="true")? `contentEditable = "true" `: `contentEditable = "false" `}>${pList[i].value}</span>
+                        ${(isOwn=="true")?`<select name="isCorrect" class="is-correct">
+                                            <option value="true" ${pList[i].isCorrect?"selected":""}> 
+                                                true
+                                            </option>
+                                            <option value="false" ${pList[i].isCorrect?"":"selected"}> 
+                                                false
+                                            </option>
+                                        </select>`
+                                        :
+                                        `<i class="fa-solid ${pList[i].isCorrect?"fa-check":"fa-xmark"}">
+                                        </i>`
+                                    }
+                        
+                    </li>`
     return temp
   }
   function getDetailContainer(input, i){
     var pList= input.answer
     var question= input.question
     var isOwn = document.getElementById("isOwn").innerHTML
-    return `<div class="contain-detail " >
+    return `
+                <span name="index" style="display:none">${i}</span>
                 <div style="display: inline;" class="w-50" >
 
                 <div class="d-flex">
-                    <span class="mx-auto" style="display: inline;"> ${i + 1}.</span>
+                    <span class="mx-auto index" style="display: inline;"> ${i + 1}</span>
+                    <span>.</span>
                     <span class="text-start textarea question w-90 border-none" 
                         role="textbox" 
-                        contentEditable = "false">
-                        ${question}
-                    </span>
+                        name="question"
+                        contentEditable = "false">${question}</span>
                 </div>
                 
                
@@ -354,8 +376,19 @@
                                     <i class="fa-style fa-solid fa-square-check " 
                                         style="display: inline;" 
                                         onclick="saveQuestionEvent(event)"
-                                        title="Click to save edit!">
-                                    </i>`: ""}
+                                        title="Click to save input!">
+                                    </i>
+                                    <i class="fa-style fa-solid fa-trash-can"
+                                        style="display: inline;" 
+                                        onclick="deleteQuestionEvent(event)"
+                                        title="Click to delete this question!">
+                                    </i>
+                                    <i class="fa-style fa-solid fa-rotate-left"
+                                        style="display: inline;" 
+                                        onclick="resetQuestionEvent(event)"
+                                        title="Click to reset all input!">
+                                    </i>
+                                    `: ""}
                 
                 
                 </div>
@@ -365,9 +398,10 @@
                 </ul>
                 </div>
                 
-            </div>`
+            `
   }
   function loadQuestion(question) {
+    questionTotal.push(question)
     var carousel_indicator = document.querySelector(".carousel-indicators");
     var detail = document.querySelector("#detail");
     var carousel_indicatorButton = carousel_indicator.querySelectorAll("button");
@@ -379,38 +413,86 @@
     for (let i = 0 + init; i < question.length + init; i++) {
       carousel_indicator.innerHTML = carousel_indicator.innerHTML + getCarouselIndicatorsButton(i);
       carousel_inner.innerHTML = carousel_inner.innerHTML + getCarouselItemDiv(question[i-init], i);
-      detail.innerHTML = detail.innerHTML + getDetailContainer(question[i-init], i)
+      detail.innerHTML = detail.innerHTML + `<div class="contain-detail ">
+                                                ${getDetailContainer(question[i-init], i)}
+                                            </div>`
     }
     setTotal()
   }
   getDataByAjax = async function(QuizzesID) {
     try {
         var temp = await getQuiz(QuizzesID)
-          .catch(function(error) {
-            throw error;
-          });
+                        .catch(function(error) {
+                            throw error;
+                        });
         loadQuestion(temp.quizzes.questions)
         setCurrent()
-        /*$.ajax({
-            url: `/quiz/${QuizzesID}`,
-            type: "GET",
-            contentType: "application/json",
-            //data: JSON.stringify(input),
-            success: function(data) {
-                loadQuestion(data.quizzes.questions);
-                console.log("data.quizzes: " + JSON.stringify(data.quizzes));
-                setCurrent();
-            },
-            error: function(xhr) {
-                console.log(xhr.responseText);
-            }
-        });*/
     } catch (e) {
         alert(e.message);
     }
+  }
+  saveQuestionEvent = async function(event){
+    try {
+        var buttonSave = event.target
+        var containDetail = buttonSave.closest('.contain-detail')
+        var index = containDetail.querySelector('span[name="index"]').innerHTML.trim()
+        var input = getInputContainDetail(containDetail)
+        var QuizzesID= document.getElementById('QuizzesID').innerHTML
+        var temp = await updateQuiz(QuizzesID,
+                                    index, 
+                                    {
+                                        param: input
+                                    },
+                                    )
+                                    .catch(function(error) {
+                                        throw error;
+                                    });
+        questionTotal= []
+        loadQuestion(temp.quiz.questions)
+        showNotification(temp.message, 2000);
+        setCurrent()
+    } catch (error) {
+        showNotification({
+            value: error.message,
+            color: "red"
+        }, 2000);
     }
+   
+  }
+  resetQuestionEvent = async function(event){
+    var buttonSave = event.target
+    var containDetail = buttonSave.closest('.contain-detail')
+    var index = containDetail.querySelector('span[name="index"]').innerHTML.trim()
+    containDetail.innerHTML = getDetailContainer(questionTotal[0][parseInt(index)], parseInt(index))
+  }
+  getInputContainDetail= function(containDetail){
+    // trong mảng question answer đại diện cho danh sách các đáp án 
+    var input
+    var answerList= []
+    var questionSpan = containDetail.querySelector('span[name="question"]')
+    var answers = containDetail.querySelectorAll('li[name="answer"]')
+    answers.forEach(element => {
+        var value = element.querySelector('span[name="value"]')
+        var options = element.querySelector('select[name="isCorrect"]')
+        var isCorrect = false
+        if( options.value == "true")
+            isCorrect = true
+        answerList.push({
+            value: value.innerHTML,
+            isCorrect: isCorrect
+        })
+    });
+    input = {
+        question: questionSpan.innerHTML,
+        answer: answerList
+    }
+    //alert(input)
+    return input
+  }
+  deleteQuestionEvent = function(event){
 
-   addEventListener("load", (event) => {
+  }
+  addEventListener("load", (event) => {
     try {
         var QuizzesID= document.getElementById('QuizzesID').innerHTML
         getDataByAjax(QuizzesID)

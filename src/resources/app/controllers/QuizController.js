@@ -47,7 +47,11 @@ class CourseController{
         // res
         res.status(200).send({
           delete: "done",
-          quiz: quiz
+          quiz: quiz,
+          message:{
+            value: `Lấy thành công`,
+            color: "green"
+          }
         })
       } catch (error) {
         res.status(500).send({
@@ -74,7 +78,13 @@ class CourseController{
         };
         // update
         var quiz= await Quizzes.findOneAndUpdate(filter, create, { new: true });
-        res.status(200).json(quiz)
+        res.status(200).json({
+                              quiz:quiz,
+                              message:{
+                                value: `Tạo thành công`,
+                                color: "green"
+                              }
+                            })
       } catch (error) {
         res.status(500).send({
           message:{
@@ -100,11 +110,17 @@ class CourseController{
         };
         // update
         var quiz= await Quizzes.findOneAndUpdate(filter, update, { new: true });
-        res.status(200).json(quiz)
+        res.status(200).json({
+          quiz: quiz,
+          message:{
+            value: `Cập nhật thành công`,
+            color: "green"
+          },
+        });
       } catch (error) {
         res.status(500).send({
           message:{
-              value: `${error.message}`,
+              value: `Cập nhật thất bại:${error.message}`,
               color: "red"
           },
           title: "Quiz"
@@ -121,7 +137,11 @@ class CourseController{
                       if(data.length == 0) throw  new Error('Get list quiz failed');
                       res.status(200).send({
                         quizzes: data,
-                        title: "Quiz"
+                        title: "Quiz",
+                        message:{
+                          value: `Truy cập thành công`,
+                          color: "green"
+                        },
                       });
                     })
         
@@ -169,7 +189,8 @@ class CourseController{
           CourseName: course.CourseName,
           CustomerID: customerid,
           QuizzesID: course.QuizzesID,
-          isOwn: (customerIDSession == customerid)
+          isOwn: (customerIDSession == customerid),
+          
         })  
       } catch (error) {
         res.status(500).render('course/quiz_list',{
