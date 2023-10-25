@@ -1,174 +1,5 @@
-//import {displayMessage} from "./common/displayMessage"
-//import {getQuiz} from "./api/quizAPI"
-    var questionTotal=[]    
-/*var questionTotal = [
-    {
-        question: "Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?",
-        answer: [
-            {
-                value: "Hành tinh thứ 1",
-                isCorrect: true
-            },
-            {
-                value: "Hành tinh thứ 2",
-                isCorrect: false
-            },
-            {
-                value: "Hành tinh thứ 3",
-                isCorrect: true
-            },
-            {
-                value: "Hành tinh thứ 4",
-                isCorrect: false
-            }
-        ]
-    },
-    {
-        question: "Trái Đất có mặt trời ở giữa không?",
-        answer: [
-            {
-                value: "Có",
-                isCorrect: false
-            },
-            {
-                value: "Không",
-                isCorrect: true
-            }
-        ]
-    },
-    {
-        question: "Bao nhiêu ngày trong một năm?",
-        answer: [
-            {
-                value: "365",
-                isCorrect: true
-            },
-            {
-                value: "366",
-                isCorrect: false
-            },
-            {
-                value: "360",
-                isCorrect: false
-            }
-        ]
-    },
-    {
-        question: "Mặt Trời có trái đất?",
-        answer: [
-            {
-                value: "Có",
-                isCorrect: true
-            },
-            {
-                value: "Không",
-                isCorrect: false
-            }
-        ]
-    },
-    {
-        question: "Loài chim nào có khả năng bay ngược?",
-        answer: [
-            {
-                value: "Kiwi",
-                isCorrect: true
-            },
-            {
-                value: "Đại bàng",
-                isCorrect: false
-            },
-            {
-                value: "Chim cánh cụt",
-                isCorrect: false
-            }
-        ]
-    },
-    {
-        question: "Con người có thể thở dưới nước không?",
-        answer: [
-            {
-                value: "Có",
-                isCorrect: false
-            },
-            {
-                value: "Không",
-                isCorrect: true
-            }
-        ]
-    },
-    {
-        question: "Bao nhiêu quốc gia trên thế giới?",
-        answer: [
-            {
-                value: "195",
-                isCorrect: false
-            },
-            {
-                value: "206",
-                isCorrect: true
-            },
-            {
-                value: "180",
-                isCorrect: false
-            }
-        ]
-    },
-    {
-        question: "Ngôn ngữ phổ biến nhất trên thế giới là gì?",
-        answer: [
-            {
-                value: "Tiếng Anh",
-                isCorrect: true
-            },
-            {
-                value: "Tiếng Trung",
-                isCorrect: false
-            },
-            {
-                value: "Tiếng Tây Ban Nha",
-                isCorrect: false
-            }
-        ]
-    },
-    {
-        question: "Đâu là hành tinh lớn nhất trong Hệ Mặt Trời?",
-        answer: [
-            {
-                value: "Sao Mộc",
-                isCorrect: false
-            },
-            {
-                value: "Sao Thổ",
-                isCorrect: false
-            },
-            {
-                value: "Sao Mộc",
-                isCorrect: false
-            },
-            {
-                value: "Sao Hỏa",
-                isCorrect: true
-            }
-        ]
-    },
-    {
-        question: "Bao nhiêu chữ cái trong bảng chữ cái tiếng Anh?",
-        answer: [
-            {
-                value: "24",
-                isCorrect: false
-            },
-            {
-                value: "26",
-                isCorrect: true
-            },
-            {
-                value: "28",
-                isCorrect: false
-            }
-        ]
-    }
-  ];*/
+
+  var GB_questionTotal=[]    
   var questionLoadMore =  [
     {
         question: "Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?",
@@ -281,7 +112,6 @@
   var GB_current = 0
   var GB_Index = 0
   function getCarouselIndicatorsButton(i){
-    
     if(i == GB_Index)
       return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" class="active" aria-current="true" aria-label="Slide ${i+1}">
             </button>`;
@@ -304,7 +134,6 @@
     var pList= input.answer
     var question= input.question
     return `
-        
         <div class="carousel-item ${i == GB_Index ? "active" : ""} w-100 h-100 " style="background-color: black;">     
             <div class="w-100 h-100 d-flex align-items-center justify-content-center flip-card">
               <div class="flip-card-inner ">
@@ -323,28 +152,54 @@
             </div>
         </div>`
   }
-  function getDetailAnswer(pList){
+  function getAnswer(input, i){
     var isOwn = document.getElementById("isOwn").innerHTML
+    return `   <li name="answer"> 
+        ${(isOwn=="true")?`<i class=" fa-solid fa-trash-can" 
+                                onclick="deleteLiAnswer(event)"> 
+                            </i>`
+                            :
+                            ''}
+        ${String.fromCharCode(65 + i)}. <span class="border-solid" name="value" ${(isOwn=="true")? `contentEditable = "true" `: `contentEditable = "false" `}
+        style=" min-width: 20px;
+                display: inline-block;
+                white-space: pre-wrap;
+                min-height: 1em;
+                outline: none;"
+        >${input.value}</span>
+        ${(isOwn=="true")?`<select name="isCorrect" class="is-correct">
+                            <option value="true" ${input.isCorrect?"selected":""}> 
+                                true
+                            </option>
+                            <option value="false" ${input.isCorrect?"":"selected"}> 
+                                false
+                            </option>
+                        </select>`
+                        :
+                        `<i class="fa-solid ${input.isCorrect?"fa-check":"fa-xmark"}">
+                        </i>`
+                    }
+        
+        </li>`
+  }
+  function getDetailAnswer(pList){
+    
     var temp = ""
     for(let i = 0; i < pList.length; i++)
-        temp += `   
-                    <li name="answer"> 
-                        ${String.fromCharCode(65 + i)}. <span name="value" ${(isOwn=="true")? `contentEditable = "true" `: `contentEditable = "false" `}>${pList[i].value}</span>
-                        ${(isOwn=="true")?`<select name="isCorrect" class="is-correct">
-                                            <option value="true" ${pList[i].isCorrect?"selected":""}> 
-                                                true
-                                            </option>
-                                            <option value="false" ${pList[i].isCorrect?"":"selected"}> 
-                                                false
-                                            </option>
-                                        </select>`
-                                        :
-                                        `<i class="fa-solid ${pList[i].isCorrect?"fa-check":"fa-xmark"}">
-                                        </i>`
-                                    }
-                        
-                    </li>`
+        temp += getAnswer(pList[i], i)
     return temp
+  }
+  function addLiAnswerInUl(event){
+    var button = event.target
+    var containDetail = button.closest('.contain-detail')
+    var answerUl = containDetail.querySelector('ul');
+    var answerLi =  answerUl.querySelectorAll('li')
+    answerUl.innerHTML = answerUl.innerHTML + getAnswer({
+                                                            value: "",
+                                                            isCorrect: false
+                                                        },
+                                                        answerLi.length
+                                                    )
   }
   function getDetailContainer(input, i){
     var pList= input.answer
@@ -388,6 +243,11 @@
                                         onclick="resetQuestionEvent(event)"
                                         title="Click to reset all input!">
                                     </i>
+                                    <i class="fa-style fa-solid fa-plus"
+                                        style="display: inline;" 
+                                        onclick="addLiAnswerInUl(event)"
+                                        title="Click to add new answer!">
+                                    </i>
                                     `: ""}
                 
                 
@@ -395,13 +255,14 @@
                 <div class= "details display-none" style="background-color: none; border: none;">
                 <ul>
                     ${getDetailAnswer(pList)}
+
                 </ul>
                 </div>
                 
             `
   }
   function loadQuestion(question) {
-    questionTotal.push(question)
+    GB_questionTotal.push(question)
     var carousel_indicator = document.querySelector(".carousel-indicators");
     var detail = document.querySelector("#detail");
     var carousel_indicatorButton = carousel_indicator.querySelectorAll("button");
@@ -427,7 +288,26 @@
     carousel_indicator.innerHTML = ""
     carousel_inner.innerHTML = ""
     detail.innerHTML = ""
-    questionTotal= []
+    GB_questionTotal= []
+  }
+  deleteLiAnswer = function(event){
+    try{
+        var button = event.target
+        var answerLi = button.closest('li[name="answer"]');
+        var answer = answerLi.querySelector('span[name="value"]')
+        if(!confirm('Are you sure you want to delete answer: ' + answer.innerHTML))
+            return
+        answerLi.remove()   
+        showNotification({
+            value: "delete success answer: " + answer.innerHTML,
+            color: "green"
+        }, 2000);
+    }catch(err){
+        showNotification({
+            value: err.message,
+            color: "red"
+        }, 2000);
+    }
   }
   getDataByAjax = async function(QuizzesID) {
     try {
@@ -440,6 +320,35 @@
     } catch (e) {
         showNotification({
             value: e.message,
+            color: "red"
+        }, 2000);
+    }
+  }
+  insertQuestionEvent = async function(event){
+    try {
+        var buttonSave = event.target
+        var containDetail = buttonSave.closest('.contain-detail')
+        var input = getInputContainDetail(containDetail)
+        // validate
+        if( input.question.trim() == undefined || input.question.trim() == "" ) throw new Error('Câu hỏi không được để trống')
+        if( input.answer.length == 0 ) throw new Error('Phải có ít nhất 1 câu trả lời')
+        // do ajax
+        var QuizzesID= document.getElementById('QuizzesID').innerHTML
+        var temp = await createQuiz(QuizzesID,
+                                    {
+                                        param: input
+                                    }
+                                    )
+                                    .catch(function(error) {
+                                        throw error;
+                                    });
+        clearAllData()
+        loadQuestion(temp.quiz.questions)
+        showNotification(temp.message, 2000);
+        setCurrent()
+    }catch(error){
+        showNotification({
+            value: error.message,
             color: "red"
         }, 2000);
     }
@@ -472,11 +381,39 @@
     }
    
   }
+  addQuestionEvent = async function(event){
+    try {
+        var buttonSave = event.target
+        var containDetail = buttonSave.closest('.contain-detail')
+        var index = containDetail.querySelector('span[name="index"]').innerHTML.trim()
+        var input = getInputContainDetail(containDetail)
+        var QuizzesID= document.getElementById('QuizzesID').innerHTML
+        var temp = await updateQuiz(QuizzesID,
+                                    index, 
+                                    {
+                                        param: input
+                                    },
+                                    )
+                                    .catch(function(error) {
+                                        throw error;
+                                    });
+        clearAllData()
+        loadQuestion(temp.quiz.questions)
+        showNotification(temp.message, 2000);
+        setCurrent()
+    } catch (error) {
+        showNotification({
+            value: error.message,
+            color: "red"
+        }, 2000);
+    }
+   
+  }
   resetQuestionEvent = async function(event){
     var buttonSave = event.target
     var containDetail = buttonSave.closest('.contain-detail')
     var index = containDetail.querySelector('span[name="index"]').innerHTML.trim()
-    containDetail.innerHTML = getDetailContainer(questionTotal[0][parseInt(index)], parseInt(index))
+    containDetail.innerHTML = getDetailContainer(GB_questionTotal[0][parseInt(index)], parseInt(index))
   }
   getInputContainDetail= function(containDetail){
     // trong mảng question answer đại diện cho danh sách các đáp án 
@@ -531,7 +468,7 @@
     try {
         var QuizzesID= document.getElementById('QuizzesID').innerHTML
         getDataByAjax(QuizzesID)
-       // loadQuestion(questionTotal)
+       // loadQuestion(GB_questionTotal)
         setCurrent()
     } catch (error) {
         alert(error.message)

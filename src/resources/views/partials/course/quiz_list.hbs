@@ -29,7 +29,35 @@
     </div>
     
   </div>
+  {{#if isOwn}}
+    <div class="w-50 border-solid"  id="detail-ready-to-add" style="margin-left: auto; margin-right: auto; padding: 10px;">
+      <div class="contain-detail ">                   
+        <span name="index" style="display:none">-1</span>
+        <div style="display: inline;" class="w-50">
+          <div class="d-flex">
+              <span class="mx-auto index" style="display: inline;"> 3</span>
+              <span>.</span>
+              <span class="text-start textarea question w-90 border-none" role="textbox" name="question" contenteditable="false"></span>
+          </div>
+          <i class=" fa-solid fa-play rotate-ele-0 " onclick="toggleDetails(event)" title="Click to list answer!">
+          </i>
+          <i class="fa-style fa-solid fa-pen " style="display: inline;" onclick="editEvent(event)" title="Click to edit question!">
+          </i>
+          <i class="fa-style fa-solid fa-square-check " style="display: inline;" onclick="insertQuestionEvent(event)" title="Click to save input!">
+          </i>
+          <i class="fa-style fa-solid fa-plus" style="display: inline;" onclick="addLiAnswerInUl(event)" title="Click to add new answer!">
+          </i>
+        </div>
+        <div class="details display-none" style="background-color: none; border: none;">
+          <ul>
+          </ul>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+   
+  
   <div class="w-50"  id="detail" style="margin-left: auto; margin-right: auto;">
 
-    </div>
+  </div>
   <button onclick="loadmore()">Load more</button>
