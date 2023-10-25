@@ -1,4 +1,6 @@
-var questionTotal=[]    
+//import {displayMessage} from "./common/displayMessage"
+//import {getQuiz} from "./api/quizAPI"
+    var questionTotal=[]    
 /*var questionTotal = [
     {
         question: "Trái Đất là hành tinh thứ mấy trong Hệ Mặt Trời?",
@@ -274,10 +276,12 @@ var questionTotal=[]
         ]
     }
   ];
+
   var GB_Total = 0
   var GB_current = 0
   var GB_Index = 0
   function getCarouselIndicatorsButton(i){
+    
     if(i == GB_Index)
       return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" class="active" aria-current="true" aria-label="Slide ${i+1}"></button>`;
     return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" aria-label="Slide ${i+1}"></button>`;
@@ -327,11 +331,16 @@ var questionTotal=[]
     var isOwn = document.getElementById("isOwn").innerHTML
     return `<div class="contain-detail " >
                 <div style="display: inline;" class="w-50" >
-                <span class="textarea question w-90 border-none" 
-                    role="textbox" 
-                    contentEditable = "false">
-                    ${i + 1}. ${question}
-                </span>
+
+                <div class="d-flex">
+                    <span class="mx-auto" style="display: inline;"> ${i + 1}.</span>
+                    <span class="text-start textarea question w-90 border-none" 
+                        role="textbox" 
+                        contentEditable = "false">
+                        ${question}
+                    </span>
+                </div>
+                
                
                 <i class=" fa-solid fa-play rotate-ele-0 " 
                     onclick="toggleDetails(event)"
@@ -374,9 +383,15 @@ var questionTotal=[]
     }
     setTotal()
   }
-  getDataByAjax = function(QuizzesID) {
+  getDataByAjax = async function(QuizzesID) {
     try {
-        $.ajax({
+        var temp = await getQuiz(QuizzesID)
+          .catch(function(error) {
+            throw error;
+          });
+        loadQuestion(temp.quizzes.questions)
+        setCurrent()
+        /*$.ajax({
             url: `/quiz/${QuizzesID}`,
             type: "GET",
             contentType: "application/json",
@@ -389,7 +404,7 @@ var questionTotal=[]
             error: function(xhr) {
                 console.log(xhr.responseText);
             }
-        });
+        });*/
     } catch (e) {
         alert(e.message);
     }

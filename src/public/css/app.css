@@ -1,3 +1,9 @@
+.border-solid {
+  border: 1px solid black !important; }
+
+.border-none {
+  border: none !important; }
+
 .test {
   font-size: 1rem;
   width: 50%;

@@ -110,13 +110,20 @@
   border: 2px solid black;
   margin: 0px 5px 0px 5px;
 }
-.question{
-  margin-bottom: 15px;
-  margin-top: 15px;
-}
 .border-solid{
   border: 1px solid black !important
 }
 .border-none{
   border:none !important
+}
+#detail{
+  .contain-detail{
+    div span{
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+    .question{
+      
+    }
+  }
 }

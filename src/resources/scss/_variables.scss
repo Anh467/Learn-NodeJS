@@ -8,3 +8,9 @@ $green-color : green;
     @return rgb($red, $green, $blue);
   }
   
+.border-solid{
+  border: 1px solid black !important
+}
+.border-none{
+  border:none !important
+}

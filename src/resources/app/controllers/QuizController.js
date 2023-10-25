@@ -74,7 +74,7 @@ class CourseController{
         };
         // update
         var quiz= await Quizzes.findOneAndUpdate(filter, create, { new: true });
-        res.status(200).json(quiz.questions[quiz.questions.length - 1])
+        res.status(200).json(quiz)
       } catch (error) {
         res.status(500).send({
           message:{
@@ -100,7 +100,7 @@ class CourseController{
         };
         // update
         var quiz= await Quizzes.findOneAndUpdate(filter, update, { new: true });
-        res.status(200).json(quiz.questions[index])
+        res.status(200).json(quiz)
       } catch (error) {
         res.status(500).send({
           message:{

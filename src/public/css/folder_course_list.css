@@ -1,4 +1,10 @@
 @charset "UTF-8";
+.border-solid {
+  border: 1px solid black !important; }
+
+.border-none {
+  border: none !important; }
+
 .card {
   width: 80%;
   margin: auto; }
@@ -7,7 +13,7 @@
   .card .card-body .card-text {
     margin-bottom: 0; }
   .card .card-body button {
-    border: 3px solid #b41d4f;
+    border: 3px solid #55edeb;
     border-radius: 10px;
     background-color: #80f080; }
   .card .card-body .card-privacry {
@@ -16,11 +22,11 @@
     margin-right: 0;
     padding: 3px 10px 3px 10px;
     margin-left: auto;
-    border: 3px solid #ffed98;
+    border: 3px solid #8bcb08;
     border-radius: 10px;
     background-color: #80f080; }
   .card .card-body .card-title input {
-    border: 3px solid #7a4622;
+    border: 3px solid #a434e6;
     border-radius: 10px;
     height: 37px;
     width: 80%; }
