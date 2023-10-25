@@ -409,7 +409,6 @@
     var init = carousel_indicatorButton.length
     // carousel_indicators.innerHTML = "";
     // carousel_inner.innerHTML = "";
-  
     for (let i = 0 + init; i < question.length + init; i++) {
       carousel_indicator.innerHTML = carousel_indicator.innerHTML + getCarouselIndicatorsButton(i);
       carousel_inner.innerHTML = carousel_inner.innerHTML + getCarouselItemDiv(question[i-init], i);
@@ -418,6 +417,17 @@
                                             </div>`
     }
     setTotal()
+  }
+  clearAllData= function(){
+    var carousel_indicator = document.querySelector(".carousel-indicators");
+    var detail = document.querySelector("#detail");
+    var carousel_indicatorButton = carousel_indicator.querySelectorAll("button");
+    var carousel_inner = document.querySelector(".carousel-inner");
+    var init = carousel_indicatorButton.length
+    carousel_indicator.innerHTML = ""
+    carousel_inner.innerHTML = ""
+    detail.innerHTML = ""
+    questionTotal= []
   }
   getDataByAjax = async function(QuizzesID) {
     try {
@@ -428,7 +438,10 @@
         loadQuestion(temp.quizzes.questions)
         setCurrent()
     } catch (e) {
-        alert(e.message);
+        showNotification({
+            value: e.message,
+            color: "red"
+        }, 2000);
     }
   }
   saveQuestionEvent = async function(event){
@@ -447,7 +460,7 @@
                                     .catch(function(error) {
                                         throw error;
                                     });
-        questionTotal= []
+        clearAllData()
         loadQuestion(temp.quiz.questions)
         showNotification(temp.message, 2000);
         setCurrent()
@@ -489,8 +502,30 @@
     //alert(input)
     return input
   }
-  deleteQuestionEvent = function(event){
-
+  deleteQuestionEvent = async function(event){
+    if(!confirm('Are you sure you want to delete')) return
+    try{
+         var buttonSave = event.target
+        var containDetail = buttonSave.closest('.contain-detail')
+        var index = containDetail.querySelector('span[name="index"]').innerHTML.trim()
+        var QuizzesID= document.getElementById('QuizzesID').innerHTML
+        var temp = await deleteQuiz(
+                                        QuizzesID,
+                                        index, 
+                                    )
+                                    .catch(function(error) {
+                                        throw error;
+                                    });
+        clearAllData()
+        loadQuestion(temp.quiz.questions)
+        showNotification(temp.message, 2000);
+        setCurrent()
+    }catch(error){
+        showNotification({
+            value: error.message,
+            color: "red"
+        }, 2000);
+    }
   }
   addEventListener("load", (event) => {
     try {

@@ -37,13 +37,15 @@ class CourseController{
                                               new: true 
                                             });
         // delete null
-        var quiz= await Quizzes.updateOne({
-          _id: quizzesid
-        }, {
-          $pull : { 
-            questions: null
-          }
-        }, { new: true });
+        var quiz= await Quizzes.findOneAndUpdate({
+                                            _id: quizzesid
+                                          }, {
+                                            $pull : { 
+                                              questions: null
+                                            }
+                                          }, { 
+                                              new: true 
+                                            });
         // res
         res.status(200).send({
           delete: "done",
