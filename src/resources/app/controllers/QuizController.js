@@ -8,6 +8,7 @@ const sqlServer = dbConfig.sqlServer
 const { Sequelize, Op } = require('sequelize');
 const PROJECT_PATH= require('../../../public/getProjectPath');
 const multer = require('multer');
+const CheckPrivacy = require('../../common/checkPrivacy')
 const sequelize = new Sequelize(sqlServer.DB, sqlServer.USER, sqlServer.PASSWORD, {
   host: sqlServer.HOST,
   port: sqlServer.PORT,
@@ -159,14 +160,16 @@ class CourseController{
     }
     //[GET]
     index = async function(req, res){
+      // get session
+      const User= req.session.User
+      const customerIDSession = (User) ? User.CustomerID : undefined
+      // get request params
+      const customerid = req.params.customerid
+      const coursename = req.params.coursename
+      const foldername = req.params.foldername
       try {
-        // get session
-        const User= req.session.User
-        const customerIDSession = (User) ? User.CustomerID : undefined
-        // get request params
-        const customerid = req.params.customerid
-        const coursename = req.params.coursename
-        const foldername = req.params.foldername
+        
+        
         // res CourseID / CourseName / CustomerID / QuizzesID
         const course = await Courses.findOne({
           attributes: [ 'CourseName', 'CourseID', 'QuizzesID'],
@@ -186,6 +189,16 @@ class CourseController{
           CourseName: coursename,
         })
         */
+        if (customerIDSession != customerid){
+          if(!await CheckPrivacy(customerid, foldername, coursename))
+          res.status(500).render('errorPage',{
+              message:{
+                  value: `Bạn không có quyền truy cập khoá học ${course.CourseName} của người dùng ${customerid}`,
+                  color: "red"
+              },
+          })
+       }
+        
         res.status(200).render('course/quiz_list',{
           CourseID: course.CourseID,
           CourseName: course.CourseName,

@@ -111,6 +111,7 @@
   var GB_Total = 0
   var GB_current = 0
   var GB_Index = 0
+// render ui
   function getCarouselIndicatorsButton(i){
     if(i == GB_Index)
       return `<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" class="active" aria-current="true" aria-label="Slide ${i+1}">
@@ -279,6 +280,8 @@
     }
     setTotal()
   }
+// common handler
+  // clear all input, data, and field
   clearAllData= function(){
     var carousel_indicator = document.querySelector(".carousel-indicators");
     var detail = document.querySelector("#detail");
@@ -290,6 +293,53 @@
     detail.innerHTML = ""
     GB_questionTotal= []
   }
+  // get input the block arccoring button position
+  getInputContainDetail= function(containDetail){
+    // trong mảng question answer đại diện cho danh sách các đáp án 
+    var input
+    var answerList= []
+    var questionSpan = containDetail.querySelector('span[name="question"]')
+    var answers = containDetail.querySelectorAll('li[name="answer"]')
+    answers.forEach(element => {
+        var value = element.querySelector('span[name="value"]')
+        var options = element.querySelector('select[name="isCorrect"]')
+        var isCorrect = false
+        if( options.value == "true")
+            isCorrect = true
+        answerList.push({
+            value: value.innerHTML,
+            isCorrect: isCorrect
+        })
+    });
+    input = {
+        question: questionSpan.innerHTML,
+        answer: answerList
+    }
+    //alert(input)
+    return input
+  }
+  // set total
+  function setTotal(){
+    var carousel_indicator = document.querySelector(".carousel-indicators");
+    var carousel_indicatorButton = carousel_indicator.querySelectorAll("button");
+    var total = document.getElementById('total')
+    total.innerHTML = "Total: "+ carousel_indicatorButton.length
+    GB_Total = carousel_indicatorButton.length
+    //alert(GB_Total)
+  }
+  // set current
+  function setCurrent(){
+      // Lấy phần tử carousel
+      var myCarousel = $('#carouselExampleIndicators');
+      // Lấy chỉ số của slide hiện tại
+      var activeSlideIndex = myCarousel.find('.carousel-item.active').index();
+      var current = document.getElementById('current')
+      current.innerHTML = 'Current: ' + (activeSlideIndex + 1) 
+      GB_current = activeSlideIndex + 1
+      //alert(GB_current)
+  }
+// button event
+  // delete an Answer
   deleteLiAnswer = function(event){
     try{
         var button = event.target
@@ -309,12 +359,17 @@
         }, 2000);
     }
   }
+  // render data questions from db
   getDataByAjax = async function(QuizzesID) {
     try {
+        if(QuizzesID== undefined || QuizzesID== "" ) throw new Error('No quiz found')
         var temp = await getQuiz(QuizzesID)
                         .catch(function(error) {
                             throw error;
                         });
+        if(temp == undefined) throw new Error('No quiz found')
+        if(!temp.quizzes) throw new Error('No quiz found')
+        if(!temp.quizzes.questions) throw new Error('No quiz found')
         loadQuestion(temp.quizzes.questions)
         setCurrent()
     } catch (e) {
@@ -324,6 +379,7 @@
         }, 2000);
     }
   }
+  // create a question and save in the database
   insertQuestionEvent = async function(event){
     try {
         var buttonSave = event.target
@@ -353,6 +409,7 @@
         }, 2000);
     }
   }
+  // update a question and save in the database
   saveQuestionEvent = async function(event){
     try {
         var buttonSave = event.target
@@ -381,64 +438,14 @@
     }
    
   }
-  addQuestionEvent = async function(event){
-    try {
-        var buttonSave = event.target
-        var containDetail = buttonSave.closest('.contain-detail')
-        var index = containDetail.querySelector('span[name="index"]').innerHTML.trim()
-        var input = getInputContainDetail(containDetail)
-        var QuizzesID= document.getElementById('QuizzesID').innerHTML
-        var temp = await updateQuiz(QuizzesID,
-                                    index, 
-                                    {
-                                        param: input
-                                    },
-                                    )
-                                    .catch(function(error) {
-                                        throw error;
-                                    });
-        clearAllData()
-        loadQuestion(temp.quiz.questions)
-        showNotification(temp.message, 2000);
-        setCurrent()
-    } catch (error) {
-        showNotification({
-            value: error.message,
-            color: "red"
-        }, 2000);
-    }
-   
-  }
+  // set input data return to the begining
   resetQuestionEvent = async function(event){
     var buttonSave = event.target
     var containDetail = buttonSave.closest('.contain-detail')
     var index = containDetail.querySelector('span[name="index"]').innerHTML.trim()
     containDetail.innerHTML = getDetailContainer(GB_questionTotal[0][parseInt(index)], parseInt(index))
   }
-  getInputContainDetail= function(containDetail){
-    // trong mảng question answer đại diện cho danh sách các đáp án 
-    var input
-    var answerList= []
-    var questionSpan = containDetail.querySelector('span[name="question"]')
-    var answers = containDetail.querySelectorAll('li[name="answer"]')
-    answers.forEach(element => {
-        var value = element.querySelector('span[name="value"]')
-        var options = element.querySelector('select[name="isCorrect"]')
-        var isCorrect = false
-        if( options.value == "true")
-            isCorrect = true
-        answerList.push({
-            value: value.innerHTML,
-            isCorrect: isCorrect
-        })
-    });
-    input = {
-        question: questionSpan.innerHTML,
-        answer: answerList
-    }
-    //alert(input)
-    return input
-  }
+  // delete a question in the database
   deleteQuestionEvent = async function(event){
     if(!confirm('Are you sure you want to delete')) return
     try{
@@ -464,6 +471,7 @@
         }, 2000);
     }
   }
+// event when load page and auto render data
   addEventListener("load", (event) => {
     try {
         var QuizzesID= document.getElementById('QuizzesID').innerHTML
@@ -475,6 +483,7 @@
     }
     
   });
+// others
   function reachTo(){
       try {
           // giá trị mà slide mới đến 
@@ -508,24 +517,6 @@
   }
   function loadmore(){
     loadQuestion(questionLoadMore)
-  }
-  function setTotal(){
-    var carousel_indicator = document.querySelector(".carousel-indicators");
-    var carousel_indicatorButton = carousel_indicator.querySelectorAll("button");
-    var total = document.getElementById('total')
-    total.innerHTML = "Total: "+ carousel_indicatorButton.length
-    GB_Total = carousel_indicatorButton.length
-    //alert(GB_Total)
-  }
-  function setCurrent(){
-      // Lấy phần tử carousel
-      var myCarousel = $('#carouselExampleIndicators');
-      // Lấy chỉ số của slide hiện tại
-      var activeSlideIndex = myCarousel.find('.carousel-item.active').index();
-      var current = document.getElementById('current')
-      current.innerHTML = 'Current: ' + (activeSlideIndex + 1) 
-      GB_current = activeSlideIndex + 1
-      //alert(GB_current)
   }
   $(document).ready(function() {
       // Lắng nghe sự kiện 'slide.bs.carousel'

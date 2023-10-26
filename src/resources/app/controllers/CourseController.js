@@ -8,6 +8,7 @@ const sqlServer = dbConfig.sqlServer
 const { Sequelize, Op } = require('sequelize');
 const PROJECT_PATH= require('../../../public/getProjectPath');
 const multer = require('multer');
+const CheckPrivacy = require('../../common/checkPrivacy')
 const sequelize = new Sequelize(sqlServer.DB, sqlServer.USER, sqlServer.PASSWORD, {
   host: sqlServer.HOST,
   port: sqlServer.PORT,
@@ -16,6 +17,7 @@ const sequelize = new Sequelize(sqlServer.DB, sqlServer.USER, sqlServer.PASSWORD
 const FolderCourses= db.foldercourses 
 const Courses= db.courses
 const Customers= db.customers
+const Quizzes= db.quizzes
 class CourseController{
 //common
 //Courses
@@ -46,6 +48,13 @@ class CourseController{
                     FolderID: folderCourse.FolderID
                 }
             }else{
+                if(!await CheckPrivacy(customerid, foldername, null))
+                    res.status(500).render('errorPage',{
+                        message:{
+                            value: `Bạn không có quyền truy cập khoá học ${foldername} của người dùng ${customerid}`,
+                            color: "red"
+                        },
+                })
                 condition.where= {
                     FolderID: folderCourse.FolderID,
                     privacry : "public"
@@ -88,12 +97,18 @@ class CourseController{
             if (customerid != CustomerID) throw new Error("You don't have permission to create")
             var CourseID 
             var courseImg= `${uuidv4()}.png`
+            // create data for mongodb
+            const quiz = new Quizzes({ questions: [] });
+            const quizTemp = await quiz.save();
+            const _id = quizTemp.id;
+            // build data for sequelize
             var courses= Courses.build({
                 FolderID: FolderID,
                 CourseImg: courseImg,
                 CourseName: FolderName,
                 Description: Description,
-                privacry: privacry
+                privacry: privacry,
+                QuizzesID: _id
             }) 
             await Courses.findOne({
                 where:{

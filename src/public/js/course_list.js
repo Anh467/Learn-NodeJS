@@ -207,7 +207,7 @@ insertFolderCourse= function(formData){
                                     <div class="col foldercourse-container" name="${course.CourseID}">
                                     <p name="FolderID" class="d-none">${data.FolderID} </p>
                                     <div class="card h-100">
-                                        <a href="/foldercourse/${data.CustomerID}/${data.FolderName}/${course.CourseName}">
+                                        <a href="/quiz/${data.CustomerID}/${data.FolderName}/${course.CourseName}">
                                         <img name="FolderImg" src="/img/user/${data.CustomerID}/FolderCourse/${data.FolderID}/${course.CourseID}/${course.CourseImg}" class="card-img-top h-70" 
                                                 alt="${course.CourseName}"/>
                                         
