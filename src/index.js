@@ -15,7 +15,12 @@ const path = require('path')
 const port= 3000
 const route= require('./resources/routers')
 
-
+//config no-cors
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+    next();
+  });
 //session
 app.use(session({
     resave: true, 

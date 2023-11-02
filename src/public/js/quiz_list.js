@@ -263,6 +263,13 @@
             `
   }
   function loadQuestion(question) {
+    if (question.length == 0) {
+        
+        showNotification({
+            value: "There are no quiz in this cover: ",
+            color: "red"
+        }, 2000);
+    }
     GB_questionTotal.push(question)
     var carousel_indicator = document.querySelector(".carousel-indicators");
     var detail = document.querySelector("#detail");
